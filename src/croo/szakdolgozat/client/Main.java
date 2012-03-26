@@ -1,147 +1,118 @@
 package croo.szakdolgozat.client;
 
-import croo.szakdolgozat.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.maps.client.InfoWindowContent;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.Maps;
+import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
-/**
- * Entry point classes define <code>onModuleLoad()</code>.
- */
-public class Main implements EntryPoint {
-  /**
-   * The message displayed to the user when the server cannot be reached or
-   * returns an error.
-   */
-  private static final String SERVER_ERROR = "An error occurred while "
-      + "attempting to contact the server. Please check your network "
-      + "connection and try again.";
+import croo.szakdolgozat.client.stubs.QueryService;
+import croo.szakdolgozat.client.stubs.QueryServiceAsync;
+import croo.szakdolgozat.shared.Coordinates;
 
-  /**
-   * Create a remote service proxy to talk to the server-side Greeting service.
-   */
-  private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+public class Main implements EntryPoint, MapClickHandler, ClickHandler
+{
 
-  /**
-   * This is the entry point method.
-   */
-  public void onModuleLoad() {
-    final Button sendButton = new Button("Send");
-    final TextBox nameField = new TextBox();
-    nameField.setText("GWT User");
-    final Label errorLabel = new Label();
+	private final QueryServiceAsync reverseService = GWT.create(QueryService.class);
+	private TextBox inputField;
+	private Button sendButton;
+	private HTML htmlBlock;
+	private MapWidget map;
 
-    // We can add style names to widgets
-    sendButton.addStyleName("sendButton");
+	/**
+	 * Entry Point
+	 */
+	public void onModuleLoad()
+	{
+		Maps.loadMapsApi("AIzaSyD--gmXsvTyag6v_Li5-wsYfdlXTMyauCU", "2", false, new Runnable() {
+			public void run()
+			{
+				buildUi();
+			}
+		});
 
-    // Add the nameField and sendButton to the RootPanel
-    // Use RootPanel.get() to get the entire body element
-    RootPanel.get("nameFieldContainer").add(nameField);
-    RootPanel.get("sendButtonContainer").add(sendButton);
-    RootPanel.get("errorLabelContainer").add(errorLabel);
+		inputField = new TextBox();
+		sendButton = new Button("Send");
+		htmlBlock = new HTML();
 
-    // Focus the cursor on the name field when the app loads
-    nameField.setFocus(true);
-    nameField.selectAll();
+		sendButton.addStyleName("sendButton");
 
-    // Create the popup dialog box
-    final DialogBox dialogBox = new DialogBox();
-    dialogBox.setText("Remote Procedure Call");
-    dialogBox.setAnimationEnabled(true);
-    final Button closeButton = new Button("Close");
-    // We can set the id of a widget by accessing its Element
-    closeButton.getElement().setId("closeButton");
-    final Label textToServerLabel = new Label();
-    final HTML serverResponseLabel = new HTML();
-    VerticalPanel dialogVPanel = new VerticalPanel();
-    dialogVPanel.addStyleName("dialogVPanel");
-    dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
-    dialogVPanel.add(textToServerLabel);
-    dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
-    dialogVPanel.add(serverResponseLabel);
-    dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-    dialogVPanel.add(closeButton);
-    dialogBox.setWidget(dialogVPanel);
+		RootPanel.get("input").add(inputField);
+		RootPanel.get("button").add(sendButton);
+		RootPanel.get("label").add(htmlBlock);
 
-    // Add a handler to close the DialogBox
-    closeButton.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        dialogBox.hide();
-        sendButton.setEnabled(true);
-        sendButton.setFocus(true);
-      }
-    });
+		inputField.setFocus(true);
+		inputField.selectAll();
 
-    // Create a handler for the sendButton and nameField
-    class MyHandler implements ClickHandler, KeyUpHandler {
-      /**
-       * Fired when the user clicks on the sendButton.
-       */
-      public void onClick(ClickEvent event) {
-        sendNameToServer();
-      }
+		sendButton.addClickHandler(this);
+	}
 
-      /**
-       * Fired when the user types in the nameField.
-       */
-      public void onKeyUp(KeyUpEvent event) {
-        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-          sendNameToServer();
-        }
-      }
+	private void buildUi()
+	{
+		LatLng budapest = LatLng.newInstance(47.309, 19.500);
+		map = new MapWidget(budapest, 2);
+		map.setSize("640px", "480px");
+		map.addControl(new LargeMapControl());
+		map.setZoomLevel(7);
+		map.addOverlay(new Marker(budapest));
+		map.getInfoWindow().open(map.getCenter(), new InfoWindowContent("Middle of Europe... more or less."));
+		final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
+		map.setScrollWheelZoomEnabled(true);
+		map.setContinuousZoom(true);
+		dock.addNorth(map, 500);
+		RootPanel.get("map").add(dock);
+		map.addMapClickHandler(this);
+	}
 
-      /**
-       * Send the name from the nameField to the server and wait for a response.
-       */
-      private void sendNameToServer() {
-        // First, we validate the input.
-        errorLabel.setText("");
-        String textToServer = nameField.getText();
-        if (!FieldVerifier.isValidName(textToServer)) {
-          errorLabel.setText("Please enter at least four characters");
-          return;
-        }
-        
-        // Then, we send the input to the server.
-        sendButton.setEnabled(false);
-        textToServerLabel.setText(textToServer);
-        serverResponseLabel.setText("");
-        greetingService.greetServer(textToServer, new AsyncCallback<String>() {
-          public void onFailure(Throwable caught) {
-            // Show the RPC error message to the user
-            dialogBox.setText("Remote Procedure Call - Failure");
-            serverResponseLabel.addStyleName("serverResponseLabelError");
-            serverResponseLabel.setHTML(SERVER_ERROR);
-            dialogBox.center();
-            closeButton.setFocus(true);
-          }
+	private void locateInputOnMap(String place)
+	{
+		sendButton.setEnabled(false);
+		reverseService.query(place, new AsyncCallback<Coordinates>() {
+			public void onFailure(Throwable caught)
+			{
+				htmlBlock.setHTML(caught.getMessage());
+				GWT.log(caught.getMessage());
+				sendButton.setEnabled(true);
+			}
 
-          public void onSuccess(String result) {
-            dialogBox.setText("Remote Procedure Call");
-            serverResponseLabel.removeStyleName("serverResponseLabelError");
-            serverResponseLabel.setHTML(result);
-            dialogBox.center();
-            closeButton.setFocus(true);
-          }
-        });
-      }
-    }
+			public void onSuccess(Coordinates result)
+			{
+				if (result != null)
+				{
+					htmlBlock.setHTML(result.getLatitude() + ", " + result.getLongitude());
+					sendButton.setEnabled(true);
+					map.setCenter(LatLng.newInstance(result.getLatitude(), result.getLongitude()));
+				} else
+				{
+					htmlBlock.setHTML("This place cannot be found in the database. Please try another one.");
+				}
+			}
+		});
+	}
 
-    // Add a handler to send the name to the server
-    MyHandler handler = new MyHandler();
-    sendButton.addClickHandler(handler);
-    nameField.addKeyUpHandler(handler);
-  }
+	@Override
+	public void onClick(MapClickEvent event)
+	{
+		htmlBlock.setHTML("The coords you clicked on: " + String.valueOf(event.getLatLng().getLatitude()) + " , "
+				+ String.valueOf(event.getLatLng().getLongitude()));
+	}
+
+	@Override
+	public void onClick(ClickEvent event)
+	{
+		locateInputOnMap(inputField.getText());
+	}
 }

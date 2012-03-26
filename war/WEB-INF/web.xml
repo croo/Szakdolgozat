@@ -6,14 +6,15 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
+
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>croo.szakdolgozat.server.GreetingServiceImpl</servlet-class>
+    <servlet-name>queryServlet</servlet-name>
+    <servlet-class>croo.szakdolgozat.server.QueryServiceImpl</servlet-class>
   </servlet>
-  
+
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/main/greet</url-pattern>
+    <servlet-name>queryServlet</servlet-name>
+    <url-pattern>/main/query</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
