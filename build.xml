@@ -7,6 +7,8 @@
   <property name="gwt.sdk" location="C:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201112160242-rel-r37/gwt-2.4.0" />
   <property name="jena.dir" location="C:/work/Jena/apache-jena-2.7.0-incubating" />
   <property name="googlemaps.dir" location="C:/work/googlemaps-api/gwt-maps-1.1.1" />
+  <property name="default.jar.dir" location="war/WEB-INF/lib" />
+  <property name="glassfish.domain" location="c:/glassfish3.1.1/glassfish3/glassfish/domains/domain1" />
   
 	
   <path id="project.class.path">
@@ -18,11 +20,14 @@
   </path>
 
   <target name="libs" description="Copy libs to WEB-INF/lib">
-    <mkdir dir="war/WEB-INF/lib" />
-    <copy todir="war/WEB-INF/lib" file="${gwt.sdk}/gwt-servlet.jar" verbose="true"/>
-    <copy todir="war/WEB-INF/lib" file="${gwt.sdk}/gwt-servlet-deps.jar" verbose="true"/>
-    <copy todir="war/WEB-INF/lib" file="${jena.dir}/lib/jena-core-2.7.0-incubating.jar" verbose="true"/>
-    <copy todir="war/WEB-INF/lib" file="${googlemaps.dir}/gwt-maps.jar" verbose="true"/>
+    <mkdir dir="${default.jar.dir}" />
+    <copy todir="${default.jar.dir}" file="${gwt.sdk}/gwt-servlet.jar" verbose="true"/>
+    <copy todir="${default.jar.dir}" file="${gwt.sdk}/gwt-servlet-deps.jar" verbose="true"/>
+    <copy todir="${default.jar.dir}" file="${jena.dir}/lib/jena-core-2.7.0-incubating.jar" verbose="true"/>
+    <copy todir="${default.jar.dir}" file="${googlemaps.dir}/gwt-maps.jar" verbose="true"/>
+    <copy todir="${default.jar.dir}" file="${gwt.sdk}/validation-api-1.0.0.GA.jar" verbose="true"/>
+    <copy todir="${default.jar.dir}" file="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" verbose="true"/>
+  	
   </target>
 
   <target name="javac" depends="libs" description="Compile java source to bytecode">
@@ -44,8 +49,8 @@
       <classpath>
         <pathelement location="src"/>
         <path refid="project.class.path"/>
-        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA.jar" />
-        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA.jar" />
+        <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA-sources.jar" />
       </classpath>
       <jvmarg value="-Xmx256M"/>
       <arg line="-war"/>
@@ -61,8 +66,8 @@
       <classpath>
         <pathelement location="src"/>
         <path refid="project.class.path"/>
-        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA.jar" />
-        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA.jar" />
+        <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA-sources.jar" />
       </classpath>
       <jvmarg value="-Xmx256M"/>
       <arg value="-startupUrl"/>
@@ -78,16 +83,22 @@
   </target>
 
   <target name="build" depends="gwtc" description="Build this project" />
+  
+	<target name="deploy" depends="" description="Build this project" >
+		<copy todir="${glassfish.domain}/autodeploy" file="created-war/Main.war" overwrite="yes" failonerror="yes" />
+	</target>
 
   <target name="war" depends="build" description="Create a war file">
-    <zip destfile="Main.war" basedir="war"/>
+  	<mkdir dir="created-war"/>
+    <zip destfile="created-war/Main.war" basedir="war"/>
   </target>
 
   <target name="clean" description="Cleans this project">
-    <delete dir="war/WEB-INF/classes" failonerror="false" />
-    <delete dir="war/main" failonerror="false" />
-  	<delete dir="gwt-unitCache" failonerror="false"/>
-  	<delete dir="war/WEB-INF/depoly" failonerror="false"/>
+    <delete dir="war/WEB-INF/classes" failonerror="no" />
+    <delete dir="war/main" failonerror="no" />
+  	<delete dir="gwt-unitCache" failonerror="no"/>
+  	<delete dir="war/WEB-INF/depoly" failonerror="no"/>
+  	<delete dir="created-war" failonerror="no"/>
   </target>
 
 </project>
