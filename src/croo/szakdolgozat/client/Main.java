@@ -26,6 +26,7 @@ import croo.szakdolgozat.shared.Coordinates;
 public class Main implements EntryPoint, MapClickHandler, ClickHandler
 {
 
+	private static final String MY_GOOGLEAPI_AUTH_KEY = "AIzaSyD--gmXsvTyag6v_Li5-wsYfdlXTMyauCU";
 	private final QueryServiceAsync reverseService = GWT.create(QueryService.class);
 	private TextBox inputField;
 	private Button sendButton;
@@ -37,7 +38,7 @@ public class Main implements EntryPoint, MapClickHandler, ClickHandler
 	 */
 	public void onModuleLoad()
 	{
-		Maps.loadMapsApi("AIzaSyD--gmXsvTyag6v_Li5-wsYfdlXTMyauCU", "2", false, new Runnable() {
+		Maps.loadMapsApi(MY_GOOGLEAPI_AUTH_KEY, "2", false, new Runnable() {
 			public void run()
 			{
 				buildUi();
