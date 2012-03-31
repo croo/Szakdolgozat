@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
@@ -25,8 +24,6 @@ import croo.szakdolgozat.shared.Coordinates;
 
 public class Main implements EntryPoint, MapClickHandler, ClickHandler
 {
-
-	private static final String MY_GOOGLEAPI_AUTH_KEY = "AIzaSyD--gmXsvTyag6v_Li5-wsYfdlXTMyauCU";
 	private final QueryServiceAsync reverseService = GWT.create(QueryService.class);
 	private TextBox inputField;
 	private Button sendButton;
@@ -38,13 +35,6 @@ public class Main implements EntryPoint, MapClickHandler, ClickHandler
 	 */
 	public void onModuleLoad()
 	{
-		Maps.loadMapsApi(MY_GOOGLEAPI_AUTH_KEY, "2", false, new Runnable() {
-			public void run()
-			{
-				buildUi();
-			}
-		});
-
 		inputField = new TextBox();
 		sendButton = new Button("Send");
 		htmlBlock = new HTML();
