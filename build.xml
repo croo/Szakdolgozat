@@ -79,7 +79,7 @@
       <arg value="8001"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
       <arg line="-logLevel"/>
-      <arg value="DEBUG"/>
+      <arg value="INFO"/>
       <arg line="${gwt.args}"/>
       <arg value="croo.szakdolgozat.Main"/>
     </java>
