@@ -70,7 +70,7 @@
       </classpath>
       <jvmarg value="-Xmx256M"/>
       <jvmarg value="-Xdebug" />
-      <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8001" />
+      <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8001" />
       <arg value="-startupUrl"/>
       <arg value="Main.html"/>
       <arg value="-war"/>
