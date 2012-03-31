@@ -9,18 +9,81 @@ import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.web.bindery.event.shared.EventBus;
 
+import croo.szakdolgozat.client.ErrorHandlingAsyncCallback;
 import croo.szakdolgozat.client.display.TravelMapDisplay;
+import croo.szakdolgozat.client.stubs.MapServiceAsync;
 
 public class TravelMapPresenter implements MapClickHandler
 {
 	private static final String MY_GOOGLEAPI_AUTH_KEY = "AIzaSyD--gmXsvTyag6v_Li5-wsYfdlXTMyauCU";
 	private EventBus eventBus;
 	private TravelMapDisplay display;
+	private Boolean startTownInputIsValid;
+	private Boolean destinationTownInputIsValid;
 
-	public TravelMapPresenter(EventBus eventBus, TravelMapDisplay display)
+	private MapServiceAsync mapService;
+
+	public TravelMapPresenter(EventBus eventBus, TravelMapDisplay display, MapServiceAsync mapService)
 	{
 		this.eventBus = eventBus;
 		this.display = display;
+		this.mapService = mapService;
+	}
+
+	public void verifyStartTownInput(final String text)
+	{
+		mapService.verifyLocation(text, new ErrorHandlingAsyncCallback<Boolean>() {
+			@Override
+			public void onSuccess(Boolean inputIsValid)
+			{
+				GWT.log("Validating of input " + text + " was successful.");
+				if (inputIsValid)
+				{
+					GWT.log("Input is valid.");
+					startTownInputIsValid = true;
+				} else
+				{
+					GWT.log("Input is invalid.");
+					display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
+					startTownInputIsValid = false;
+				}
+			}
+		});
+	}
+
+	public void verifyDestinationTownInput(final String text)
+	{
+		mapService.verifyLocation(text, new ErrorHandlingAsyncCallback<Boolean>() {
+			@Override
+			public void onSuccess(Boolean inputIsValid)
+			{
+				GWT.log("Validating of input " + text + " was successful.");
+				if (inputIsValid)
+				{
+					GWT.log("Input is valid.");
+					destinationTownInputIsValid = true;
+				} else
+				{
+					GWT.log("Input is invalid.");
+					display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
+					destinationTownInputIsValid = false;
+				}
+			}
+		});
+	}
+
+	public void onSendButtonClicked()
+	{
+		if (startTownInputIsValid && destinationTownInputIsValid)
+			GWT.log("You have clicked on the Send button and both input is valid.");
+		else
+			GWT.log("You have clicked on the Send button but some of the input is invalid.");
+	}
+
+	@Override
+	public void onClick(MapClickEvent event)
+	{
+		GWT.log("You have clicked on the map.");
 	}
 
 	public void initializeMap()
@@ -51,16 +114,4 @@ public class TravelMapPresenter implements MapClickHandler
 			}
 		};
 	}
-
-	public void onSendButtonClicked()
-	{
-		GWT.log("You have clicked on the Send button.");
-	}
-
-	@Override
-	public void onClick(MapClickEvent event)
-	{
-		GWT.log("You have clicked on the map.");
-	}
-
 }
