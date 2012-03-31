@@ -4,5 +4,5 @@ import com.google.gwt.maps.client.MapWidget;
 
 public interface TravelMapDisplay
 {
-	public MapWidget getTravelMap();
+	public void setTravelMap(MapWidget map);
 }
