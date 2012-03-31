@@ -33,7 +33,8 @@ public class TravelMap extends Composite implements TravelMapDisplay
 	SimplePanel mapHolder;
 
 	TravelMapPresenter presenter;
-	private MapWidget map;
+
+	// private MapWidget map;
 
 	public TravelMap(EventBus eventBus)
 	{
@@ -51,7 +52,7 @@ public class TravelMap extends Composite implements TravelMapDisplay
 	@Override
 	public void setTravelMap(MapWidget map)
 	{
-		this.map = map;
+		// this.map = map;
 		mapHolder.add(map);
 	}
 }

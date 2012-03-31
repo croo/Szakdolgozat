@@ -7,7 +7,7 @@ import croo.szakdolgozat.shared.Coordinates;
 /**
  * The async counterpart of QueryService
  */
-public interface QueryServiceAsync
+public interface MapServiceAsync
 {
 	void query(String queryData, AsyncCallback<Coordinates> callback);
 }

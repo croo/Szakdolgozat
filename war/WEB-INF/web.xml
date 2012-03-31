@@ -9,7 +9,7 @@
 
   <servlet>
     <servlet-name>queryServlet</servlet-name>
-    <servlet-class>croo.szakdolgozat.server.QueryServiceImpl</servlet-class>
+    <servlet-class>croo.szakdolgozat.server.MapServiceImpl</servlet-class>
   </servlet>
 
   <servlet-mapping>

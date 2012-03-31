@@ -5,25 +5,30 @@ import java.util.Map;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import croo.szakdolgozat.client.stubs.QueryService;
+import croo.szakdolgozat.client.stubs.MapService;
 import croo.szakdolgozat.shared.Coordinates;
 
 /**
  * The server side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
-public class QueryServiceImpl extends RemoteServiceServlet implements QueryService
+public class MapServiceImpl extends RemoteServiceServlet implements MapService
 {
 
 	Map<String, Coordinates> database = new HashMap<String, Coordinates>();
 
-	public QueryServiceImpl()
+	public MapServiceImpl()
 	{
 		database.put("budapest", new Coordinates(47.309, 19.500));
 		database.put("esztergom", new Coordinates(47.7776069, 18.7435935));
 	}
 
 	@Override
+	public Boolean verifyLocation(String location)
+	{
+		return database.containsKey(location.trim().toLowerCase());
+	}
+
 	public Coordinates query(String place)
 	{
 		if (database.containsKey(place.toLowerCase()))
