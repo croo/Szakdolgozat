@@ -38,7 +38,7 @@ public class TravelMapPresenter implements MapClickHandler
 
 			private void buildUi()
 			{
-				LatLng budapest = LatLng.newInstance(47.309, 19.500);
+				LatLng budapest = LatLng.newInstance(47.49841, 19.04076);
 				MapWidget map = new MapWidget(budapest, 7);
 				map.setSize("800px", "600px");
 				map.setTitle("Utazz a MÁVval!");
