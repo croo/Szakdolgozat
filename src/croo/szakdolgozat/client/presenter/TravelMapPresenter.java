@@ -9,17 +9,17 @@ import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.web.bindery.event.shared.EventBus;
 
-import croo.szakdolgozat.client.ValidatingAsyncCallback;
 import croo.szakdolgozat.client.display.TravelMapDisplay;
 import croo.szakdolgozat.client.stubs.MapServiceAsync;
+import croo.szakdolgozat.client.stubs.callbacks.ErrorHandlingAsyncCallback;
+import croo.szakdolgozat.client.stubs.callbacks.ValidatingAsyncCallback;
+import croo.szakdolgozat.shared.Route;
 
 public class TravelMapPresenter implements MapClickHandler
 {
 	private static final String MY_GOOGLEAPI_AUTH_KEY = "AIzaSyD--gmXsvTyag6v_Li5-wsYfdlXTMyauCU";
 	private EventBus eventBus;
 	private TravelMapDisplay display;
-	private Boolean startTownInputIsValid;
-	private Boolean destinationTownInputIsValid;
 
 	private MapServiceAsync mapService;
 
@@ -37,7 +37,6 @@ public class TravelMapPresenter implements MapClickHandler
 			@Override
 			public void onValidInput()
 			{
-				startTownInputIsValid = true;
 				display.setErrorLabel("");
 			}
 
@@ -45,7 +44,6 @@ public class TravelMapPresenter implements MapClickHandler
 			public void onInvalidInput()
 			{
 				display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
-				startTownInputIsValid = false;
 			}
 		});
 	}
@@ -57,7 +55,6 @@ public class TravelMapPresenter implements MapClickHandler
 			@Override
 			public void onValidInput()
 			{
-				destinationTownInputIsValid = true;
 				display.setErrorLabel("");
 			}
 
@@ -65,19 +62,22 @@ public class TravelMapPresenter implements MapClickHandler
 			public void onInvalidInput()
 			{
 				display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
-				destinationTownInputIsValid = false;
 			}
 		});
 	}
 
-	public void onSendButtonClicked()
+	public void onSendButtonClicked(String startTown, String destinationTown)
 	{
-		if (startTownInputIsValid && destinationTownInputIsValid) {
-			GWT.log("You have clicked on the Send button and both input is valid.");
-			display.setErrorLabel("");
-		} else {
-			GWT.log("You have clicked on the Send button but some of the input is invalid.");
-		}
+		GWT.log("Getting route information...");
+		display.setErrorLabel("");
+		mapService.getRoute(startTown, destinationTown, new ErrorHandlingAsyncCallback<Route>() {
+			@Override
+			public void onSuccess(Route result)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	@Override

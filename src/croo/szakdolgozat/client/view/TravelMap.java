@@ -51,7 +51,7 @@ public class TravelMap extends Composite implements TravelMapDisplay
 	@UiHandler("sendButton")
 	void onClick(ClickEvent e)
 	{
-		presenter.onSendButtonClicked();
+		presenter.onSendButtonClicked(startTown.getText(), destinationTown.getText());
 	}
 
 	@UiHandler("startTown")
