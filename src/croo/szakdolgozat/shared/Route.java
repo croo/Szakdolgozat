@@ -19,6 +19,12 @@ public class Route implements Serializable
 		this.routeway = routeway;
 	}
 
+	public Route(String startTownName, String endTownName, ArrayList<Coordinates> routeway)
+	{
+		this.routeway = routeway;
+		startTown = new Town(routeway.get(0), startTownName);
+	}
+
 	public Town getStartTown()
 	{
 		return startTown;
