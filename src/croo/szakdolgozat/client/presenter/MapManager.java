@@ -19,6 +19,7 @@ public class MapManager
 
 	public void drawRoute(Route route)
 	{
+		map.addOverlay(route.getRouteWayInJSO());
 		GWT.log("Drawing the route.");
 	}
 
