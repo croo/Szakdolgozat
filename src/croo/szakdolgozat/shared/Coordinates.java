@@ -11,6 +11,7 @@ public class Coordinates implements Serializable
 
 	public Coordinates()
 	{
+		/* GWT RPC needs an empty no-arguments constructor */
 	}
 
 	public Coordinates(double lat, double lng)

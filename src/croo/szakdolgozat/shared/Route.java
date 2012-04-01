@@ -11,9 +11,13 @@ public class Route implements Serializable
 	private Town endTown;
 	private ArrayList<Coordinates> routeway;
 
+	public Route()
+	{
+		/* GWT RPC needs an empty no-arguments constructor */
+	}
+
 	public Route(Town startTown, Town endTown, ArrayList<Coordinates> routeway)
 	{
-		super();
 		this.startTown = startTown;
 		this.endTown = endTown;
 		this.routeway = routeway;
@@ -23,6 +27,7 @@ public class Route implements Serializable
 	{
 		this.routeway = routeway;
 		startTown = new Town(routeway.get(0), startTownName);
+		endTown = new Town(routeway.get(routeway.size() - 1), startTownName);
 	}
 
 	public Town getStartTown()

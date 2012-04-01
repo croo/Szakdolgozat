@@ -9,6 +9,11 @@ public class Town implements Serializable
 	private Coordinates coordinate;
 	private String name;
 
+	public Town()
+	{
+		/* GWT RPC needs an empty no-arguments constructor */
+	}
+
 	public Town(Coordinates coordinate, String name)
 	{
 		super();
