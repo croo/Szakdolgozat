@@ -1,5 +1,6 @@
 package croo.szakdolgozat.shared;
 
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Town implements IsSerializable
@@ -17,6 +18,11 @@ public class Town implements IsSerializable
 		super();
 		this.coordinate = coordinate;
 		this.name = name;
+	}
+
+	public LatLng getTownCoordinateInJSO()
+	{
+		return coordinate.getCoordinateInJSO();
 	}
 
 	public Coordinate getCoordinate()

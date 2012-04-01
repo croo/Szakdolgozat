@@ -34,7 +34,7 @@ public class Coordinate implements IsSerializable
 		this.latitude = latitude;
 	}
 
-	public double getLongitude()
+	public Double getLongitude()
 	{
 		return longitude;
 	}
