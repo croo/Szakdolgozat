@@ -61,7 +61,7 @@ public class TravelMap extends Composite implements TravelMapDisplay
 	}
 
 	@UiHandler("destinationTown")
-	void onEndFieldChange(ChangeEvent event)
+	void onDestinationTownChange(ChangeEvent event)
 	{
 		presenter.verifyDestinationTownInput(destinationTown.getText());
 	}
