@@ -3,12 +3,13 @@
   <!-- Arguments to gwtc and devmode targets -->
   <property name="gwt.args" value="" />
 	
+  <property name="glassfish.domain" location="c:/glassfish3.1.1/glassfish3/glassfish/domains/domain1" />
   <!-- Configure path to Needed Libraries -->
   <property name="gwt.sdk" location="C:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201112160242-rel-r37/gwt-2.4.0" />
   <property name="jena.dir" location="C:/work/Jena/apache-jena-2.7.0-incubating" />
   <property name="googlemaps.dir" location="C:/work/googlemaps-api/gwt-maps-1.1.1" />
   <property name="default.jar.dir" location="war/WEB-INF/lib" />
-  <property name="glassfish.domain" location="c:/glassfish3.1.1/glassfish3/glassfish/domains/domain1" />
+  <property name="junit.dir" location="c:/eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705" />
   
 	
   <path id="project.class.path">
@@ -104,4 +105,66 @@
   	<delete dir="created-war" failonerror="no"/>
   </target>
 
+  <target name="javac.tests" depends="javac" description="Compiles test code">
+    <javac srcdir="test" includes="**" encoding="utf-8"
+      source="1.7" target="1.7" nowarn="true"
+      destdir="war/WEB-INF/classes"
+      debug="true" debuglevel="lines,vars,source">
+      <classpath location="${junit.dir}/junit.jar"/>
+      <classpath refid="project.class.path"/>
+    </javac>
+  </target>
+
+  <target name="test.dev" depends="javac.tests" description="Run development mode tests">
+    <mkdir dir="reports/htmlunit.dev" />
+    <junit fork="yes" printsummary="yes" haltonfailure="yes">
+      <jvmarg line="-Xmx256m" />
+      <sysproperty key="gwt.args" value="-standardsMode -logLevel WARN" />
+      <sysproperty key="java.awt.headless" value="true" />
+      <classpath>
+        <pathelement location="src" />
+        <pathelement location="test" />
+        <path refid="project.class.path" />
+        <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA.jar" />
+        <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="${junit.dir}/junit.jar" />
+      </classpath>
+      <batchtest todir="reports/htmlunit.dev" >
+        <fileset dir="test" >
+          <include name="**/*Test.java" />
+        </fileset>
+      </batchtest>
+      <formatter type="plain" />
+    </junit>
+  </target>
+
+  <target name="test.prod" depends="javac.tests" description="Run production mode tests">
+    <mkdir dir="reports/htmlunit.prod" />
+    <junit fork="yes" printsummary="yes" haltonfailure="yes">
+      <jvmarg line="-Xmx256m" />
+      <sysproperty key="gwt.args" value="-prod -standardsMode -logLevel WARN -standardsMode -out www-test" />
+      <sysproperty key="java.awt.headless" value="true" />
+      <classpath>
+        <pathelement location="src" />
+        <pathelement location="test" />
+        <path refid="project.class.path" />
+      	<pathelement location="${default.jar.dir}/validation-api-1.0.0.GA.jar" />
+        <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="${junit.dir}/junit.jar" />
+      </classpath>
+      <batchtest todir="reports/htmlunit.prod" >
+        <fileset dir="test" >
+          <include name="**/*Test.java" />
+        </fileset>
+      </batchtest>
+      <formatter type="plain" />
+      <formatter type="xml" />
+    </junit>
+  </target>
+
+  <target name="test" description="Run development and production mode tests">
+    <antcall target="test.dev" />
+    <antcall target="test.prod" />
+  </target>
+	
 </project>
