@@ -3,17 +3,17 @@ package croo.szakdolgozat.shared;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class Coordinates implements IsSerializable
+public class Coordinate implements IsSerializable
 {
 	private Double latitude;
 	private Double longitude;
 
-	public Coordinates()
+	public Coordinate()
 	{
 		/* GWT RPC needs an empty no-arguments constructor */
 	}
 
-	public Coordinates(Double lat, Double lng)
+	public Coordinate(Double lat, Double lng)
 	{
 		latitude = lat;
 		longitude = lng;
@@ -49,8 +49,8 @@ public class Coordinates implements IsSerializable
 	{
 		if (this == obj)
 			return true;
-		if (obj instanceof Coordinates) {
-			Coordinates other = (Coordinates) obj;
+		if (obj instanceof Coordinate) {
+			Coordinate other = (Coordinate) obj;
 			return latitude.equals(other.latitude) && longitude.equals(other.longitude);
 		} else {
 			return false;
