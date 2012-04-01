@@ -9,7 +9,7 @@ import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.web.bindery.event.shared.EventBus;
 
-import croo.szakdolgozat.client.ErrorHandlingAsyncCallback;
+import croo.szakdolgozat.client.ValidatingAsyncCallback;
 import croo.szakdolgozat.client.display.TravelMapDisplay;
 import croo.szakdolgozat.client.stubs.MapServiceAsync;
 
@@ -32,52 +32,52 @@ public class TravelMapPresenter implements MapClickHandler
 
 	public void verifyStartTownInput(final String text)
 	{
-		mapService.verifyLocation(text, new ErrorHandlingAsyncCallback<Boolean>() {
+		GWT.log("Validating of input " + text + ".");
+		mapService.verifyLocation(text, new ValidatingAsyncCallback() {
 			@Override
-			public void onSuccess(Boolean inputIsValid)
+			public void onValidInput()
 			{
-				GWT.log("Validating of input " + text + " was successful.");
-				if (inputIsValid)
-				{
-					GWT.log("Input is valid.");
-					startTownInputIsValid = true;
-				} else
-				{
-					GWT.log("Input is invalid.");
-					display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
-					startTownInputIsValid = false;
-				}
+				startTownInputIsValid = true;
+				display.setErrorLabel("");
+			}
+
+			@Override
+			public void onInvalidInput()
+			{
+				display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
+				startTownInputIsValid = false;
 			}
 		});
 	}
 
 	public void verifyDestinationTownInput(final String text)
 	{
-		mapService.verifyLocation(text, new ErrorHandlingAsyncCallback<Boolean>() {
+		GWT.log("Validating of input " + text + ".");
+		mapService.verifyLocation(text, new ValidatingAsyncCallback() {
 			@Override
-			public void onSuccess(Boolean inputIsValid)
+			public void onValidInput()
 			{
-				GWT.log("Validating of input " + text + " was successful.");
-				if (inputIsValid)
-				{
-					GWT.log("Input is valid.");
-					destinationTownInputIsValid = true;
-				} else
-				{
-					GWT.log("Input is invalid.");
-					display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
-					destinationTownInputIsValid = false;
-				}
+				destinationTownInputIsValid = true;
+				display.setErrorLabel("");
+			}
+
+			@Override
+			public void onInvalidInput()
+			{
+				display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
+				destinationTownInputIsValid = false;
 			}
 		});
 	}
 
 	public void onSendButtonClicked()
 	{
-		if (startTownInputIsValid && destinationTownInputIsValid)
+		if (startTownInputIsValid && destinationTownInputIsValid) {
 			GWT.log("You have clicked on the Send button and both input is valid.");
-		else
+			display.setErrorLabel("");
+		} else {
 			GWT.log("You have clicked on the Send button but some of the input is invalid.");
+		}
 	}
 
 	@Override
