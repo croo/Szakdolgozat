@@ -1,11 +1,9 @@
 package croo.szakdolgozat.shared;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class Coordinates implements Serializable
+public class Coordinates implements IsSerializable
 {
-	private static final long serialVersionUID = -2391428460640808199L;
-
 	private double latitude;
 	private double longitude;
 

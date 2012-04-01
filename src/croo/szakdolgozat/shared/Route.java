@@ -1,12 +1,11 @@
 package croo.szakdolgozat.shared;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Route implements Serializable
-{
-	private static final long serialVersionUID = 3955046507192507058L;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
+public class Route implements IsSerializable
+{
 	private Town startTown;
 	private Town endTown;
 	private ArrayList<Coordinates> routeway;
