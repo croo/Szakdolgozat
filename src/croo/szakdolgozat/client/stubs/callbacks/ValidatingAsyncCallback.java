@@ -1,4 +1,4 @@
-package croo.szakdolgozat.client;
+package croo.szakdolgozat.client.stubs.callbacks;
 
 import com.google.gwt.core.client.GWT;
 
