@@ -8,21 +8,21 @@ public class Route implements IsSerializable
 {
 	private Town startTown;
 	private Town endTown;
-	private ArrayList<Coordinates> routeway;
+	private ArrayList<Coordinate> routeway;
 
 	public Route()
 	{
 		/* GWT RPC needs an empty no-arguments constructor */
 	}
 
-	public Route(Town startTown, Town endTown, ArrayList<Coordinates> routeway)
+	public Route(Town startTown, Town endTown, ArrayList<Coordinate> routeway)
 	{
 		this.startTown = startTown;
 		this.endTown = endTown;
 		this.routeway = routeway;
 	}
 
-	public Route(String startTownName, String endTownName, ArrayList<Coordinates> routeway)
+	public Route(String startTownName, String endTownName, ArrayList<Coordinate> routeway)
 	{
 		this.routeway = routeway;
 		startTown = new Town(routeway.get(0), startTownName);
@@ -49,12 +49,12 @@ public class Route implements IsSerializable
 		this.endTown = endTown;
 	}
 
-	public ArrayList<Coordinates> getRouteway()
+	public ArrayList<Coordinate> getRouteway()
 	{
 		return routeway;
 	}
 
-	public void setRouteway(ArrayList<Coordinates> routeway)
+	public void setRouteway(ArrayList<Coordinate> routeway)
 	{
 		this.routeway = routeway;
 	}
