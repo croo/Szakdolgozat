@@ -1,12 +1,11 @@
 package croo.szakdolgozat.server;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.MapService;
-import croo.szakdolgozat.shared.Coordinates;
+import croo.szakdolgozat.server.database.Database;
+import croo.szakdolgozat.server.database.MockDatabase;
+import croo.szakdolgozat.shared.Route;
 
 /**
  * The server side implementation of the RPC service.
@@ -15,72 +14,27 @@ import croo.szakdolgozat.shared.Coordinates;
 public class MapServiceImpl extends RemoteServiceServlet implements MapService
 {
 
-	Map<String, Coordinates> database = new HashMap<String, Coordinates>();
+	//
 
-	public MapServiceImpl()
-	{
-		database.put("budapest", new Coordinates(47.309, 19.500));
-		database.put("esztergom", new Coordinates(47.7776069, 18.7435935));
-	}
+	Database database = new MockDatabase();
 
 	@Override
 	public Boolean verifyLocation(String location)
 	{
-		return database.containsKey(location.trim().toLowerCase());
+		return database.townExists(location.trim().toLowerCase());
 	}
 
-	public Coordinates query(String place)
+	@Override
+	public Route getRoute(String startTown, String destinationTown)
 	{
-		if (database.containsKey(place.toLowerCase()))
-		{
-			return database.get(place.toLowerCase());
-		} else
-		{
+		startTown = startTown.trim().toLowerCase();
+		destinationTown = destinationTown.trim().toLowerCase();
+		Boolean bothLocationExists = verifyLocation(startTown) && verifyLocation(destinationTown);
+		if (bothLocationExists) {
+			return database.getRoute(startTown, destinationTown);
+		} else {
 			return null;
 		}
 	}
-	// @Override
-	// public String query(String name) {
-	// QueryExecution qe = null;
-	// try {
-	// StringBuilder answer = new StringBuilder();
-	// Model m = ModelFactory.createDefaultModel();
-	// String queryString =
-	// "PREFIX dgp32:  <http://data-gov.tw.rpi.edu/vocab/p/32/> "
-	// + "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> "
-	// + "SELECT ?magnitude ?deph ?region ?datetime ?latitude ?longitude "
-	// + "FROM <http://data-gov.tw.rpi.edu/raw/34/data-34.rdf> "
-	// + "WHERE {  ?entry dgp32:magnitude ?magnitude ; "
-	// + "dgp32:region ?region ; "
-	// + "dgp32:lat ?latitude ; "
-	// + "dgp32:lon ?longitude ; "
-	// + "dgp32:datetime ?datetime ; "
-	// + "dgp32:depth ?deph . " +
-	//
-	// "} ORDER BY DESC(?magnitude) LIMIT 5";
-	//
-	// ResultSet resultSet = select(queryString, m);
-	// ResultSetFormatter.out(System.out, resultSet);
-	// List<String> resvars = resultSet.getResultVars();
-	// GWT.log("lol");
-	// for (String answ : resvars) {
-	// answer.append(answ);
-	// }
-	// return answer.toString();
-	// } catch (Exception e) {
-	// return e.getMessage();
-	// } finally {
-	// if (qe != null)
-	// qe.close();
-	// }
-	// }
-
-	// private ResultSet select(String queryString, Model model) {
-	// Query query = QueryFactory.create(queryString);
-	// QueryExecution qexec = QueryExecutionFactory.create(query, model);
-	// ResultSet results = ResultSetFactory.copyResults(qexec.execSelect());
-	// qexec.close();
-	// return results;
-	// }
 
 }
