@@ -60,6 +60,6 @@ public class Coordinate implements IsSerializable
 	@Override
 	public int hashCode()
 	{
-		return latitude.hashCode() / longitude.hashCode();
+		return 1013 * latitude.hashCode() ^ 1009 * longitude.hashCode();
 	}
 }
