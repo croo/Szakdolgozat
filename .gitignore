@@ -12,3 +12,6 @@ created-war/
 war/croo.szakdolgozat.Main.JUnit/
 war/croo.szakdolgozat.Main/
 war/croo.szakdolgozat.*
+reports/htmlunit.*
+www-test/croo.szakdolgozat.*
+www-test/WEB-INF/deploy/
