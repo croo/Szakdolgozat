@@ -15,7 +15,6 @@ public class Town implements IsSerializable
 
 	public Town(Coordinate coordinate, String name)
 	{
-		super();
 		this.coordinate = coordinate;
 		this.name = name;
 	}
@@ -37,7 +36,8 @@ public class Town implements IsSerializable
 
 	public String getName()
 	{
-		return name;
+		String wellFormattedName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+		return wellFormattedName;
 	}
 
 	public void setName(String name)
