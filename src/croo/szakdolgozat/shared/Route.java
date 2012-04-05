@@ -28,7 +28,7 @@ public class Route implements IsSerializable
 	{
 		this.routeway = routeway;
 		startTown = new Town(routeway.get(0), startTownName);
-		endTown = new Town(routeway.get(routeway.size() - 1), startTownName);
+		endTown = new Town(routeway.get(routeway.size() - 1), endTownName);
 	}
 
 	public Polyline getRouteWayInJSO()
