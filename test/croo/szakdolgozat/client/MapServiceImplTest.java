@@ -6,11 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.google.gwt.junit.GWTMockUtilities;
 
 import croo.szakdolgozat.server.MapServiceImpl;
 import croo.szakdolgozat.server.database.MockDatabase;
@@ -21,19 +18,17 @@ public class MapServiceImplTest
 {
 
 	private MapServiceImpl mapService;
+	private String startTown;
+	private String destinationTown;
 
 	@Before
 	public void setUp()
 	{
-		GWTMockUtilities.disarm();
+		startTown = "Budapest";
+		destinationTown = "Esztergom";
+
 		mapService = new MapServiceImpl();
 		mapService.setDatabase(new MockDatabase());
-	}
-
-	@After
-	public void tearDown()
-	{
-		GWTMockUtilities.restore();
 	}
 
 	@Test
@@ -69,9 +64,8 @@ public class MapServiceImplTest
 	@Test
 	public void routeShouldContainTheSameTownsAsInputButWellFormatted()
 	{
-		String startTown = "Budapest";
-		String destinationTown = "Esztergom";
 		Route route = mapService.getRoute(startTown, destinationTown);
+
 		assertEquals(startTown, route.getStartTown().getName());
 		assertEquals(destinationTown, route.getEndTown().getName());
 	}
@@ -79,19 +73,15 @@ public class MapServiceImplTest
 	@Test
 	public void routeShouldContainTheCoordinatesOfTowns()
 	{
-		String startTown = "Budapest";
-		String destinationTown = "Esztergom";
 		Route route = mapService.getRoute(startTown, destinationTown);
 
-		route.getStartTown().getCoordinate().equals(new Coordinate(47.49841, 19.04076));
-		route.getEndTown().getCoordinate().equals(new Coordinate(47.7776069, 18.7435935));
+		assertEquals(route.getStartTown().getCoordinate(), new Coordinate(47.49841, 19.04076));
+		assertEquals(route.getEndTown().getCoordinate(), new Coordinate(47.7776069, 18.7435935));
 	}
 
 	@Test
 	public void routeShouldContainAllTheCoordinatesBetweenTowns()
 	{
-		String startTown = "Budapest";
-		String destinationTown = "Esztergom";
 		Route route = mapService.getRoute(startTown, destinationTown);
 
 		ArrayList<Coordinate> routeway = route.getRouteway();
@@ -101,8 +91,6 @@ public class MapServiceImplTest
 	@Test
 	public void firstAndLastRouteCoordinateShouldBeTheTownCoordinates()
 	{
-		String startTown = "Budapest";
-		String destinationTown = "Esztergom";
 		Route route = mapService.getRoute(startTown, destinationTown);
 
 		ArrayList<Coordinate> routeway = route.getRouteway();
