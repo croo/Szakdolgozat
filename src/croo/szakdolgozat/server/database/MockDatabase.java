@@ -1,8 +1,6 @@
 package croo.szakdolgozat.server.database;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,19 +32,19 @@ public class MockDatabase implements Database
 		routeway.add(new Coordinate(47.600001, 18.990001));
 		routeway.add(new Coordinate(47.550001, 19.01301));
 		routeway.add(db.get(endTown));
-		sortCoordinatesInRouteway(routeway);
+		// sortCoordinatesInRouteway(routeway);
 
 		return new Route(startTown, endTown, routeway);
 	}
 
-	private void sortCoordinatesInRouteway(ArrayList<Coordinate> routeway)
-	{
-		Collections.sort(routeway, new Comparator<Coordinate>() {
-			@Override
-			public int compare(Coordinate a, Coordinate b)
-			{
-				return a.getLongitude().compareTo(b.getLongitude());
-			}
-		});
-	}
+	// private void sortCoordinatesInRouteway(ArrayList<Coordinate> routeway)
+	// {
+	// Collections.sort(routeway, new Comparator<Coordinate>() {
+	// @Override
+	// public int compare(Coordinate a, Coordinate b)
+	// {
+	// return a.getLongitude().compareTo(b.getLongitude());
+	// }
+	// });
+	// }
 }
