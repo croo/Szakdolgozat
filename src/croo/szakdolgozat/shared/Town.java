@@ -36,7 +36,8 @@ public class Town implements IsSerializable
 
 	public String getName()
 	{
-		String wellFormattedName = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+		String s = name.trim();
+		String wellFormattedName = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 		return wellFormattedName;
 	}
 
