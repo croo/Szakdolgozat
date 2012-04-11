@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Coordinate implements IsSerializable
 {
+	private static final double EPSILON = 0.0000001;
 	private Double latitude;
 	private Double longitude;
 
@@ -51,7 +52,7 @@ public class Coordinate implements IsSerializable
 			return true;
 		if (obj instanceof Coordinate) {
 			Coordinate other = (Coordinate) obj;
-			return latitude.equals(other.latitude) && longitude.equals(other.longitude);
+			return Math.abs(latitude - other.latitude) < EPSILON && Math.abs(longitude - other.longitude) < EPSILON;
 		} else {
 			return false;
 		}
