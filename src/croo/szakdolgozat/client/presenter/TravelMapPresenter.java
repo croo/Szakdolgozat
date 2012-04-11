@@ -93,11 +93,6 @@ public class TravelMapPresenter implements MapClickHandler
 		return new Runnable() {
 			public void run()
 			{
-				buildUi();
-			}
-
-			private void buildUi()
-			{
 				mapManager = new MapManager(new MapWidget());
 				mapManager.initMap();
 				mapManager.addMapClickHandler(TravelMapPresenter.this);
