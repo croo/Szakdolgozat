@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import croo.szakdolgozat.shared.Coordinate;
+import croo.szakdolgozat.shared.InterestingPlace;
 import croo.szakdolgozat.shared.Route;
 import croo.szakdolgozat.shared.Town;
 
@@ -13,12 +14,13 @@ public class MockDatabase implements Database
 
 	public MockDatabase()
 	{
-		ArrayList<String> placesInEsztergom = new ArrayList<>();
-		placesInEsztergom.add("http://budapest.hu");
-		placesInEsztergom.add("http://skanzen.hu");
+		ArrayList<InterestingPlace> placesInBudapest = new ArrayList<>();
+		placesInBudapest.add(new InterestingPlace("http://budapest.hu", "Budapest", "A fõváros honlapja."));
+		placesInBudapest.add(new InterestingPlace("http://skanzen.hu", "Skanzen Klub", "A város egyetlen dohányzó kocsmája."));
+		placesInBudapest.add(new InterestingPlace("http://index.hu", "Hírek mindenrõl", "A leglátogatottabb bulvár oldal."));
 
-		db.put("budapest", new Town(new Coordinate(47.49841, 19.04076), "budapest"));
-		db.put("esztergom", new Town(new Coordinate(47.7776069, 18.7435935), "esztergom", placesInEsztergom));
+		db.put("budapest", new Town(new Coordinate(47.49841, 19.04076), "budapest", placesInBudapest));
+		db.put("esztergom", new Town(new Coordinate(47.7776069, 18.7435935), "esztergom"));
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class MockDatabase implements Database
 		routeway.add(db.get(endTownName).getCoordinate());
 		// sortCoordinatesInRouteway(routeway);
 
-		return new Route(startTownName, endTownName, routeway);
+		return new Route(db.get(startTownName), db.get(endTownName), routeway);
 	}
 	// private void sortCoordinatesInRouteway(ArrayList<Coordinate> routeway)
 	// {

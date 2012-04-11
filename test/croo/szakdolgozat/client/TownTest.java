@@ -6,15 +6,35 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import croo.szakdolgozat.shared.Coordinate;
+import croo.szakdolgozat.shared.InterestingPlace;
 import croo.szakdolgozat.shared.Town;
 
 public class TownTest
 {
 
+	private static final InterestingPlace EMPTY_PAGE_PLACE = new InterestingPlace("http://emptypage.org", "");
+	private static final InterestingPlace INTERESTING_PLACE_1 = new InterestingPlace("http://www.thedailywtf.com",
+			"The Daily WTF", "From programmers to programmers");
+	private static final InterestingPlace INTERESTING_PLACE_2 = new InterestingPlace("http://www.cracked.com", "Cracked",
+			"Americas only humor site since 1777");
+	private static final InterestingPlace INTERESTING_PLACE_3 = new InterestingPlace("http://www.9gag.com", "9-Gag",
+			"Best of the worst");
+
 	private static final String badly_formatted_name = "   	BuDaPeST  	 ";
+	ArrayList<InterestingPlace> places;
+
+	@Before
+	public void SetUp()
+	{
+		places = new ArrayList<>();
+		places.add(INTERESTING_PLACE_1);
+		places.add(INTERESTING_PLACE_2);
+		places.add(INTERESTING_PLACE_3);
+	}
 
 	@Test
 	public void townNameShouldBeWellFormatted()
@@ -26,28 +46,17 @@ public class TownTest
 	@Test
 	public void shouldGiveBackInterestingPages()
 	{
-		ArrayList<String> places = new ArrayList<String>();
-		places.add("http://www.cracked.com");
-		places.add("http://www.9gag.com");
-		places.add("http://www.thedailywtf.com");
-
 		Town town = new Town(null, "Budapest", places);
-		assertTrue(town.getInterestingPlaceURIs().contains("http://www.9gag.com"));
-		assertTrue(town.getInterestingPlaceURIs().contains("http://www.cracked.com"));
-		assertTrue(town.getInterestingPlaceURIs().contains("http://www.thedailywtf.com"));
-
+		assertTrue(town.getInterestingPlaces().contains(INTERESTING_PLACE_1));
+		assertTrue(town.getInterestingPlaces().contains(INTERESTING_PLACE_3));
+		assertTrue(town.getInterestingPlaces().contains(INTERESTING_PLACE_2));
 	}
 
 	@Test
 	public void IfInitalizedShouldNotContainEmptyPage()
 	{
-		ArrayList<String> places = new ArrayList<String>();
-		places.add("http://www.cracked.com");
-		places.add("http://www.9gag.com");
-		places.add("http://www.thedailywtf.com");
-
 		Town town = new Town(null, "Budapest", places);
-		assertFalse(town.getInterestingPlaceURIs().contains("http://emptypage.org"));
+		assertFalse(town.getInterestingPlaces().contains(EMPTY_PAGE_PLACE));
 	}
 
 	@Test
@@ -55,7 +64,7 @@ public class TownTest
 	{
 		Town town = new Town(null, "Budapest");
 
-		assertTrue(town.getInterestingPlaceURIs().contains("http://emptypage.org"));
+		assertTrue(town.getInterestingPlaces().contains(EMPTY_PAGE_PLACE));
 	}
 
 	@Test

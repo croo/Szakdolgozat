@@ -7,9 +7,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Town implements IsSerializable
 {
+	private static final InterestingPlace EMPTY_PLACE = new InterestingPlace("http://emptypage.org", "Nothing interesting...");
 	private Coordinate coordinate;
 	private String name;
-	private ArrayList<String> interestingPlaceURIs = null;
+	private ArrayList<InterestingPlace> interestingPlaces = null;
 
 	public Town()
 	{
@@ -22,25 +23,25 @@ public class Town implements IsSerializable
 		this.name = name;
 	}
 
-	public Town(Coordinate coordinate, String name, ArrayList<String> interestingPlaceURIs)
+	public Town(Coordinate coordinate, String name, ArrayList<InterestingPlace> interestingPlaces)
 	{
 		this.coordinate = coordinate;
 		this.name = name;
-		this.interestingPlaceURIs = interestingPlaceURIs;
+		this.interestingPlaces = interestingPlaces;
 	}
 
-	public ArrayList<String> getInterestingPlaceURIs()
+	public ArrayList<InterestingPlace> getInterestingPlaces()
 	{
-		if (interestingPlaceURIs != null)
-			return interestingPlaceURIs;
+		if (interestingPlaces != null)
+			return interestingPlaces;
 		else
-			return createEmptyInterestingPlaceURIs();
+			return createEmptyInterestingPlaces();
 	}
 
-	private ArrayList<String> createEmptyInterestingPlaceURIs()
+	private ArrayList<InterestingPlace> createEmptyInterestingPlaces()
 	{
-		ArrayList<String> emptyList = new ArrayList<String>();
-		emptyList.add("http://emptypage.org");
+		ArrayList<InterestingPlace> emptyList = new ArrayList<InterestingPlace>();
+		emptyList.add(EMPTY_PLACE);
 		return emptyList;
 	}
 
