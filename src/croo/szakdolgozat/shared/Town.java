@@ -1,5 +1,7 @@
 package croo.szakdolgozat.shared;
 
+import java.util.ArrayList;
+
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -7,6 +9,7 @@ public class Town implements IsSerializable
 {
 	private Coordinate coordinate;
 	private String name;
+	private ArrayList<String> interestingPlaceURIs = null;
 
 	public Town()
 	{
@@ -17,6 +20,28 @@ public class Town implements IsSerializable
 	{
 		this.coordinate = coordinate;
 		this.name = name;
+	}
+
+	public Town(Coordinate coordinate, String name, ArrayList<String> interestingPlaceURIs)
+	{
+		this.coordinate = coordinate;
+		this.name = name;
+		this.interestingPlaceURIs = interestingPlaceURIs;
+	}
+
+	public ArrayList<String> getInterestingPlaceURIs()
+	{
+		if (interestingPlaceURIs != null)
+			return interestingPlaceURIs;
+		else
+			return createEmptyInterestingPlaceURIs();
+	}
+
+	private ArrayList<String> createEmptyInterestingPlaceURIs()
+	{
+		ArrayList<String> emptyList = new ArrayList<String>();
+		emptyList.add("http://emptypage.org");
+		return emptyList;
 	}
 
 	public LatLng getTownCoordinateInJSO()
