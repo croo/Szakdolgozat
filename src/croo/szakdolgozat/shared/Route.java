@@ -24,13 +24,6 @@ public class Route implements IsSerializable
 		this.routeway = routeway;
 	}
 
-	public Route(String startTownName, String endTownName, ArrayList<Coordinate> routeway)
-	{
-		this.routeway = routeway;
-		startTown = new Town(routeway.get(0), startTownName);
-		endTown = new Town(routeway.get(routeway.size() - 1), endTownName);
-	}
-
 	public Polyline getRouteWayInJSO()
 	{
 		LatLng[] routeLatLngs = new LatLng[routeway.size()];

@@ -28,10 +28,10 @@ public class TravelMapPresenter implements MapClickHandler
 		this.mapService = mapService;
 	}
 
-	public void verifyStartTownInput(final String text)
+	public void verifyStartTownInput(final String location)
 	{
-		GWT.log("Validating of input " + text + ".");
-		mapService.verifyLocation(text, new ValidatingAsyncCallback() {
+		GWT.log("Validating of input " + location + ".");
+		mapService.verifyLocation(location, new ValidatingAsyncCallback() {
 			@Override
 			public void onValidInput()
 			{
@@ -41,15 +41,15 @@ public class TravelMapPresenter implements MapClickHandler
 			@Override
 			public void onInvalidInput()
 			{
-				display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
+				display.setErrorLabel(location + " nevû város nincs az adatbázisban.");
 			}
 		});
 	}
 
-	public void verifyDestinationTownInput(final String text)
+	public void verifyDestinationTownInput(final String location)
 	{
-		GWT.log("Validating of input " + text + ".");
-		mapService.verifyLocation(text, new ValidatingAsyncCallback() {
+		GWT.log("Validating of input " + location + ".");
+		mapService.verifyLocation(location, new ValidatingAsyncCallback() {
 			@Override
 			public void onValidInput()
 			{
@@ -59,7 +59,7 @@ public class TravelMapPresenter implements MapClickHandler
 			@Override
 			public void onInvalidInput()
 			{
-				display.setErrorLabel(text + " nevû város nincs az adatbázisban.");
+				display.setErrorLabel(location + " nevû város nincs az adatbázisban.");
 			}
 		});
 	}
