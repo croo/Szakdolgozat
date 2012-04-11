@@ -71,4 +71,22 @@ public class Town implements IsSerializable
 		this.name = name;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj instanceof Town) {
+			Town other = (Town) obj;
+			return getName().equals(other.getName()) && getCoordinate().equals(other.getCoordinate());
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return 1013 * getName().hashCode() ^ 1009 * getCoordinate().hashCode();
+	}
 }
