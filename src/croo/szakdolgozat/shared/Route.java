@@ -63,4 +63,9 @@ public class Route implements IsSerializable
 	{
 		this.routeway = routeway;
 	}
+
+	public LatLng getDestinationCoordinateInJSO()
+	{
+		return getEndTown().getTownCoordinateInJSO();
+	}
 }

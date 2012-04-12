@@ -29,3 +29,13 @@ h1 {
 	display:inline-block;
 	width:300px;
 }
+
+.gwt-HTML-placeButton{
+	background-color:gray;
+}
+
+.gwt-HTML-placeButton:hover{
+	cursor: pointer; 
+	cursor: hand;
+	background-color:00CCFF;
+}

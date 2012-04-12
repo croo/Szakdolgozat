@@ -3,16 +3,17 @@ package croo.szakdolgozat.client.presenter;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.InfoWindow;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import croo.szakdolgozat.shared.InterestingPlace;
@@ -27,38 +28,87 @@ public class MapManager
 		this.map = map;
 	}
 
-	public void drawRoute(Route route)
+	public void drawRoute(final Route route)
 	{
 		map.clearOverlays();
+
+		final VerticalPanel placesPanel = createPlacesPanel(route);
+		final Marker destination = new Marker(route.getDestinationCoordinateInJSO());
+		destination.addMarkerClickHandler(new MarkerClickHandler() {
+			@Override
+			public void onClick(MarkerClickEvent event)
+			{
+				if (!map.getInfoWindow().isVisible())
+					showInterestingPlaces(destination, placesPanel);
+			}
+		});
+
 		map.addOverlay(route.getRouteWayInJSO());
-		map.addOverlay(new Marker(route.getEndTown().getTownCoordinateInJSO()));
+		map.addOverlay(destination);
 
-		SimplePanel wrapper = createInterestingPlacesList(route.getEndTown().getInterestingPlaces());
-		InfoWindowContent content = new InfoWindowContent(wrapper);
-
-		Frame interestingPage = new Frame(route.getEndTown().getInterestingPlaces().get(0).getURL());
-		interestingPage.setHeight("98%");
-		interestingPage.setWidth("98%");
-		content.setMaxContent(interestingPage);
-		InfoWindow info = map.getInfoWindow();
-
-		info.open(route.getEndTown().getTownCoordinateInJSO(), content);
-		GWT.log("Drawing the route, marker.");
+		GWT.log("Drawing the route and the destination marker.");
 	}
 
-	private SimplePanel createInterestingPlacesList(ArrayList<InterestingPlace> interestingPlaces)
+	private InfoWindow showInterestingPlaces(final Marker destination, final VerticalPanel panel)
 	{
-		SimplePanel wrapper = new ScrollPanel();
+		InfoWindowContent initContent = new InfoWindowContent(panel);
+		initContent.setMaxContent(createFrame("http://www.asdf.com"));
+		final InfoWindow infoWindow = map.getInfoWindow();
+		infoWindow.setMaximizeEnabled(true);
+		initContent.setNoCloseOnClick(true);
+		infoWindow.open(destination, initContent);
+		return infoWindow;
+	}
 
-		VerticalPanel panel = new VerticalPanel();
-		for (InterestingPlace place : interestingPlaces) {
-			HTML item = new HTML(place.getName());
-			panel.add(item);
+	// On every click we have to create new content for the InfoView
+	// becouse of a Google Maps API v2 bug
+	private VerticalPanel createPlacesPanel(final Route route)
+	{
+		final VerticalPanel panel = new VerticalPanel();
+		ArrayList<InterestingPlace> places = route.getEndTown().getInterestingPlaces();
+		final InfoWindow infoWindow = map.getInfoWindow();
+		for (final InterestingPlace place : places) {
+			HTML listElement = new HTML(place.getName());
+			listElement.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event)
+				{
+					InfoWindowContent content = new InfoWindowContent(panel);
+					content.setMaxContent(createFrame(place.getURL()));
+					infoWindow.open(route.getDestinationCoordinateInJSO(), content);
+					infoWindow.maximize();
+				}
+			});
+			listElement.setStyleDependentName("placeButton", true);
+			panel.add(listElement);
 		}
 
-		wrapper.add(panel);
-		return wrapper;
+		return panel;
 	}
+
+	private Frame createFrame(String url)
+	{
+		Frame interestingPage = new Frame(url);
+		interestingPage.setHeight("98%");
+		interestingPage.setWidth("98%");
+		return interestingPage;
+	}
+
+	// private SimplePanel
+	// createInterestingPlacesList(ArrayList<InterestingPlace>
+	// interestingPlaces)
+	// {
+	// SimplePanel wrapper = new ScrollPanel();
+	//
+	// VerticalPanel panel = new VerticalPanel();
+	// for (InterestingPlace place : interestingPlaces) {
+	// HTML item = new HTML(place.getName());
+	// panel.add(item);
+	// }
+	//
+	// wrapper.add(panel);
+	// return wrapper;
+	// }
 
 	public void addMapClickHandler(TravelMapPresenter travelMapPresenter)
 	{
