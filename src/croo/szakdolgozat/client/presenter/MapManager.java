@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.maps.client.InfoWindow;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
@@ -49,6 +53,8 @@ public class MapManager
 		GWT.log("Drawing the route and the destination marker.");
 	}
 
+	// TODO : This 3 method should be a different class!
+
 	private InfoWindow showInterestingPlaces(final Marker destination, final VerticalPanel panel)
 	{
 		InfoWindowContent initContent = new InfoWindowContent(panel);
@@ -68,7 +74,8 @@ public class MapManager
 		ArrayList<InterestingPlace> places = route.getEndTown().getInterestingPlaces();
 		final InfoWindow infoWindow = map.getInfoWindow();
 		for (final InterestingPlace place : places) {
-			HTML listElement = new HTML(place.getName());
+			final HTML listElement = new HTML(place.getName());
+			listElement.setStylePrimaryName("placeButton");
 			listElement.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event)
@@ -79,7 +86,22 @@ public class MapManager
 					infoWindow.maximize();
 				}
 			});
-			listElement.setStyleDependentName("placeButton", true);
+			listElement.addMouseOverHandler(new MouseOverHandler() {
+				@Override
+				public void onMouseOver(MouseOverEvent event)
+				{
+					listElement.setStyleName("placeButton-hover", true);
+				}
+			});
+			listElement.addMouseOutHandler(new MouseOutHandler() {
+
+				@Override
+				public void onMouseOut(MouseOutEvent event)
+				{
+					listElement.setStyleName("placeButton-hover", false);
+				}
+			});
+
 			panel.add(listElement);
 		}
 
@@ -93,22 +115,6 @@ public class MapManager
 		interestingPage.setWidth("98%");
 		return interestingPage;
 	}
-
-	// private SimplePanel
-	// createInterestingPlacesList(ArrayList<InterestingPlace>
-	// interestingPlaces)
-	// {
-	// SimplePanel wrapper = new ScrollPanel();
-	//
-	// VerticalPanel panel = new VerticalPanel();
-	// for (InterestingPlace place : interestingPlaces) {
-	// HTML item = new HTML(place.getName());
-	// panel.add(item);
-	// }
-	//
-	// wrapper.add(panel);
-	// return wrapper;
-	// }
 
 	public void addMapClickHandler(TravelMapPresenter travelMapPresenter)
 	{
