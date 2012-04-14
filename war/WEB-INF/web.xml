@@ -12,11 +12,21 @@
     <servlet-class>croo.szakdolgozat.server.MapServiceImpl</servlet-class>
   </servlet>
 
-  <servlet-mapping>
+<servlet-mapping>
     <servlet-name>queryServlet</servlet-name>
     <url-pattern>/main/query</url-pattern>
   </servlet-mapping>
-  
+
+<servlet>
+    <servlet-name>filteringServlet</servlet-name>
+    <servlet-class>croo.szakdolgozat.server.FilteringServiceImpl</servlet-class>
+  </servlet>
+
+<servlet-mapping>
+    <servlet-name>filteringServlet</servlet-name>
+    <url-pattern>/main/filtering</url-pattern>
+  </servlet-mapping>
+
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Main.html</welcome-file>

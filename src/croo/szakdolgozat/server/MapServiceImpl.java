@@ -8,7 +8,7 @@ import croo.szakdolgozat.server.database.MockDatabase;
 import croo.szakdolgozat.shared.Route;
 
 /**
- * The server side implementation of the RPC service.
+ * The server side implementation of the MapService service.
  */
 @SuppressWarnings("serial")
 public class MapServiceImpl extends RemoteServiceServlet implements MapService
