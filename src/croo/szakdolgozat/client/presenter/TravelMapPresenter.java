@@ -9,7 +9,6 @@ import com.google.web.bindery.event.shared.EventBus;
 import croo.szakdolgozat.client.display.TravelMapDisplay;
 import croo.szakdolgozat.client.stubs.MapServiceAsync;
 import croo.szakdolgozat.client.stubs.callbacks.ErrorHandlingAsyncCallback;
-import croo.szakdolgozat.client.stubs.callbacks.ValidatingAsyncCallback;
 import croo.szakdolgozat.shared.Route;
 
 public class TravelMapPresenter implements MapClickHandler
@@ -31,30 +30,32 @@ public class TravelMapPresenter implements MapClickHandler
 	public void verifyTownInput(final String location)
 	{
 		GWT.log("Validating of input " + location + ".");
-		mapService.verifyLocation(location, new ValidatingAsyncCallback() {
+		mapService.verifyLocation(location, new ErrorHandlingAsyncCallback<Boolean>() {
 			@Override
-			public void onValidInput()
+			public void onSuccess(Boolean locationIsValid)
 			{
-				display.setErrorLabel("");
-			}
-
-			@Override
-			public void onInvalidInput()
-			{
-				display.setErrorLabel(location + " nevû város nincs az adatbázisban.");
+				if (locationIsValid)
+					display.setErrorLabel("");
+				else
+					display.setErrorLabel(location + " nevû város nincs az adatbázisban.");
 			}
 		});
 	}
 
 	public void onSendButtonClicked(String startTown, String destinationTown)
 	{
-		GWT.log("Getting route information...");
 		display.setErrorLabel("");
+
+		GWT.log("Getting route information...");
 		mapService.getRoute(startTown, destinationTown, new ErrorHandlingAsyncCallback<Route>() {
 			@Override
 			public void onSuccess(Route route)
 			{
-				mapManager.drawRoute(route);
+				if (route != null) {
+					mapManager.drawRoute(route);
+				} else {
+					display.setErrorLabel("Rossz városnevet adtál meg.");
+				}
 			}
 		});
 	}
