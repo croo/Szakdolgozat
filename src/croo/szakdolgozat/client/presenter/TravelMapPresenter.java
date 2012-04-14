@@ -28,25 +28,7 @@ public class TravelMapPresenter implements MapClickHandler
 		this.mapService = mapService;
 	}
 
-	public void verifyStartTownInput(final String location)
-	{
-		GWT.log("Validating of input " + location + ".");
-		mapService.verifyLocation(location, new ValidatingAsyncCallback() {
-			@Override
-			public void onValidInput()
-			{
-				display.setErrorLabel("");
-			}
-
-			@Override
-			public void onInvalidInput()
-			{
-				display.setErrorLabel(location + " nevû város nincs az adatbázisban.");
-			}
-		});
-	}
-
-	public void verifyDestinationTownInput(final String location)
+	public void verifyTownInput(final String location)
 	{
 		GWT.log("Validating of input " + location + ".");
 		mapService.verifyLocation(location, new ValidatingAsyncCallback() {

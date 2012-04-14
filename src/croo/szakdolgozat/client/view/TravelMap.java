@@ -57,13 +57,13 @@ public class TravelMap extends Composite implements TravelMapDisplay
 	@UiHandler("startTown")
 	void onStartTownChange(ChangeEvent event)
 	{
-		presenter.verifyStartTownInput(startTown.getText());
+		presenter.verifyTownInput(startTown.getText());
 	}
 
 	@UiHandler("destinationTown")
 	void onDestinationTownChange(ChangeEvent event)
 	{
-		presenter.verifyDestinationTownInput(destinationTown.getText());
+		presenter.verifyTownInput(destinationTown.getText());
 	}
 
 	@Override
