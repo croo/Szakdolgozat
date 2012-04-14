@@ -30,12 +30,11 @@ h1 {
 	width:300px;
 }
 
-.gwt-HTML-placeButton{
-	background-color:gray;
+.placeButton{
 }
 
-.gwt-HTML-placeButton:hover{
+.placeButton-hover{
 	cursor: pointer; 
-	cursor: hand;
+	cursor: hand;	
 	background-color:00CCFF;
 }
