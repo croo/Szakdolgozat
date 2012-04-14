@@ -11,5 +11,5 @@ public interface MapServiceAsync
 {
 	void verifyLocation(String location, AsyncCallback<Boolean> callback);
 
-	void getRoute(String startTown, String destinationTown, AsyncCallback<Route> asyncCallback);
+	void getRoute(String startTown, String destinationTown, AsyncCallback<Route> callback);
 }
