@@ -28,11 +28,10 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 		startTown = startTown.trim().toLowerCase();
 		destinationTown = destinationTown.trim().toLowerCase();
 		Boolean bothLocationExists = verifyLocation(startTown) && verifyLocation(destinationTown);
-		if (bothLocationExists) {
+		if (bothLocationExists)
 			return database.getRoute(startTown, destinationTown);
-		} else {
+		else
 			return null;
-		}
 	}
 
 	public void setDatabase(Database database)

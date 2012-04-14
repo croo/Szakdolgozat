@@ -103,4 +103,20 @@ public class MapServiceImplTest
 		Town endtown = route.getEndTown();
 		assertFalse(endtown.getInterestingPlaces().isEmpty());
 	}
+
+	@Test
+	public void ifOneOfTheTownsAreInvalidRouteShouldBeNull()
+	{
+		Route route = mapService.getRoute(START_TOWN, "8argaer");
+		assertEquals(route, null);
+		route = mapService.getRoute("bebe Aghae", END_TOWN);
+		assertEquals(route, null);
+	}
+
+	@Test
+	public void ifBothTownsAreInvalidRouteShouldBeNull()
+	{
+		Route route = mapService.getRoute("bebe Aghae", "8argaer");
+		assertEquals(route, null);
+	}
 }
