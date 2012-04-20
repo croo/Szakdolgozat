@@ -2,6 +2,8 @@ package croo.szakdolgozat.server;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.FilteringService;
@@ -10,33 +12,24 @@ import croo.szakdolgozat.client.stubs.FilteringService;
  * The server side implementation of the FilteringService service.
  */
 @SuppressWarnings("serial")
-public class FilteringServiceImpl extends RemoteServiceServlet implements FilteringService, RestApiFilter
+public class FilteringServiceImpl extends RemoteServiceServlet implements FilteringService
 {
-	private Date date;
-	private String discountRate;
 
 	@Override
 	public void setDate(Date date)
 	{
-		this.date = date;
+		getSession().setAttribute("date", date);
 	}
 
 	@Override
 	public void setDiscountRate(String discountRate)
 	{
-		this.discountRate = discountRate;
+		getSession().setAttribute("discountRate", discountRate);
 	}
 
-	@Override
-	public Date getDate()
+	private HttpSession getSession()
 	{
-		return date;
-	}
-
-	@Override
-	public String getDiscountRate()
-	{
-		return discountRate;
+		return this.getThreadLocalRequest().getSession();
 	}
 
 }

@@ -1,5 +1,7 @@
 package croo.szakdolgozat.server;
 
+import javax.servlet.http.HttpSession;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.MapService;
@@ -23,19 +25,26 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 	}
 
 	@Override
-	public Route getRoute(String startTown, String destinationTown)
+	public Route getRoute(String startTown, String endTown)
 	{
 		startTown = startTown.trim().toLowerCase();
-		destinationTown = destinationTown.trim().toLowerCase();
-		Boolean bothLocationExists = verifyLocation(startTown) && verifyLocation(destinationTown);
-		if (bothLocationExists)
-			return database.getRoute(startTown, destinationTown);
-		else
+		endTown = endTown.trim().toLowerCase();
+		Boolean bothLocationExists = verifyLocation(startTown) && verifyLocation(endTown);
+		if (bothLocationExists) {
+			getSession().setAttribute("startTown", startTown);
+			getSession().setAttribute("endTown", endTown);
+			return database.getRoute(startTown, endTown);
+		} else
 			return null;
 	}
 
 	public void setDatabase(Database database)
 	{
 		this.database = database;
+	}
+
+	private HttpSession getSession()
+	{
+		return this.getThreadLocalRequest().getSession();
 	}
 }
