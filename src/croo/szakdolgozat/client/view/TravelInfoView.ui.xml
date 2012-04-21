@@ -5,6 +5,7 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-		<g:label ui:field="label"></g:label>
+		<g:Label ui:field="label"></g:Label>
+		<g:Button ui:field="button"></g:Button>
 	</g:HTMLPanel>
 </ui:UiBinder> 
