@@ -18,10 +18,10 @@ import croo.szakdolgozat.client.display.FilteringDisplay;
 import croo.szakdolgozat.client.presenter.FilteringPresenter;
 import croo.szakdolgozat.client.stubs.FilterServiceAsync;
 
-public class Filtering extends Composite implements FilteringDisplay
+public class FilterView extends Composite implements FilteringDisplay
 {
 
-	private static FilteringUiBinder uiBinder = GWT.create(FilteringUiBinder.class);
+	private static FilterViewUiBinder uiBinder = GWT.create(FilterViewUiBinder.class);
 
 	@UiField
 	ListBox discountBox;
@@ -30,11 +30,11 @@ public class Filtering extends Composite implements FilteringDisplay
 
 	private FilteringPresenter presenter;
 
-	interface FilteringUiBinder extends UiBinder<Widget, Filtering>
+	interface FilterViewUiBinder extends UiBinder<Widget, FilterView>
 	{
 	}
 
-	public Filtering(EventBus eventBus, FilterServiceAsync filteringService)
+	public FilterView(EventBus eventBus, FilterServiceAsync filteringService)
 	{
 		presenter = new FilteringPresenter(this, eventBus, filteringService);
 		initWidget(uiBinder.createAndBindUi(this));

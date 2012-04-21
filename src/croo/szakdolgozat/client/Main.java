@@ -12,7 +12,7 @@ import croo.szakdolgozat.client.stubs.MapService;
 import croo.szakdolgozat.client.stubs.MapServiceAsync;
 import croo.szakdolgozat.client.stubs.TravelService;
 import croo.szakdolgozat.client.stubs.TravelServiceAsync;
-import croo.szakdolgozat.client.view.Filtering;
+import croo.szakdolgozat.client.view.FilterView;
 import croo.szakdolgozat.client.view.TravelInfoView;
 import croo.szakdolgozat.client.view.TravelMap;
 
@@ -31,7 +31,7 @@ public class Main implements EntryPoint
 		TravelServiceAsync travelService = GWT.create(TravelService.class);
 		
 		TravelMap map = new TravelMap(eventBus, mapService);
-		Filtering filtering = new Filtering(eventBus, filteringService);
+		FilterView filtering = new FilterView(eventBus, filteringService);
 		TravelInfoView travelInfo = new TravelInfoView(eventBus,travelService);
 		
 		RootPanel.get("map").add(map);
