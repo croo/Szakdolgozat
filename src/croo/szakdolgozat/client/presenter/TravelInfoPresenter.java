@@ -11,26 +11,30 @@ import croo.szakdolgozat.client.stubs.TravelServiceAsync;
 import croo.szakdolgozat.client.stubs.callbacks.ErrorHandlingAsyncCallback;
 import croo.szakdolgozat.shared.TravelInfo;
 
-public class TravelInfoPresenter implements SendEventHandler{
+public class TravelInfoPresenter implements SendEventHandler
+{
 
 	private TravelInfoDisplay display;
 	private EventBus eventBus;
 	private TravelServiceAsync travelService;
 
-	public TravelInfoPresenter(TravelInfoDisplay display, EventBus eventBus, TravelServiceAsync travelService) {
-		this.display = display;		
+	public TravelInfoPresenter(TravelInfoDisplay display, EventBus eventBus, TravelServiceAsync travelService)
+	{
+		this.display = display;
 		this.eventBus = eventBus;
 		this.travelService = travelService;
-		
+
 		this.eventBus.addHandler(SendEvent.TYPE, this);
-	}	
+	}
 
 	@Override
-	public void onSendButtonClicked(SendEvent event) {
+	public void onSendButtonClicked(SendEvent event)
+	{
 		travelService.getTravelInfos(new ErrorHandlingAsyncCallback<ArrayList<TravelInfo>>() {
 			@Override
-			public void onSuccess(ArrayList<TravelInfo> result) {
-				TravelInfoPresenter.this.display.setLabel(result.get(0).test);
+			public void onSuccess(ArrayList<TravelInfo> result)
+			{
+				display.setLabel(result.get(0).test);
 			}
 		});
 	}
