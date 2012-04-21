@@ -1,15 +1,10 @@
 package croo.szakdolgozat.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.TravelService;
@@ -17,6 +12,8 @@ import croo.szakdolgozat.shared.TravelInfo;
 
 @SuppressWarnings("serial")
 public class TravelServiceImpl extends RemoteServiceServlet implements TravelService {
+
+	private static final String ELVIRA_API_BASE_URL = "http://api.oroszi.net/elvira?";
 
 	public ArrayList<TravelInfo> getTravelInfos(){
 //		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,"http://api.oroszi.com/elvira");
@@ -39,9 +36,20 @@ public class TravelServiceImpl extends RemoteServiceServlet implements TravelSer
 //		}
 		ArrayList<TravelInfo> infos = new ArrayList<TravelInfo>();
 		TravelInfo a = new TravelInfo();
-		a.test = (String)session().getAttribute("endTown"); 
+		a.test = buildQueryURL(); 
 		infos.add(a);
 		return infos;
+	}
+	
+	private String buildQueryURL() {
+		String from = "from=" + (String)session().getAttribute("startTown");
+		String to = "to=" + (String)session().getAttribute("endTown");
+		
+		Date d = (Date)session().getAttribute("date");
+		String date = "date=" + (1900 + d.getYear()) + '.'+d.getMonth()+'.'+d.getDay(); 
+		
+		String type = "type=0"; //+ (String)session().getAttribute("discountRate");		
+		return ELVIRA_API_BASE_URL + from + '&'+ to + '&' + date + '&' + type;
 	}
 	
 	private HttpSession session()

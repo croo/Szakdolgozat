@@ -32,9 +32,6 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 	@UiField
 	Label label;
 	
-	@UiField
-	Button button;
-
 	private TravelInfoPresenter presenter;
 
 	interface TravelInfoViewUiBinder extends UiBinder<Widget, TravelInfoView>
@@ -46,7 +43,6 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 		initWidget(uiBinder.createAndBindUi(this));
 		presenter = new TravelInfoPresenter(this, eventBus, travelInfoService);		
 		label.setText("label");
-		button.setText("gomb");
 	}
 
 	@Override
@@ -54,9 +50,4 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 		label.setText(text);
 	}
 	
-	@UiHandler("button")
-	void onClick(ClickEvent e)
-	{
-		presenter.onButtonClick();
-	}
 }

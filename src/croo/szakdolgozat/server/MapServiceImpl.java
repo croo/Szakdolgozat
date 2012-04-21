@@ -21,16 +21,19 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 	@Override
 	public Boolean verifyLocation(String location)
 	{
-		return database.townExists(formatted(location));
+		return database.townExists(location);
 	}
 
 	@Override
 	public Route getRoute(String startTown, String endTown)
 	{		
 		if (bothLocationExists(startTown, endTown)) {
-			session().setAttribute("startTown", startTown);
-			session().setAttribute("endTown", endTown);
-			return database.getRoute(formatted(startTown), formatted(endTown));
+			if(session() != null){
+				session().setAttribute("startTown", startTown);
+				session().setAttribute("endTown", endTown);
+			}
+			
+			return database.getRoute(startTown, endTown);
 		} else
 			return null;
 	}
@@ -46,11 +49,9 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 
 	private HttpSession session()
 	{
-		return this.getThreadLocalRequest().getSession();
-	}
-	
-	private String formatted(String text)
-	{
-		return text.trim().toLowerCase();
-	}
+		if(this.getThreadLocalRequest() != null)
+			return this.getThreadLocalRequest().getSession();
+		else 
+			return null;
+	}	
 }

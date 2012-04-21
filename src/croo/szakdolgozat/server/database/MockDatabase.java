@@ -26,30 +26,24 @@ public class MockDatabase implements Database
 	@Override
 	public boolean townExists(String town)
 	{
-		return db.containsKey(town);
+		return db.containsKey(formatted(town));
 	}
 
 	@Override
 	public Route getRoute(String startTownName, String endTownName)
 	{
 		ArrayList<Coordinate> routeway = new ArrayList<Coordinate>();
-		routeway.add(db.get(startTownName).getCoordinate());
+		routeway.add(db.get(formatted(startTownName)).getCoordinate());
 		routeway.add(new Coordinate(47.500001, 18.800001));
 		routeway.add(new Coordinate(47.600001, 18.990001));
 		routeway.add(new Coordinate(47.550001, 19.01301));
-		routeway.add(db.get(endTownName).getCoordinate());
-		// sortCoordinatesInRouteway(routeway);
+		routeway.add(db.get(formatted(endTownName)).getCoordinate());
 
-		return new Route(db.get(startTownName), db.get(endTownName), routeway);
+		return new Route(db.get(formatted(startTownName)), db.get(formatted(endTownName)), routeway);
+	}	
+	
+	private String formatted(String text)
+	{
+		return text.trim().toLowerCase();
 	}
-	// private void sortCoordinatesInRouteway(ArrayList<Coordinate> routeway)
-	// {
-	// Collections.sort(routeway, new Comparator<Coordinate>() {
-	// @Override
-	// public int compare(Coordinate a, Coordinate b)
-	// {
-	// return a.getLongitude().compareTo(b.getLongitude());
-	// }
-	// });
-	// }
 }

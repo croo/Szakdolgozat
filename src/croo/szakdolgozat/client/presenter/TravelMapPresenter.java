@@ -4,9 +4,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.web.bindery.event.shared.Event;
 import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.client.display.TravelMapDisplay;
+import croo.szakdolgozat.client.events.SendEvent;
 import croo.szakdolgozat.client.stubs.MapServiceAsync;
 import croo.szakdolgozat.client.stubs.callbacks.ErrorHandlingAsyncCallback;
 import croo.szakdolgozat.shared.Route;
@@ -53,6 +55,7 @@ public class TravelMapPresenter implements MapClickHandler
 			{
 				if (route != null) {
 					mapManager.drawRoute(route);
+					eventBus.fireEvent(new SendEvent());
 				} else {
 					display.setErrorLabel("Rossz városnevet adtál meg.");
 				}
