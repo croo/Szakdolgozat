@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface FilteringServiceAsync
+public interface FilterServiceAsync
 {
 	void setDate(Date date, AsyncCallback<Void> callback);
 

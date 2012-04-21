@@ -6,28 +6,28 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import croo.szakdolgozat.client.stubs.FilteringService;
+import croo.szakdolgozat.client.stubs.FilterService;
 
 /**
  * The server side implementation of the FilteringService service.
  */
 @SuppressWarnings("serial")
-public class FilteringServiceImpl extends RemoteServiceServlet implements FilteringService
+public class FilteringServiceImpl extends RemoteServiceServlet implements FilterService
 {
 
 	@Override
 	public void setDate(Date date)
 	{
-		getSession().setAttribute("date", date);
+		session().setAttribute("date", date);
 	}
 
 	@Override
 	public void setDiscountRate(String discountRate)
 	{
-		getSession().setAttribute("discountRate", discountRate);
+		session().setAttribute("discountRate", discountRate);
 	}
 
-	private HttpSession getSession()
+	private HttpSession session()
 	{
 		return this.getThreadLocalRequest().getSession();
 	}

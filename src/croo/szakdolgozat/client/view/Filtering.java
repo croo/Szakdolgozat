@@ -16,7 +16,7 @@ import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.client.display.FilteringDisplay;
 import croo.szakdolgozat.client.presenter.FilteringPresenter;
-import croo.szakdolgozat.client.stubs.FilteringServiceAsync;
+import croo.szakdolgozat.client.stubs.FilterServiceAsync;
 
 public class Filtering extends Composite implements FilteringDisplay
 {
@@ -34,7 +34,7 @@ public class Filtering extends Composite implements FilteringDisplay
 	{
 	}
 
-	public Filtering(EventBus eventBus, FilteringServiceAsync filteringService)
+	public Filtering(EventBus eventBus, FilterServiceAsync filteringService)
 	{
 		presenter = new FilteringPresenter(this, eventBus, filteringService);
 		initWidget(uiBinder.createAndBindUi(this));

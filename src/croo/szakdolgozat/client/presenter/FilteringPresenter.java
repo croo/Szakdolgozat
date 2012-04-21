@@ -6,16 +6,16 @@ import com.google.gwt.core.client.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.client.display.FilteringDisplay;
-import croo.szakdolgozat.client.stubs.FilteringServiceAsync;
+import croo.szakdolgozat.client.stubs.FilterServiceAsync;
 import croo.szakdolgozat.client.stubs.callbacks.ErrorHandlingAsyncCallback;
 
 public class FilteringPresenter
 {
 	private FilteringDisplay display;
 	private EventBus eventBus;
-	private final FilteringServiceAsync filteringService;
+	private final FilterServiceAsync filteringService;
 
-	public FilteringPresenter(FilteringDisplay display, EventBus eventBus, FilteringServiceAsync filteringService)
+	public FilteringPresenter(FilteringDisplay display, EventBus eventBus, FilterServiceAsync filteringService)
 	{
 		this.display = display;
 		this.eventBus = eventBus;
