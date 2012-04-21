@@ -24,7 +24,17 @@
 
 <servlet-mapping>
     <servlet-name>filteringServlet</servlet-name>
-    <url-pattern>/main/filtering</url-pattern>
+    <url-pattern>/main/filter</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>travelServlet</servlet-name>
+    <servlet-class>croo.szakdolgozat.server.TravelServiceImpl</servlet-class>
+  </servlet>
+
+<servlet-mapping>
+    <servlet-name>travelServlet</servlet-name>
+    <url-pattern>/main/travel</url-pattern>
   </servlet-mapping>
 
   <!-- Default page to serve -->
