@@ -14,7 +14,7 @@ public class MockDatabase implements Database
 
 	public MockDatabase()
 	{
-		ArrayList<InterestingPlace> placesInBudapest = new ArrayList<>();
+		ArrayList<InterestingPlace> placesInBudapest = new ArrayList<InterestingPlace>();
 		placesInBudapest.add(new InterestingPlace("http://budapest.hu", "Budapest", "A fõváros honlapja."));
 		placesInBudapest.add(new InterestingPlace("http://skanzen.hu", "Skanzen Klub", "A város egyetlen dohányzó kocsmája."));
 		placesInBudapest.add(new InterestingPlace("http://index.hu", "Hírek mindenrõl", "A leglátogatottabb bulvár oldal."));

@@ -30,7 +30,7 @@ public class TownTest
 	@Before
 	public void SetUp()
 	{
-		places = new ArrayList<>();
+		places = new ArrayList<InterestingPlace>();
 		places.add(INTERESTING_PLACE_1);
 		places.add(INTERESTING_PLACE_2);
 		places.add(INTERESTING_PLACE_3);
