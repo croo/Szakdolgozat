@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
+import us.monoid.web.Resty;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.TravelService;
@@ -39,8 +41,12 @@ public class TravelServiceImpl extends RemoteServiceServlet implements TravelSer
 		// }
 		ArrayList<TravelInfo> infos = new ArrayList<TravelInfo>();
 		TravelInfo a = new TravelInfo();
-		a.test = buildQueryURL();
 		infos.add(a);
+		try {
+			a.test = new Resty().text(buildQueryURL()).toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return infos;
 	}
 
