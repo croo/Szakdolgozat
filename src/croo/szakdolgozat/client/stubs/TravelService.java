@@ -1,16 +1,14 @@
 package croo.szakdolgozat.client.stubs;
 
-import java.util.ArrayList;
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import croo.szakdolgozat.shared.TravelInfo;
-
+import croo.szakdolgozat.shared.TravelInfos;
 
 @RemoteServiceRelativePath("travel")
-public interface TravelService extends RemoteService{
-	
-	ArrayList<TravelInfo> getTravelInfos(); 
-	
+public interface TravelService extends RemoteService
+{
+
+	TravelInfos getTravelInfos() throws Exception;
+
 }

@@ -1,13 +1,12 @@
 package croo.szakdolgozat.client.stubs;
 
-import java.util.ArrayList;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import croo.szakdolgozat.shared.TravelInfo;
+import croo.szakdolgozat.shared.TravelInfos;
 
-public interface TravelServiceAsync {
+public interface TravelServiceAsync
+{
 
-	void getTravelInfos(AsyncCallback<ArrayList<TravelInfo>> callback);
+	void getTravelInfos(AsyncCallback<TravelInfos> callback);
 
 }

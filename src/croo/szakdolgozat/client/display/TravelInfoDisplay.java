@@ -1,7 +1,10 @@
 package croo.szakdolgozat.client.display;
 
-public interface TravelInfoDisplay {
+import croo.szakdolgozat.shared.TravelInfos;
 
-	void setLabel(String text);
+public interface TravelInfoDisplay
+{
+
+	void showTravelInfos(TravelInfos infos);
 
 }

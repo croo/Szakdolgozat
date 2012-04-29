@@ -1,7 +1,5 @@
 package croo.szakdolgozat.client.presenter;
 
-import java.util.ArrayList;
-
 import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.client.display.TravelInfoDisplay;
@@ -9,7 +7,7 @@ import croo.szakdolgozat.client.events.SendEvent;
 import croo.szakdolgozat.client.events.SendEventHandler;
 import croo.szakdolgozat.client.stubs.TravelServiceAsync;
 import croo.szakdolgozat.client.stubs.callbacks.ErrorHandlingAsyncCallback;
-import croo.szakdolgozat.shared.TravelInfo;
+import croo.szakdolgozat.shared.TravelInfos;
 
 public class TravelInfoPresenter implements SendEventHandler
 {
@@ -30,11 +28,11 @@ public class TravelInfoPresenter implements SendEventHandler
 	@Override
 	public void onSendButtonClicked(SendEvent event)
 	{
-		travelService.getTravelInfos(new ErrorHandlingAsyncCallback<ArrayList<TravelInfo>>() {
+		travelService.getTravelInfos(new ErrorHandlingAsyncCallback<TravelInfos>() {
 			@Override
-			public void onSuccess(ArrayList<TravelInfo> result)
+			public void onSuccess(TravelInfos result)
 			{
-				display.setLabel(result.get(0).test);
+				display.showTravelInfos(result);
 			}
 		});
 	}

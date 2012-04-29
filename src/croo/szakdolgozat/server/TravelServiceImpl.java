@@ -1,87 +1,32 @@
 package croo.szakdolgozat.server;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.IOException;
 
 import javax.servlet.http.HttpSession;
 
+import us.monoid.json.JSONException;
+import us.monoid.json.JSONObject;
 import us.monoid.web.Resty;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.TravelService;
-import croo.szakdolgozat.shared.TravelInfo;
+import croo.szakdolgozat.shared.TravelInfos;
 
 @SuppressWarnings("serial")
 public class TravelServiceImpl extends RemoteServiceServlet implements TravelService
 {
 
-	private static final String ELVIRA_API_BASE_URL = "http://api.oroszi.net/elvira?";
-
-	public ArrayList<TravelInfo> getTravelInfos()
+	public TravelInfos getTravelInfos() throws Throwable
 	{
-		// RequestBuilder builder = new
-		// RequestBuilder(RequestBuilder.GET,"http://api.oroszi.com/elvira");
-		// builder.setHeader("Content-Type", "application/json");
-		// try {
-		// builder.sendRequest("", new RequestCallback() {
-		// @Override
-		// public void onResponseReceived(Request arg0, Response arg1) {
-		// // TODO Auto-generated method stub
-		// }
-		//
-		// @Override
-		// public void onError(Request arg0, Throwable arg1) {
-		// // TODO Auto-generated method stub
-		// }
-		// });
-		// } catch (RequestException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		ArrayList<TravelInfo> infos = new ArrayList<TravelInfo>();
-		TravelInfo a = new TravelInfo();
-		infos.add(a);
-		try {
-			a.test = new Resty().text(buildQueryURL()).toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		TravelInfos infos = ElviraApi.getTravelInfosFromJson(session(), getElviraJson());
 		return infos;
 	}
 
-	private String buildQueryURL()
+	private JSONObject getElviraJson() throws JSONException, IOException
 	{
-		String from = createUrlParameter("from", "startTown");
-		String to = createUrlParameter("to", "endTown");
-		String type = "type=0"; // createUrlParameter("type", "discountRate");
-
-		String date = createDateUrlParameter();
-
-		return ELVIRA_API_BASE_URL + from + '&' + to + '&' + date + '&' + type;
-	}
-
-	private String createDateUrlParameter()
-	{
-		Date d;
-		if (session().getAttribute("date") != null) {
-			d = (Date) session().getAttribute("date");
-		} else {
-			d = new Date();
-		}
-		String date = "date=" + (1900 + d.getYear()) + '.' + d.getMonth() + '.' + d.getDay();
-		return date;
-	}
-
-	private String createUrlParameter(String parameterName, String sessionAttributeKey)
-	{
-		if (session().getAttribute(sessionAttributeKey) != null) {
-			return parameterName + "=" + (String) session().getAttribute(sessionAttributeKey);
-		} else if (parameterName.equals("type")) {
-			return parameterName + "=0";
-		} else {
-			return parameterName + "=\"\"";
-		}
+		JSONObject json = new Resty().json(ElviraApi.buildQueryURL(session())).object();
+		return json;
 	}
 
 	private HttpSession session()
