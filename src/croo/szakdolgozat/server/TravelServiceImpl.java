@@ -17,7 +17,7 @@ import croo.szakdolgozat.shared.TravelInfos;
 public class TravelServiceImpl extends RemoteServiceServlet implements TravelService
 {
 
-	public TravelInfos getTravelInfos() throws Throwable
+	public TravelInfos getTravelInfos() throws Exception
 	{
 		TravelInfos infos = ElviraApi.getTravelInfosFromJson(session(), getElviraJson());
 		return infos;
