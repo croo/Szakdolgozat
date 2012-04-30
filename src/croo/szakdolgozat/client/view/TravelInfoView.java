@@ -37,7 +37,8 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 	@Override
 	public void showTravelInfos(TravelInfos infos)
 	{
-		label.setText(infos.getStartTown() + ";" + infos.getEndTown() + ";" + infos.getTravelDate());
+		label.setText(infos.getRouteName() + ";" + infos.getTravelDate());
 
 	}
+
 }

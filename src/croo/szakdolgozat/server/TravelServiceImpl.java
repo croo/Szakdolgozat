@@ -1,12 +1,11 @@
 package croo.szakdolgozat.server;
 
-import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
-import us.monoid.json.JSONException;
 import us.monoid.json.JSONObject;
-import us.monoid.web.Resty;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -17,16 +16,34 @@ import croo.szakdolgozat.shared.TravelInfos;
 public class TravelServiceImpl extends RemoteServiceServlet implements TravelService
 {
 
+	@Override
 	public TravelInfos getTravelInfos() throws Exception
 	{
-		TravelInfos infos = ElviraApi.getTravelInfosFromJson(session(), getElviraJson());
+		JSONObject json = ElviraApi.getJson(getString("startTown"), getString("endTown"), getDateInGoodFormat(), 27);
+		TravelInfos infos = TravelInfoCreator.fromJson(json);
+
 		return infos;
 	}
 
-	private JSONObject getElviraJson() throws JSONException, IOException
+	private String getDateInGoodFormat()
 	{
-		JSONObject json = new Resty().json(ElviraApi.buildQueryURL(session())).object();
-		return json;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+		return format.format(getDate("date"));
+	}
+
+	private String getString(String key)
+	{
+		return (String) session().getAttribute(key);
+	}
+
+	private Date getDate(String key)
+	{
+		return (Date) session().getAttribute(key);
+	}
+
+	private Integer getInt(String key)
+	{
+		return (Integer) session().getAttribute(key);
 	}
 
 	private HttpSession session()
