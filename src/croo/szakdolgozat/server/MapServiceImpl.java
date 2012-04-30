@@ -6,7 +6,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.MapService;
 import croo.szakdolgozat.server.database.Database;
-import croo.szakdolgozat.server.database.MockDatabase;
+import croo.szakdolgozat.server.database.RdfDatabase;
 import croo.szakdolgozat.shared.Route;
 
 /**
@@ -16,7 +16,7 @@ import croo.szakdolgozat.shared.Route;
 public class MapServiceImpl extends RemoteServiceServlet implements MapService
 {
 
-	private Database database = new MockDatabase();
+	private Database database = new RdfDatabase();
 
 	@Override
 	public Boolean verifyLocation(String location)
@@ -26,32 +26,33 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 
 	@Override
 	public Route getRoute(String startTown, String endTown)
-	{		
+	{
 		if (bothLocationExists(startTown, endTown)) {
-			if(session() != null){
+			if (session() != null) {
 				session().setAttribute("startTown", startTown);
 				session().setAttribute("endTown", endTown);
 			}
-			
+
 			return database.getRoute(startTown, endTown);
 		} else
 			return null;
 	}
 
-	public void setDatabase(Database database)
+	public void setDatabase(Database db)
 	{
-		this.database = database;
+		database = db;
 	}
 
-	private Boolean bothLocationExists(String startTown, String endTown) {
+	private Boolean bothLocationExists(String startTown, String endTown)
+	{
 		return verifyLocation(startTown) && verifyLocation(endTown);
 	}
 
 	private HttpSession session()
 	{
-		if(this.getThreadLocalRequest() != null)
+		if (this.getThreadLocalRequest() != null)
 			return this.getThreadLocalRequest().getSession();
-		else 
+		else
 			return null;
-	}	
+	}
 }
