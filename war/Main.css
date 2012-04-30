@@ -13,7 +13,7 @@ h1 {
 	height:1024px;
 }
 
-#map{
+/*#map{
 	display:inline-block;
 	float:left;
 	width:800px;
@@ -28,7 +28,7 @@ h1 {
 #travelInfo{
 	display:block;
 	width:300px;
-}
+}*/
 
 .placeButton{
 }

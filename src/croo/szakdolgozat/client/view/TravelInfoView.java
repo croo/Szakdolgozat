@@ -58,34 +58,38 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 	private void loadTable(ArrayList<TravelInfo> travelInfos)
 	{
 		table.clear();
-		Grid grid = new Grid(travelInfos.size() + 1, 9);
+		Grid grid = new Grid(travelInfos.size() + 1, 10);
 		grid.setBorderWidth(1);
 		addHeader(grid);
 		for (int i = 1; i <= travelInfos.size(); i++) {
 			TravelInfo info = travelInfos.get(i - 1);
-			grid.setWidget(i, 0, new HTML(info.getDistance()));
-			grid.setWidget(i, 1, new HTML(info.getEndStation()));
-			grid.setWidget(i, 2, new HTML(info.getEndTime()));
-			grid.setWidget(i, 3, new HTML(info.getStartPlatform()));
-			grid.setWidget(i, 4, new HTML(info.getStartStation()));
-			grid.setWidget(i, 5, new HTML(info.getStartTime()));
-			grid.setWidget(i, 6, new HTML(info.getTrainInfo()));
-			grid.setWidget(i, 7, new HTML(info.getTravelClass()));
-			grid.setWidget(i, 8, new HTML(info.getTravelTime()));
+			int column = 0;
+			grid.setWidget(i, column++, new HTML(info.getStartStation()));
+			grid.setWidget(i, column++, new HTML(info.getStartPlatform()));
+			grid.setWidget(i, column++, new HTML(info.getEndStation()));
+			grid.setWidget(i, column++, new HTML(info.getStartTime()));
+			grid.setWidget(i, column++, new HTML(info.getEndTime()));
+			grid.setWidget(i, column++, new HTML(info.getTravelTime()));
+			grid.setWidget(i, column++, new HTML(info.getDistance()));
+			grid.setWidget(i, column++, new HTML(info.getTrainInfo()));
+			grid.setWidget(i, column++, new HTML(info.getTravelClass()));
+			grid.setWidget(i, column++, new HTML(info.getPrice()));
 		}
 		table.add(grid);
 	}
 
 	private void addHeader(Grid grid)
 	{
-		grid.setWidget(0, 0, new HTML("Distance"));
-		grid.setWidget(0, 1, new HTML("EndStation"));
-		grid.setWidget(0, 2, new HTML("EndTime"));
-		grid.setWidget(0, 3, new HTML("StartPlatform"));
-		grid.setWidget(0, 4, new HTML("StartSTation"));
-		grid.setWidget(0, 5, new HTML("StartTime"));
-		grid.setWidget(0, 6, new HTML("TrainInfo"));
-		grid.setWidget(0, 7, new HTML("Class"));
-		grid.setWidget(0, 8, new HTML("TravelTime"));
+		int column = 0;
+		grid.setWidget(0, column++, new HTML("Honnan"));
+		grid.setWidget(0, column++, new HTML("Vágány"));
+		grid.setWidget(0, column++, new HTML("Hova"));
+		grid.setWidget(0, column++, new HTML("Indulás"));
+		grid.setWidget(0, column++, new HTML("Érkezés"));
+		grid.setWidget(0, column++, new HTML("Idõtartam"));
+		grid.setWidget(0, column++, new HTML("Távolság"));
+		grid.setWidget(0, column++, new HTML("Járat"));
+		grid.setWidget(0, column++, new HTML("Osztály"));
+		grid.setWidget(0, column++, new HTML("Ár"));
 	}
 }
