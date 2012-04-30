@@ -25,8 +25,8 @@ h1 {
 	width:300px;	
 }
 
-#pricing{
-	display:inline-block;
+#travelInfo{
+	display:block;
 	width:300px;
 }
 
@@ -36,5 +36,5 @@ h1 {
 .placeButton-hover{
 	cursor: pointer; 
 	cursor: hand;	
-	background-color:00CCFF;
+	color:00CCFF;
 }

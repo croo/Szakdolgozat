@@ -32,7 +32,7 @@ public class TravelInfoPresenter implements SendEventHandler
 			@Override
 			public void onSuccess(TravelInfos result)
 			{
-				display.showTravelInfos(result);
+				display.loadInfosToInfoTable(result);
 			}
 		});
 	}

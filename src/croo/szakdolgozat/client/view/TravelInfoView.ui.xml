@@ -5,6 +5,12 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-		<g:Label ui:field="label"></g:Label>
+		<g:VerticalPanel ui:field="infoPanel">
+			<g:Label ui:field="routeLabel"/>
+			<g:Label ui:field="dateLabel"/>
+			<g:SimplePanel ui:field="table"/>
+		</g:VerticalPanel>
+			
+		
 	</g:HTMLPanel>
 </ui:UiBinder> 
