@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import croo.szakdolgozat.server.MapServiceImpl;
-import croo.szakdolgozat.server.database.MockDatabase;
 import croo.szakdolgozat.shared.Coordinate;
 import croo.szakdolgozat.shared.Route;
 import croo.szakdolgozat.shared.Town;
@@ -26,7 +25,7 @@ public class MapServiceImplTest
 	public void setUp()
 	{
 		mapService = new MapServiceImpl();
-		mapService.setDatabase(new MockDatabase());
+		// mapService.setDatabase(new MockDatabase());
 	}
 
 	@Test

@@ -4,17 +4,17 @@
         xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
 	xmlns:georss="http://www.georss.org/georss#"
 	xmlns:foaf="http://xmlns.com/foaf/0.1/"
-	xml:base="http://example.org/test#"
-	xmlns:croo="http://example.org/croo#">
+	xml:base="http://example.org/base#"
+    	xmlns:croo="http://example.org/croo#">
 
 <croo:Town rdf:ID="budapest">
-    <foaf:Name> Budapest </foaf:Name>
+    <foaf:Name> budapest </foaf:Name>
     <geo:lat>55.701</geo:lat>
     <geo:long>12.552</geo:long>
 </croo:Town>
 
 <croo:Town rdf:ID="esztergom">
-    <foaf:Name> Esztergom </foaf:Name>
+    <foaf:Name> esztergom </foaf:Name>
     <geo:lat>54.701</geo:lat>
     <geo:long>13.552</geo:long>
 </croo:Town>
@@ -22,6 +22,12 @@
 <croo:Route rdf:ID="fromEsztergomToBudapest">
     <croo:startTown rdf:resource="#esztergom" />
     <croo:endTown rdf:resource="#budapest" />
-    <georss:line>54.701,54.701 54.701,54.701 54.6,54.701 </georss:line>
+    <georss:line>54.701,54.701 54.701,54.701 54.6,54.701</georss:line>
+</croo:Route>
+
+<croo:Route rdf:ID="fromBudapestToEsztergom">
+    <croo:startTown rdf:resource="#budapest" />
+    <croo:endTown rdf:resource="#esztergom" />
+    <georss:line>54.6,54.701 54.701,54.701 54.701,54.701</georss:line>
 </croo:Route>
 </rdf:RDF>

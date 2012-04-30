@@ -21,7 +21,7 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 	@Override
 	public Boolean verifyLocation(String location)
 	{
-		return database.townExists(location);
+		return database.townExists(formatted(location));
 	}
 
 	@Override
@@ -54,5 +54,10 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 			return this.getThreadLocalRequest().getSession();
 		else
 			return null;
+	}
+
+	private String formatted(String text)
+	{
+		return text.trim().toLowerCase();
 	}
 }
