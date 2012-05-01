@@ -1,33 +1,31 @@
 <?xml version="1.0"?>
 
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-        xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
-	xmlns:georss="http://www.georss.org/georss#"
-	xmlns:foaf="http://xmlns.com/foaf/0.1/"
-	xml:base="http://example.org/base#"
-    	xmlns:croo="http://example.org/croo#">
-
-<croo:Town rdf:ID="budapest">
-    <foaf:Name>budapest</foaf:Name>
-    <geo:lat>47.49841</geo:lat> 
-    <geo:long>19.04076</geo:long>
-</croo:Town>
-
-<croo:Town rdf:ID="esztergom">
-    <foaf:Name>esztergom</foaf:Name>
-    <geo:lat>47.7776069</geo:lat>
-    <geo:long>18.7435935</geo:long>
-</croo:Town>
-
-<croo:Route rdf:ID="fromesztergomtobudapest">
-    <croo:startTown rdf:resource="#esztergom" />
-    <croo:endTown rdf:resource="#budapest" />
-    <georss:line>54.701,54.701 54.701,54.701 54.6,54.701</georss:line>
-</croo:Route>
-
-<croo:Route rdf:ID="frombudapesttoesztergom">
-    <croo:startTown rdf:resource="#budapest" />
-    <croo:endTown rdf:resource="#esztergom" />
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:georss="http://www.georss.org/georss#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:croo="http://example.org/croo#"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
+  <croo:Route rdf:about="http://example.org/base#frombudapesttoesztergom">
     <georss:line>54.6,54.701 54.701,54.701 54.701,54.701</georss:line>
-</croo:Route>
+    <croo:endTown>
+      <croo:Town rdf:about="http://example.org/base#esztergom">
+        <geo:long>18.7435935</geo:long>
+        <geo:lat>47.7776069</geo:lat>
+        <foaf:Name>esztergom</foaf:Name>
+      </croo:Town>
+    </croo:endTown>
+    <croo:startTown>
+      <croo:Town rdf:about="http://example.org/base#budapest">
+        <geo:long>19.04076</geo:long>
+        <geo:lat>47.49841</geo:lat>
+        <foaf:Name>budapest</foaf:Name>
+      </croo:Town>
+    </croo:startTown>
+  </croo:Route>
+  <croo:Route rdf:about="http://example.org/base#fromesztergomtobudapest">
+    <georss:line>54.701,54.701 54.701,54.701 54.6,54.701</georss:line>
+    <croo:endTown rdf:resource="http://example.org/base#budapest"/>
+    <croo:startTown rdf:resource="http://example.org/base#esztergom"/>
+  </croo:Route>
 </rdf:RDF>
