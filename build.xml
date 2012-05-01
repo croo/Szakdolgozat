@@ -11,6 +11,7 @@
   <property name="googlemaps.dir" location="C:/work/googlemaps-api/gwt-maps-1.1.1" />
   <property name="default.jar.dir" location="war/WEB-INF/lib" />
   <property name="junit.dir" location="c:/eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705" />
+	<property name="slf4j.dir" location="c:/work/slf4j-1.6.4" />
   
 	
   <path id="project.class.path">
@@ -26,11 +27,13 @@
     <copy todir="${default.jar.dir}" file="${gwt.sdk}/gwt-servlet.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${gwt.sdk}/gwt-servlet-deps.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${jena.dir}/lib/jena-core-2.7.0-incubating.jar" verbose="true"/>
+    <copy todir="${default.jar.dir}" file="${jena.dir}/lib/jena-iri-0.9.0-incubating.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${googlemaps.dir}/gwt-maps.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${gwt.sdk}/validation-api-1.0.0.GA.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${junit.dir}/junit.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${resty.dir}/resty-0.3.1.jar" verbose="true"/>
+    <copy todir="${default.jar.dir}" file="${slf4j.dir}/slf4j-api-1.6.4.jar" verbose="true"/>
   	
   </target>
 

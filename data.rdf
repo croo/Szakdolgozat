@@ -8,24 +8,24 @@
     	xmlns:croo="http://example.org/croo#">
 
 <croo:Town rdf:ID="budapest">
-    <foaf:Name> budapest </foaf:Name>
-    <geo:lat>55.701</geo:lat>
-    <geo:long>12.552</geo:long>
+    <foaf:Name>budapest</foaf:Name>
+    <geo:lat>47.49841</geo:lat> 
+    <geo:long>19.04076</geo:long>
 </croo:Town>
 
 <croo:Town rdf:ID="esztergom">
-    <foaf:Name> esztergom </foaf:Name>
-    <geo:lat>54.701</geo:lat>
-    <geo:long>13.552</geo:long>
+    <foaf:Name>esztergom</foaf:Name>
+    <geo:lat>47.7776069</geo:lat>
+    <geo:long>18.7435935</geo:long>
 </croo:Town>
 
-<croo:Route rdf:ID="fromEsztergomToBudapest">
+<croo:Route rdf:ID="fromesztergomtobudapest">
     <croo:startTown rdf:resource="#esztergom" />
     <croo:endTown rdf:resource="#budapest" />
     <georss:line>54.701,54.701 54.701,54.701 54.6,54.701</georss:line>
 </croo:Route>
 
-<croo:Route rdf:ID="fromBudapestToEsztergom">
+<croo:Route rdf:ID="frombudapesttoesztergom">
     <croo:startTown rdf:resource="#budapest" />
     <croo:endTown rdf:resource="#esztergom" />
     <georss:line>54.6,54.701 54.701,54.701 54.701,54.701</georss:line>

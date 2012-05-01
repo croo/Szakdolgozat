@@ -1,29 +1,69 @@
 package croo.szakdolgozat.server.database;
 
-import com.hp.hpl.jena.graph.Node;
+import java.util.ArrayList;
+
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.FileManager;
 
+import croo.szakdolgozat.shared.Coordinate;
 import croo.szakdolgozat.shared.Route;
+import croo.szakdolgozat.shared.Town;
 
 public class RdfDatabase implements Database
 {
 
+	private static final Model model = FileManager.get().loadModel("data.rdf");
+	private static final String NAMESPACE = "http://example.org/base#";
+	private static final Property LATITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#lat");
+	private static final Property LONGITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#long");
+	private static final Property NAME = model.getProperty("http://xmlns.com/foaf/0.1/Name");
+	private static final Property ROUTEWAY = model.getProperty("http://www.georss.org/georss#line");
+
 	@Override
 	public boolean townExists(String town)
 	{
-		String namespace = "http://example.org/base#";
-		Model model = FileManager.get().loadModel("data.rdf");
-		Resource townResource = model.getResource(namespace + town);
+		Resource townResource = model.getResource(NAMESPACE + town);
 		return model.containsResource(model.getRDFNode(townResource.asNode()));
 	}
 
 	@Override
 	public Route getRoute(String startTown, String endTown)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Resource startTownResource = model.getResource(NAMESPACE + startTown);
+		Resource endTownResource = model.getResource(NAMESPACE + endTown);
+		Resource routewayResource = model.getResource(NAMESPACE + "from" + startTown + "to" + endTown);
+
+		Town start = createTown(startTownResource);
+		Town end = createTown(endTownResource);
+		ArrayList<Coordinate> routeway = createRouteWay(start.getCoordinate(), routewayResource, end.getCoordinate());
+		return new Route(start, end, routeway);
 	}
 
+	private ArrayList<Coordinate> createRouteWay(Coordinate startTownCoordinate, Resource route, Coordinate endTownCoordinate)
+	{
+		ArrayList<Coordinate> routeway = new ArrayList<Coordinate>();
+		routeway.add(startTownCoordinate);
+		String[] coordinateStrings = route.getProperty(ROUTEWAY).getString().split(" ");
+		for (String coordinateString : coordinateStrings) {
+			String[] latLng = coordinateString.split(",");
+			routeway.add(new Coordinate(Double.parseDouble(latLng[0]), Double.parseDouble(latLng[1])));
+		}
+		routeway.add(endTownCoordinate);
+		return routeway;
+	}
+
+	private Town createTown(Resource town)
+	{
+		Double lat = town.getProperty(LATITUDE).getDouble();
+		Double lng = town.getProperty(LONGITUDE).getDouble();
+		Coordinate coordinate = new Coordinate(lat, lng);
+
+		String name = town.getProperty(NAME).getString();
+
+		// TODO: List of interesting places are yet to add.
+
+		return new Town(coordinate, name);
+	}
 }

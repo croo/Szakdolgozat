@@ -28,19 +28,15 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 	public Route getRoute(String startTown, String endTown)
 	{
 		if (bothLocationExists(startTown, endTown)) {
-			if (session() != null) {
-				session().setAttribute("startTown", startTown);
-				session().setAttribute("endTown", endTown);
+			if (session() != null) { // while running JUnit test there are no
+										// sessions. Thats why this check is
+										// needed.
+				session().setAttribute("startTown", formatted(startTown));
+				session().setAttribute("endTown", formatted(endTown));
 			}
-
-			return database.getRoute(startTown, endTown);
+			return database.getRoute(formatted(startTown), formatted(endTown));
 		} else
 			return null;
-	}
-
-	public void setDatabase(Database db)
-	{
-		database = db;
 	}
 
 	private Boolean bothLocationExists(String startTown, String endTown)
