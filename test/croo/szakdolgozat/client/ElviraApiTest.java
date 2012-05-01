@@ -3,6 +3,8 @@ package croo.szakdolgozat.client;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,11 +25,10 @@ import croo.szakdolgozat.server.ElviraApi;
 public class ElviraApiTest
 {
 
-	private static final String EMPTY_JSON_RESULT = "{\"date\":\"\",\"route\":\"\",\"timetable\":[]}";
 	private static final String NON_EXISTING_STATION = "Mucsaröcsöge";
 	private static final boolean WITHOUT_TRANSFER = true;
-	private static final int TYPE = 27;
-	private static final String DATE = "2012.05.01";
+	private static final String TYPE = "27";
+	private static final Date DATE = new Date();
 	private static final String ESZTERGOM = "esztergom";
 	private static final String BUDAPEST = "budapest";
 	private JSONObject json_reference;
@@ -35,9 +36,10 @@ public class ElviraApiTest
 	@Before
 	public void SetUp()
 	{
+		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
 		try {
 			json_reference = new Resty().json(
-					"http://api.oroszi.net/elvira?from=" + BUDAPEST + "&to=" + ESZTERGOM + "&date=" + DATE
+					"http://api.oroszi.net/elvira?from=" + BUDAPEST + "&to=" + ESZTERGOM + "&date=" + format.format(DATE)
 							+ "&type=27&wotransfer=1").object();
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
@@ -53,7 +55,7 @@ public class ElviraApiTest
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE);
 		} catch (IOException | JSONException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
 	}
@@ -65,7 +67,7 @@ public class ElviraApiTest
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, TYPE);
 		} catch (IOException | JSONException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
 	}
@@ -77,22 +79,19 @@ public class ElviraApiTest
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, TYPE, WITHOUT_TRANSFER);
 		} catch (IOException | JSONException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
 	}
 
-	@Test
-	public void queryWithNotExistingStationShouldGiveJsonWithErrorCode() throws JSONException
+	@Test(expected = IOException.class)
+	public void queryWithNotExistingStationShouldGiveJsonWithErrorCode() throws IOException
 	{
-		JSONObject json = null;
 		try {
-			json = ElviraApi.getJson(NON_EXISTING_STATION, ESZTERGOM, DATE, TYPE, WITHOUT_TRANSFER);
-		} catch (IOException | JSONException e) {
-			e.printStackTrace();
+			JSONObject json = ElviraApi.getJson(NON_EXISTING_STATION, ESZTERGOM, DATE, TYPE, WITHOUT_TRANSFER);
+		} catch (JSONException e) {
+			System.out.println(e.getMessage());
 		}
-		assertEquals(json.getString("error"), "1");
-		assertEquals(json.getString("errormsg"), "ismeretlen állomásnév");
 	}
 
 	@Test
@@ -102,10 +101,10 @@ public class ElviraApiTest
 		try {
 			json = ElviraApi.getJson(ESZTERGOM, ESZTERGOM, DATE, TYPE, WITHOUT_TRANSFER);
 		} catch (IOException | JSONException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
-		assertEquals(json.toString(), EMPTY_JSON_RESULT);
+		assertEquals(null, json);
 	}
 
 	@Test
@@ -113,10 +112,12 @@ public class ElviraApiTest
 	{
 		JSONObject json = null;
 		try {
-			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, 51234, WITHOUT_TRANSFER);
+			final String BAD_TYPE = "51234";
+			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, BAD_TYPE, WITHOUT_TRANSFER);
 		} catch (IOException | JSONException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
+		System.out.println(json_reference);
 		System.out.println(json);
 		assertEquals(json.toString(), json_reference.toString());
 	}
@@ -124,14 +125,15 @@ public class ElviraApiTest
 	@Test
 	public void queryWithOutdatedDateShouldReturnEmptyList() throws JSONException
 	{
+		Date outdatedDate = new Date(123);
 		JSONObject json = null;
 		try {
-			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, "2010.05.01", TYPE, WITHOUT_TRANSFER);
+			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, outdatedDate, TYPE, WITHOUT_TRANSFER);
 		} catch (IOException | JSONException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		System.out.println(json);
-		assertEquals(json.toString(), EMPTY_JSON_RESULT);
+		assertEquals(json, null);
 	}
 
 }
