@@ -1,6 +1,12 @@
 package croo.szakdolgozat.server;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,7 +30,31 @@ public class FilteringServiceImpl extends RemoteServiceServlet implements Filter
 	@Override
 	public void setDiscountRate(String discountRate)
 	{
-		session().setAttribute("discountRate", discountRate);
+		session().setAttribute("rate", discountRate);
+	}
+
+	@Override
+	public HashMap<String, String> getDiscounts() throws Exception
+	{
+		try {
+			Properties properties = new Properties();
+			properties.load(new FileInputStream("pricing.properties"));
+			return convertPropertiesToHashMap(properties);
+
+		} catch (FileNotFoundException e) {
+			throw new Exception("File Not Found: Couldn't find the pricing properties file.");
+		} catch (IOException e) {
+			throw new Exception("IO Exception: Couldn't read the pricing properties file.");
+		}
+	}
+
+	private HashMap<String, String> convertPropertiesToHashMap(Properties properties)
+	{
+		HashMap<String, String> map = new HashMap<String, String>();
+		for (Map.Entry<Object, Object> item : properties.entrySet()) {
+			map.put((String) item.getKey(), (String) item.getValue());
+		}
+		return map;
 	}
 
 	private HttpSession session()

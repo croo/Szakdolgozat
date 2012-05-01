@@ -1,6 +1,8 @@
 package croo.szakdolgozat.client.view;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -14,11 +16,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.web.bindery.event.shared.EventBus;
 
-import croo.szakdolgozat.client.display.FilteringDisplay;
-import croo.szakdolgozat.client.presenter.FilteringPresenter;
+import croo.szakdolgozat.client.display.FilterDisplay;
+import croo.szakdolgozat.client.presenter.FilterPresenter;
 import croo.szakdolgozat.client.stubs.FilterServiceAsync;
 
-public class FilterView extends Composite implements FilteringDisplay
+public class FilterView extends Composite implements FilterDisplay
 {
 
 	private static FilterViewUiBinder uiBinder = GWT.create(FilterViewUiBinder.class);
@@ -28,7 +30,7 @@ public class FilterView extends Composite implements FilteringDisplay
 	@UiField
 	DateBox dateBox;
 
-	private FilteringPresenter presenter;
+	private FilterPresenter presenter;
 
 	interface FilterViewUiBinder extends UiBinder<Widget, FilterView>
 	{
@@ -36,7 +38,7 @@ public class FilterView extends Composite implements FilteringDisplay
 
 	public FilterView(EventBus eventBus, FilterServiceAsync filteringService)
 	{
-		presenter = new FilteringPresenter(this, eventBus, filteringService);
+		presenter = new FilterPresenter(this, eventBus, filteringService);
 		initWidget(uiBinder.createAndBindUi(this));
 		setUpDateBox();
 		setUpDiscountBox();
@@ -49,10 +51,7 @@ public class FilterView extends Composite implements FilteringDisplay
 
 	private void setUpDiscountBox()
 	{
-		discountBox.addItem("100%");
-		discountBox.addItem("75%");
-		discountBox.addItem("66%");
-		discountBox.addItem("50%");
+		presenter.loadDiscounts();
 	}
 
 	@UiHandler("dateBox")
@@ -65,5 +64,13 @@ public class FilterView extends Composite implements FilteringDisplay
 	void onDiscountBoxChange(ChangeEvent event)
 	{
 		presenter.onDiscountBoxChange(discountBox.getValue(discountBox.getSelectedIndex()));
+	}
+
+	@Override
+	public void loadDiscountBoxData(HashMap<String, String> properties)
+	{
+		for (Entry<String, String> item : properties.entrySet()) {
+			discountBox.addItem((String) item.getValue(), (String) item.getKey());
+		}
 	}
 }
