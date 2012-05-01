@@ -31,10 +31,20 @@ h1 {
 }*/
 
 .placeButton{
+	cursor: pointer; 
+	cursor: hand;
+}
+
+.placeButton-readonly{
+	color: grey;
+}
+
+.placeButton-link{
+	cursor: pointer; 
+	cursor: hand;
+	color: blue;
 }
 
 .placeButton-hover{
-	cursor: pointer; 
-	cursor: hand;	
-	color:00CCFF;
+	background-color:00CCFF;
 }

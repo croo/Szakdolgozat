@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import croo.szakdolgozat.client.view.ElementCreatorView;
 import croo.szakdolgozat.shared.InterestingPlace;
 import croo.szakdolgozat.shared.Town;
 
@@ -24,8 +25,37 @@ public class PlacesListPanel extends VerticalPanel
 	{
 		ArrayList<InterestingPlace> places = endTown.getInterestingPlaces();
 		for (final InterestingPlace place : places) {
-			add(createListElement(endTown.getTownCoordinateInJSO(), infoWindow, place));
+			if (place != Town.EMPTY_PLACE)
+				add(listElement(endTown.getTownCoordinateInJSO(), infoWindow, place));
+			else
+				add(emptyElement());
 		}
+		add(elementCreatorButton(endTown.getTownCoordinateInJSO(), infoWindow));
+	}
+
+	private HTML elementCreatorButton(final LatLng coordinateInJSO, final InfoWindow infoWindow)
+	{
+		final HTML elementCreatorButton = new HTML("Hozzáadás...");
+		elementCreatorButton.setStylePrimaryName("placeButton-link");
+
+		elementCreatorButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				InfoWindowContent content = new InfoWindowContent(PlacesListPanel.this);
+				content.setMaxContent(new ElementCreatorView());
+				infoWindow.open(coordinateInJSO, content);
+				infoWindow.maximize();
+			}
+		});
+		return elementCreatorButton;
+	}
+
+	private HTML emptyElement()
+	{
+		final HTML emptyElement = new HTML(Town.EMPTY_PLACE.getName());
+		emptyElement.setStylePrimaryName("placeButton-readonly");
+		return emptyElement;
 	}
 
 	public Frame createMaxContent(String url)
@@ -36,11 +66,12 @@ public class PlacesListPanel extends VerticalPanel
 		return interestingPage;
 	}
 
-	private HTML createListElement(final LatLng coordinateInJSO, final InfoWindow infoWindow, final InterestingPlace place)
+	private HTML listElement(final LatLng coordinateInJSO, final InfoWindow infoWindow, final InterestingPlace place)
 	{
 		final HTML listElement = new HTML(place.getName());
 		listElement.setStylePrimaryName("placeButton");
 		addHoverEffectToElement(listElement);
+
 		listElement.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event)

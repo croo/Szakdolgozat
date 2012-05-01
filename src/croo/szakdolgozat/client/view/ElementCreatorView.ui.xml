@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:VerticalPanel horizontalAlignment="ALIGN_CENTER">
+			<g:HorizontalPanel>
+				<g:Label text="Név " width="75px"/>
+				<g:TextBox alignment="LEFT"/>
+			</g:HorizontalPanel>
+			<g:HorizontalPanel>
+					<g:Label text="Honlap " width="75px"/>
+					<g:TextBox/>
+				</g:HorizontalPanel>
+			<g:Cell horizontalAlignment="ALIGN_CENTER">
+				<g:Label text="Leírás"/>
+			</g:Cell>
+			<g:TextArea width="230px" height="106px"/>
+			<g:Button width="46px">Ok</g:Button>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

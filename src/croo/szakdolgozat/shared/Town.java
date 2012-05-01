@@ -7,7 +7,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Town implements IsSerializable
 {
-	private static final InterestingPlace EMPTY_PLACE = new InterestingPlace("http://emptypage.org", "Nothing interesting...");
+	public static final InterestingPlace EMPTY_PLACE = new InterestingPlace("http://emptypage.org",
+			"Itt nincs semmi érdekes...");
 	private Coordinate coordinate;
 	private String name;
 	private ArrayList<InterestingPlace> interestingPlaces = null;
