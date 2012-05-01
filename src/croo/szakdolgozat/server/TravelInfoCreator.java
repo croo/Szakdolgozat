@@ -16,7 +16,7 @@ public class TravelInfoCreator
 	private static TravelInfos createTravelInfos(JSONObject json) throws JSONException
 	{
 		String routeName = json.getString("route");
-		String travelDate = json.getString("date");
+		String travelDate = json.getString("date").replace("átszállás nélkül;", "");
 		TravelInfos infos = new TravelInfos(routeName, travelDate);
 
 		JSONArray timetables = json.getJSONArray("timetable");
