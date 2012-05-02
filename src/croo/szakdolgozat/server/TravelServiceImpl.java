@@ -24,14 +24,20 @@ public class TravelServiceImpl extends RemoteServiceServlet implements TravelSer
 		return infos;
 	}
 
-	private String getString(String key)
+	private String getString(String key) throws Exception
 	{
-		return (String) session().getAttribute(key);
+		if (session().getAttribute(key) == null)
+			throw new Exception("Error getting travel info: The " + key + " attribute was null.");
+		else
+			return (String) session().getAttribute(key);
 	}
 
-	private Date getDate(String key)
+	private Date getDate(String key) throws Exception
 	{
-		return (Date) session().getAttribute(key);
+		if (session().getAttribute(key) == null)
+			throw new Exception("Error getting travel info: The " + key + " attribute was null.");
+		else
+			return (Date) session().getAttribute(key);
 	}
 
 	private HttpSession session()
