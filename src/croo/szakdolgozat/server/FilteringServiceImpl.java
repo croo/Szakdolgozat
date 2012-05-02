@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.FilterService;
+import croo.szakdolgozat.server.database.SystemProperties;
 
 /**
  * The server side implementation of the FilteringService service.
@@ -35,12 +36,11 @@ public class FilteringServiceImpl extends RemoteServiceServlet implements Filter
 
 	@Override
 	public HashMap<String, String> getDiscounts() throws Exception
-	{		
+	{
 		try {
 			Properties properties = new Properties();
 			properties.load(new FileInputStream(getPricingProperties()));
 			return convertPropertiesToHashMap(properties);
-
 		} catch (FileNotFoundException e) {
 			throw new Exception("File Not Found: Couldn't find the pricing properties file.");
 		} catch (IOException e) {
@@ -50,8 +50,8 @@ public class FilteringServiceImpl extends RemoteServiceServlet implements Filter
 
 	private String getPricingProperties()
 	{
-		//TODO: when config.properties working correctly it should contain this property file name/path
-		return "pricing.properties"; //System.getProperty("pricing.properties.file");
+		String pricingProperties = SystemProperties.GetInstance().getFileLocation("pricing.properties");
+		return (pricingProperties == null) ? "pricing.properties" : pricingProperties;
 	}
 
 	private HashMap<String, String> convertPropertiesToHashMap(Properties properties)
