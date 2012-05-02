@@ -16,7 +16,7 @@ import croo.szakdolgozat.shared.Route;
 public class MapServiceImpl extends RemoteServiceServlet implements MapService
 {
 
-	private static final Database database = new DatabaseFactory().createRdfDatabase();
+	private static volatile Database database = DatabaseFactory.createRdfDatabase();
 
 	@Override
 	public Boolean verifyLocation(String location)
@@ -51,6 +51,11 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 		else
 			return null;
 	}
+
+	// public void setDatabase(Database database)
+	// {
+	// this.database = database;
+	// }
 
 	private String formatted(String text)
 	{
