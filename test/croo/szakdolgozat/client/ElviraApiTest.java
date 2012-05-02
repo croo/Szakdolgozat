@@ -54,7 +54,9 @@ public class ElviraApiTest
 		JSONObject json = null;
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE);
-		} catch (IOException | JSONException e) {
+		} catch (IOException e){
+			System.out.println(e.getMessage());
+		}catch (JSONException e){
 			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
@@ -66,7 +68,7 @@ public class ElviraApiTest
 		JSONObject json = null;
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, TYPE);
-		} catch (IOException | JSONException e) {
+		} catch (IOException e){
 			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
@@ -78,7 +80,7 @@ public class ElviraApiTest
 		JSONObject json = null;
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, TYPE, WITHOUT_TRANSFER);
-		} catch (IOException | JSONException e) {
+		} catch (IOException e){
 			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
@@ -100,7 +102,7 @@ public class ElviraApiTest
 		JSONObject json = null;
 		try {
 			json = ElviraApi.getJson(ESZTERGOM, ESZTERGOM, DATE, TYPE, WITHOUT_TRANSFER);
-		} catch (IOException | JSONException e) {
+		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 
@@ -114,7 +116,7 @@ public class ElviraApiTest
 		try {
 			final String BAD_TYPE = "51234";
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, BAD_TYPE, WITHOUT_TRANSFER);
-		} catch (IOException | JSONException e) {
+		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 		System.out.println(json_reference);
@@ -129,7 +131,7 @@ public class ElviraApiTest
 		JSONObject json = null;
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, outdatedDate, TYPE, WITHOUT_TRANSFER);
-		} catch (IOException | JSONException e) {
+		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 		System.out.println(json);

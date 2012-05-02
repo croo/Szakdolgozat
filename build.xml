@@ -5,13 +5,14 @@
 	
   <property name="glassfish.domain" location="c:/glassfish3.1.1/glassfish3/glassfish/domains/domain1" />
   <!-- Configure path to Needed Libraries -->
-  <property name="gwt.sdk" location="c:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201202290255-rel-r37/gwt-2.4.0" />
-  <property name="jena.dir" location="C:/work/Jena/apache-jena-2.7.0-incubating" />
-	<property name="resty.dir" location="C:/work/Resty" />
-  <property name="googlemaps.dir" location="C:/work/googlemaps-api/gwt-maps-1.1.1" />
+  <property name="gwt.sdk.home" location="c:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201202290255-rel-r37/gwt-2.4.0" />
+  <property name="gwt.sdk" location="c:\Users\epterba\Desktop\eclipse\plugins\com.google.gwt.eclipse.sdkbundle_2.4.0.v201203300216-rel-r36\gwt-2.4.0" />
+  <property name="jena.dir" location="../Jena/apache-jena-2.7.0-incubating" />
+	<property name="resty.dir" location="../Resty" />
+  <property name="googlemaps.dir" location="../googlemaps-api/gwt-maps-1.1.1" />
   <property name="default.jar.dir" location="war/WEB-INF/lib" />
   <property name="junit.dir" location="c:/eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705" />
-	<property name="slf4j.dir" location="c:/work/slf4j-1.6.4" />
+	<property name="slf4j.dir" location="../slf4j-1.6.4" />
   
 	
   <path id="project.class.path">
