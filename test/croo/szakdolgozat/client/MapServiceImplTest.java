@@ -25,7 +25,7 @@ public class MapServiceImplTest
 	public void setUp()
 	{
 		mapService = new MapServiceImpl();
-		// mapService.setDatabase(new MockDatabase());
+		// mapService.setDatabase(DatabaseFactory.createMockDatabase());
 	}
 
 	@Test
