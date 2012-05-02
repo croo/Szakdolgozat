@@ -79,6 +79,7 @@
       <jvmarg value="-Xmx256M"/>
       <jvmarg value="-Xdebug" />
       <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8001" />
+      <jvmarg value="-Dconfig.location=config.properties" />
       <arg value="-startupUrl"/>
       <arg value="Main.html"/>
       <arg value="-war"/>

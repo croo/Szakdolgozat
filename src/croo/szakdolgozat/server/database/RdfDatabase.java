@@ -14,13 +14,25 @@ import croo.szakdolgozat.shared.Town;
 public class RdfDatabase implements Database
 {
 
-	private static final Model model = FileManager.get().loadModel("data.rdf");
 	private static final String NAMESPACE = "http://example.org/base#";
-	private static final Property LATITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#lat");
-	private static final Property LONGITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#long");
-	private static final Property NAME = model.getProperty("http://xmlns.com/foaf/0.1/Name");
-	private static final Property ROUTEWAY = model.getProperty("http://www.georss.org/georss#line");
+	private static Model model;
+	private static Property LATITUDE;
+	private static Property LONGITUDE;
+	private static Property NAME;
+	private static Property ROUTEWAY;
 
+	/**
+	 * Accepts filename with relative or absolute path
+	 * @param rdfFileName 
+	 */
+	public RdfDatabase(String rdfFileName){
+		model = FileManager.get().loadModel(rdfFileName);
+		LATITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#lat");
+		LONGITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#long");
+		NAME = model.getProperty("http://xmlns.com/foaf/0.1/Name");
+		ROUTEWAY = model.getProperty("http://www.georss.org/georss#line");
+	}
+	
 	@Override
 	public boolean townExists(String town)
 	{

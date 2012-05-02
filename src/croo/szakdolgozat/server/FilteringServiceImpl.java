@@ -35,17 +35,23 @@ public class FilteringServiceImpl extends RemoteServiceServlet implements Filter
 
 	@Override
 	public HashMap<String, String> getDiscounts() throws Exception
-	{
+	{		
 		try {
 			Properties properties = new Properties();
-			properties.load(new FileInputStream("pricing.properties"));
+			properties.load(new FileInputStream(getPricingProperties()));
 			return convertPropertiesToHashMap(properties);
 
 		} catch (FileNotFoundException e) {
 			throw new Exception("File Not Found: Couldn't find the pricing properties file.");
 		} catch (IOException e) {
-			throw new Exception("IO Exception: Couldn't read the pricing properties file.");
+			throw new Exception("IO Exception: Found, but couldn't read the pricing properties file.");
 		}
+	}
+
+	private String getPricingProperties()
+	{
+		//TODO: when config.properties working correctly it should contain this property file name/path
+		return "pricing.properties"; //System.getProperty("pricing.properties.file");
 	}
 
 	private HashMap<String, String> convertPropertiesToHashMap(Properties properties)

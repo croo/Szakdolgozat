@@ -6,7 +6,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.MapService;
 import croo.szakdolgozat.server.database.Database;
-import croo.szakdolgozat.server.database.RdfDatabase;
+import croo.szakdolgozat.server.database.DatabaseFactory;
 import croo.szakdolgozat.shared.Route;
 
 /**
@@ -16,7 +16,7 @@ import croo.szakdolgozat.shared.Route;
 public class MapServiceImpl extends RemoteServiceServlet implements MapService
 {
 
-	private Database database = new RdfDatabase();
+	private static final Database database = new DatabaseFactory().createRdfDatabase();
 
 	@Override
 	public Boolean verifyLocation(String location)
