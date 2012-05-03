@@ -1,5 +1,7 @@
 package croo.szakdolgozat.server.database;
 
+import java.io.IOException;
+
 public class DatabaseFactory
 {
 
@@ -10,7 +12,7 @@ public class DatabaseFactory
 		return new MockDatabase();
 	}
 
-	public static Database createRdfDatabase()
+	public static Database createRdfDatabase() throws IOException
 	{
 		String databaseFile = SystemProperties.GetInstance().getFileLocation(RDF_DATABASE_FILE_PROPERTY_KEY);
 

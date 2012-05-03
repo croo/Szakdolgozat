@@ -1,5 +1,7 @@
 package croo.szakdolgozat.server;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -16,13 +18,20 @@ import croo.szakdolgozat.shared.Route;
 public class MapServiceImpl extends RemoteServiceServlet implements MapService
 {
 
-	private static volatile Database database = DatabaseFactory.createRdfDatabase();
+	private static volatile Database database;
+	static {
+		 try {
+			database = DatabaseFactory.createRdfDatabase();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
 
 	@Override
 	public Boolean verifyLocation(String location)
 	{
 		return database.townExists(formatted(location));
-	}
+	}	
 
 	@Override
 	public Route getRoute(String startTown, String endTown)
@@ -51,11 +60,6 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 		else
 			return null;
 	}
-
-	// public void setDatabase(Database database)
-	// {
-	// this.database = database;
-	// }
 
 	private String formatted(String text)
 	{

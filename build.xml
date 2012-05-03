@@ -13,6 +13,7 @@
   <property name="default.jar.dir" location="war/WEB-INF/lib" />
   <property name="junit.dir" location="c:/eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705" />
 	<property name="slf4j.dir" location="../slf4j-1.6.4" />
+	<property name="opencsv.dir" location="../opencsv" />
   
 	
   <path id="project.class.path">
@@ -35,7 +36,7 @@
     <copy todir="${default.jar.dir}" file="${junit.dir}/junit.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${resty.dir}/resty-0.3.1.jar" verbose="true"/>
     <copy todir="${default.jar.dir}" file="${slf4j.dir}/slf4j-api-1.6.4.jar" verbose="true"/>
-  	
+    <copy todir="${default.jar.dir}" file="${opencsv.dir}/opencsv-2.4.jar" verbose="true"/>
   </target>
 
   <target name="javac" depends="libs" description="Compile java source to bytecode">
