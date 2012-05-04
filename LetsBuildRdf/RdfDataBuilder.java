@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,18 +24,19 @@ public class RdfDataBuilder
 	private static final String TRIPS = "trips.txt";
 	private static final String SHAPES = "shapes.txt";
 	private static List<String[]> stops;
-	private static Map<String, List<String[]>> stop_times;
+	private static Map<String, List<String[]>> stopTimesMap;
 	private static List<String[]> trips;
-	private static CSVReader shapesCsv;
+	private static Map<String,List<String[]>> shapesMap;
 	private File database;
 
 	public RdfDataBuilder(String tempDir) throws IOException, FileNotFoundException
 	{
 		stops = new CSVReader(new FileReader(tempDir + STOPS)).readAll();
-		List<String[]> stoptimesCsv = new CSVReader(new FileReader(tempDir + STOP_TIMES)).readAll();
-		stop_times = createMapWithIdAsKeyFromCsvList(stoptimesCsv);
+		List<String[]> stoptimes = new CSVReader(new FileReader(tempDir + STOP_TIMES)).readAll();
+		stopTimesMap = createMapWithIdAsKeyFromCsvList(stoptimes);
 		trips = new CSVReader(new FileReader(tempDir + TRIPS)).readAll();
-		shapesCsv = new CSVReader(new FileReader(tempDir + SHAPES));
+		List<String[]> shapesCsv = new CSVReader(new FileReader(tempDir + SHAPES)).readAll();
+		shapesMap = createMapWithIdAsKeyFromCsvList(shapesCsv);
 	}
 
 	public void parseTxtToRdfDatabase(String rdfDatabaseFile) throws IOException
@@ -57,28 +59,78 @@ public class RdfDataBuilder
 	private void generateRoutes() throws IOException
 	{
 		Map<String, List<String[]>> stopsMap = createMapWithIdAsKeyFromCsvList(stops);
-
 		for (String[] trip : trips) {
-			String tripId = trip[0];
-			List<String[]> stopsInTrip = stop_times.get(tripId);
-
-			String startTown = "";
-			String endTown = "";
-			List<String> block = new ArrayList<String>();
-			block.add("<croo:Route rdf:ID=\"from" + startTown + "to" + endTown + "\">");
-			block.add("<croo:startTown rdf:resource=\"#" + startTown + "\" />");
-			block.add("<croo:endTown rdf:resource=\"#" + endTown + "\" />");
-			block.add("<georss:line>" + getCoorinateList() + "</georss:line>");
-			block.add("</croo:Route>");
-			writeBlockToDatabase(block);
+			generateRoutesOfTrip(trip[2]);
 		}
 	}
 
-	private String getCoorinateList()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	private void generateRoutesOfTrip(String tripId) throws IOException {		
+		List<String[]> stopsInTrip = stopTimesMap.get(tripId);
+		for (int i = 0; i < stopsInTrip.size(); i++) {
+			String startTownId = stopsInTrip.get(i)[3];
+			for (int j = i+1; j < stopsInTrip.size(); j++) {
+				String endTownId = stopsInTrip.get(j)[3];
+				createRouteBetweenTwoStopsInTrip(tripId, startTownId, endTownId);
+			}
+		}
 	}
+
+	private void createRouteBetweenTwoStopsInTrip(String tripId,
+			String startTownId, String endTownId) throws IOException {
+		Map<String, List<String[]>> stopsMap = createMapWithIdAsKeyFromCsvList(stops);
+		String startTown = getTownName(startTownId,stopsMap);		
+		String endTown = getTownName(endTownId,stopsMap);
+		List<String> block = new ArrayList<String>();
+		block.add("<croo:Route rdf:ID=\"from" + startTown + "to" + endTown + "\">");
+		block.add("<croo:startTown rdf:resource=\"#" + startTown + "\" />");
+		block.add("<croo:endTown rdf:resource=\"#" + endTown + "\" />");
+		block.add("<georss:line>" + getCoorinateList(tripId,stopsMap.get(startTownId).get(0),stopsMap.get(endTownId).get(0)) + "</georss:line>");
+		block.add("</croo:Route>");
+		writeBlockToDatabase(block);
+	}
+
+	private String getCoorinateList(String tripId, String[] startTown, String[] endTown)
+	{
+		Double startLat = Double.parseDouble(startTown[3]); 
+		Double startLon = Double.parseDouble(startTown[4]);
+		Double endLat = Double.parseDouble(endTown[3]); 
+		Double endLon = Double.parseDouble(endTown[4]);
+		
+		
+		StringBuilder coordinateList = new StringBuilder();
+		List<String[]> shapeOfTrip = shapesMap.get(tripId);
+		Boolean isActualRoutewayHopefully = false; 
+		for (int i = 0; i < shapeOfTrip.size(); i++) {
+			if(townFoundOnShapeOfTrip(startLat, startLon, shapeOfTrip, i)){
+				isActualRoutewayHopefully = true;
+			}
+			if(isActualRoutewayHopefully){
+				coordinateList.append(shapeOfTrip.get(i)[0]+","+shapeOfTrip.get(i)[1] + " ");
+			}
+			if(townFoundOnShapeOfTrip(endLat, endLon, shapeOfTrip, i)){
+				isActualRoutewayHopefully = false;
+			}
+		}
+		return coordinateList.toString().trim();
+	}
+
+	private boolean townFoundOnShapeOfTrip(Double startLat, Double startLon,
+			List<String[]> shapeOfTrip, int i) {
+		return Math.abs(startLat - Double.parseDouble(shapeOfTrip.get(i)[0])) < 0.0001  && Math.abs(startLon - Double.parseDouble(shapeOfTrip.get(i)[1])) < 0.0001;
+	}
+
+	private String getTownName(String townId, Map<String, List<String[]>> stopsMap) {
+		String stopName = stopsMap.get(townId).get(0)[4];
+		if(platformOfStation(stopName)){
+			stopName = convertToStation(stopName);
+		}
+		return stopName;
+	}
+
+	private String convertToStation(String stopName) {
+		return stopName.replaceAll(", *[0-9]*. *vágány", "");
+	}
+
 
 	private void writeBlockToDatabase(List<String> data) throws IOException
 	{
@@ -106,37 +158,29 @@ public class RdfDataBuilder
 	private void generateStops() throws IOException
 	{
 		for (int i = 1; i < stops.size(); i++) {
-			String[] row = stops.get(i);
-			if (!platformOfStation(row)) {
+			String[] stop = stops.get(i);
+			if (!platformOfStation(stop[2])) {
 				List<String> block = new ArrayList<String>();
 				block.add("\n");
-				block.add("<croo:Town rdf:ID=\"" + formatted(row[2]) + "\">");
-				block.add("<foaf:Name>" + row[2] + "</foaf:Name>");
-				block.add("<geo:lat>" + row[4] + "</geo:lat>");
-				block.add("<geo:long>" + row[5] + "</geo:long>");
+				block.add("<croo:Town rdf:ID=\"" + formatted(stop[2]) + "\">");
+				block.add("<foaf:Name>" + stop[2] + "</foaf:Name>");
+				block.add("<geo:lat>" + stop[4] + "</geo:lat>");
+				block.add("<geo:long>" + stop[5] + "</geo:long>");
 				block.add("</croo:Town>");
 				writeBlockToDatabase(block);
 			}
 		}
 	}
 
-	private boolean platformOfStation(String[] row)
+	private boolean platformOfStation(String stopName)
 	{
-		return formatted(row[2]).contains("vágány");
+		return formatted(stopName).contains("vágány");
 	}
 
 	private String formatted(String text)
 	{
 		return text.trim().toLowerCase();
 	}
-
-	// private HashMap<String,Integer> createHeaders(String[] header){
-	// HashMap<String,Integer> headerResult = new HashMap<String, Integer>();
-	// for(int i = 0;i<header.length;i++){
-	// headerResult.put(header[i],i);
-	// }
-	// return headerResult;
-	// }
 
 	private File createDatabaseFile(String rdfDatabaseFile) throws IOException
 	{
