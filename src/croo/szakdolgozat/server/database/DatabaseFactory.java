@@ -1,5 +1,6 @@
 package croo.szakdolgozat.server.database;
 
+import java.io.File;
 import java.io.IOException;
 
 public class DatabaseFactory
@@ -17,7 +18,10 @@ public class DatabaseFactory
 		String databaseFile = SystemProperties.GetInstance().getFileLocation(RDF_DATABASE_FILE_PROPERTY_KEY);
 
 		RdfDatabaseGenerator generator = new RdfDatabaseGenerator();
-		generator.generateRdfDatabase(databaseFile);
+		File file = new File(databaseFile);
+		if (!file.exists()) {
+			generator.generateRdfDatabase(databaseFile);
+		}
 
 		return new RdfDatabase(databaseFile);
 	}

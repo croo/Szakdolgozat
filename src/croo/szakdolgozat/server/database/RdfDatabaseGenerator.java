@@ -14,33 +14,35 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- * Generates the RDF database from a downloaded source.
- * The source should be exactly in the format described on
+ * Generates the RDF database from a downloaded source. The source zip file
+ * should be exactly in the format described on
  * https://developers.google.com/transit/gtfs/reference
  * 
- * The public methods can be used with absolute and relative path and describes 
+ * The public methods can be used with absolute and relative path and tells
  * where the generated RDF database will be.
  * 
- * The class uses the default java temp directory for unzipping and parsing the files.
- * You can modify that temp dir by changing the java.io.tmpdir JVM environment variable.
+ * The class uses the default java temp directory for unzipping and parsing the
+ * files. You can modify that temp dir by changing the java.io.tmpdir JVM
+ * environment variable.
  * 
  * @author epterba
- *
+ * 
  */
 public class RdfDatabaseGenerator
 {
 	private static final String TEMP_DATA_ZIP = "MavSourceData.zip";
 	private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
-	
+
 	public void generateRdfDatabase(String rdfDatabaseFile) throws IOException
 	{
 		downloadSource();
 		unzip(TEMP_DIR + TEMP_DATA_ZIP);
 		deleteZipFile(TEMP_DIR + TEMP_DATA_ZIP);
-		new RdfDatabaseBuilder().parseTxtToRdfDatabase(TEMP_DIR,rdfDatabaseFile);
+		new RdfDatabaseBuilder(TEMP_DIR).parseTxtToRdfDatabase(rdfDatabaseFile);
 	}
-	
-	private void deleteZipFile(String file) {
+
+	private void deleteZipFile(String file)
+	{
 		File zipFile = new File(file);
 		zipFile.delete();
 	}
@@ -50,7 +52,7 @@ public class RdfDatabaseGenerator
 		String sourceURL = SystemProperties.GetInstance().getFileLocation("mav.source.zip.url");
 		saveUrl(TEMP_DIR + TEMP_DATA_ZIP, sourceURL);
 	}
-	
+
 	private void saveUrl(String file, String urlString) throws IOException
 	{
 		URL google = new URL(urlString);
@@ -58,7 +60,7 @@ public class RdfDatabaseGenerator
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.getChannel().transferFrom(rbc, 0, 1 << 24);
 	}
-	
+
 	private void unzip(String file) throws IOException
 	{
 		try {

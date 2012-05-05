@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.event.MapClickHandler;
-import com.google.web.bindery.event.shared.Event;
 import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.client.display.TravelMapDisplay;
@@ -39,7 +38,7 @@ public class TravelMapPresenter implements MapClickHandler
 				if (locationIsValid)
 					display.setErrorLabel("");
 				else
-					display.setErrorLabel(location + " nev˚ v·ros nincs az adatb·zisban.");
+					display.setErrorLabel(location + " nev≈± v√°ros nincs az adatb√°zisban.");
 			}
 		});
 	}
@@ -57,7 +56,7 @@ public class TravelMapPresenter implements MapClickHandler
 					mapManager.drawRoute(route);
 					eventBus.fireEvent(new SendEvent());
 				} else {
-					display.setErrorLabel("Rossz v·rosnevet adt·l meg.");
+					display.setErrorLabel("Rossz v√°rosnevet adt√°l meg.");
 				}
 			}
 		});

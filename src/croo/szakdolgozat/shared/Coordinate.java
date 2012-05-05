@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Coordinate implements IsSerializable
 {
-	private static final double EPSILON = 0.0000001;
+	private static final double EPSILON = 0.00001;
 	private Double latitude;
 	private Double longitude;
 
@@ -62,5 +62,11 @@ public class Coordinate implements IsSerializable
 	public int hashCode()
 	{
 		return 1013 * latitude.hashCode() ^ 1009 * longitude.hashCode();
+	}
+
+	@Override
+	public String toString()
+	{
+		return latitude + "," + longitude;
 	}
 }
