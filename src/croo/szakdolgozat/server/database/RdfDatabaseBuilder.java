@@ -1,5 +1,4 @@
 package croo.szakdolgozat.server.database;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +8,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -19,46 +21,76 @@ public class RdfDatabaseBuilder
 	private static final String STOP_TIMES = "stop_times.txt";
 	private static final String TRIPS = "trips.txt";
 	private static final String SHAPES = "shapes.txt";
-	private static List<String[]> stops;
 	private static List<String[]> trips;
-	private static List<String[]> stopTimes;
-	private static List<String[]> shapesCsv;
-	private File database;
+	private static Map<String, List<String[]>> shapesMap;
+	private static Map<String, List<String[]>> stopTimesMap;
+	private static Map<String, String[]> stopsMap;
 	private Writer out;
 
 	public RdfDatabaseBuilder(final String tempDir) throws IOException, FileNotFoundException
 	{
-		stops = new CSVReader(new FileReader(tempDir + STOPS)).readAll();
+		stopsMap = createMap(new CSVReader(new FileReader(tempDir + STOPS)));
 		System.out.println("stops loaded.");
 		trips = new CSVReader(new FileReader(tempDir + TRIPS)).readAll();
 		System.out.println("trips loaded.");
-		stopTimes = new CSVReader(new FileReader(tempDir + STOP_TIMES)).readAll();
+		stopTimesMap = createMultiMap(new CSVReader(new FileReader(tempDir + STOP_TIMES)));
 		System.out.println("stoptimes loaded.");
-		shapesCsv = new CSVReader(new FileReader(tempDir + SHAPES)).readAll();
+		shapesMap = createMultiMap(new CSVReader(new FileReader(tempDir + SHAPES)));
 		System.out.println("shapes loaded.");
 	}
 
 	public void parseTxtToRdfDatabase(String rdfDatabaseFile) throws IOException
 	{
-		Runtime r = Runtime.getRuntime();
-		database = createDatabaseFile(rdfDatabaseFile);
-		out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(database), "UTF-8"), 1024 * 1024 * 2);
+
+		File database = createDatabaseFile(rdfDatabaseFile);
+		out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(database), "UTF-8"), 1024 * 1024 * 10);
 		initializeDatabase();
 
 		generateStops();
-		r.gc();
 		generateRoutes();
-		r.gc();
 		finalizeDatabase();
 		clearThoseDamnBigLists();
-		r.gc();
+		Runtime.getRuntime().gc();
+	}
+
+	private Map<String, List<String[]>> createMultiMap(CSVReader data) throws IOException
+	{
+		Map<String, List<String[]>> map = new HashMap<String, List<String[]>>();
+		String[] row = data.readNext(); // throw away headers
+		row = data.readNext();
+		while (row != null) {
+			if (!map.containsKey(row[0])) {
+				List<String[]> values = new ArrayList<String[]>();
+				values.add(row);
+				map.put(row[0], values);
+			} else {
+				map.get(row[0]).add(row);
+			}
+			row = data.readNext();
+		}
+		return map;
+	}
+
+	private Map<String, String[]> createMap(CSVReader data) throws IOException
+	{
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		String[] row = data.readNext(); // throw away headers
+		row = data.readNext();
+		while (row != null) {
+			if (!map.containsKey(row[0])) {
+				map.put(row[0], row);
+			}
+			row = data.readNext();
+		}
+		return map;
 	}
 
 	private void clearThoseDamnBigLists() throws IOException
 	{
-		stops.clear();
+		stopsMap.clear();
 		trips.clear();
-		stopTimes.clear();
+		shapesMap.clear();
+		stopTimesMap.clear();
 		out.close();
 	}
 
@@ -66,13 +98,10 @@ public class RdfDatabaseBuilder
 	// 8 - shapes_id ; 2 - trips_id
 	private void generateRoutes() throws IOException
 	{
-		int i = 1;
-		for (String[] trip : trips) {
-			generateRoutesOfTrip(trip[2], trip[8]);
-			System.out.println("" + i + " - generating routes for trip: " + trip[2]);
-			i++;
-			if (i % 10 == 0)
-				Runtime.getRuntime().gc();
+		for (int i = 1; i < trips.size(); i++) {
+			generateRoutesOfTrip(trips.get(i)[2], trips.get(i)[8]);
+			System.out.println("" + i + " - generating routes for trip: " + trips.get(i)[2]);
+
 		}
 	}
 
@@ -80,7 +109,7 @@ public class RdfDatabaseBuilder
 	// 3 - stop_id ; 8 - shape_dist_traveled
 	private void generateRoutesOfTrip(String tripId, String shapesId) throws IOException
 	{
-		final List<String[]> stopTimesInTrip = getStopTimesInTrip(tripId);
+		final List<String[]> stopTimesInTrip = stopTimesMap.get(tripId);// getStopTimesInTrip(tripId);
 		for (int i = 0; i < stopTimesInTrip.size(); i++) {
 			String startTownId = stopTimesInTrip.get(i)[3];
 			String startTown_shape_dist_traveled = stopTimesInTrip.get(i)[8];
@@ -93,37 +122,11 @@ public class RdfDatabaseBuilder
 		}
 	}
 
-	private List<String[]> getStopTimesInTrip(String tripId)
-	{
-		List<String[]> stopsInTrip = new ArrayList<String[]>();
-		for (String[] stopTime : stopTimes) {
-			if (stopTime[0].equals(tripId)) {
-				stopsInTrip.add(stopTime);
-			}
-		}
-		return stopsInTrip;
-	}
-
 	private void createRouteBetweenTwoStopsInTrip(String shapesId, String startTownId, String endTownId,
 			String startTown_shape_dist_traveled, String endTown_shape_dist_traveled) throws IOException
 	{
-		String[] startTownRow = null;
-		String[] endTownRow = null;
-
-		boolean startTownFound = false;
-		boolean endTownFound = false;
-		for (String[] stop : stops) {
-			if (stop[0].equals(startTownId)) {
-				startTownRow = stop;
-				startTownFound = true;
-			}
-			if (stop[0].equals(endTownId)) {
-				endTownRow = stop;
-				endTownFound = true;
-			}
-			if (startTownFound && endTownFound)
-				break;
-		}
+		String[] startTownRow = stopsMap.get(startTownId);
+		String[] endTownRow = stopsMap.get(endTownId);
 
 		String startTown = ifPlatformConvertToStation(startTownRow[2]);
 		String endTown = ifPlatformConvertToStation(endTownRow[2]);
@@ -139,10 +142,9 @@ public class RdfDatabaseBuilder
 
 	// in shapes.txt
 	// 1 - shape latitude ; 2 - shape longitude
-	// 4 - shape_dist_traveled
 	private String getCoorinateList(String shapesId, String start_dist_traveled, String end_dist_traveled) throws IOException
 	{
-		List<String[]> shapesOfTrip = getShapesOfTrip(shapesId);
+		List<String[]> shapesOfTrip = shapesMap.get(shapesId);
 		StringBuilder coordinateList = new StringBuilder();
 		for (String[] shape : shapesOfTrip) {
 			if (shapeIsBetweenStops(start_dist_traveled, end_dist_traveled, shape))
@@ -159,53 +161,6 @@ public class RdfDatabaseBuilder
 				&& Double.parseDouble(shape[4]) <= Double.parseDouble(end_dist_traveled);
 	}
 
-	private List<String[]> getShapesOfTrip(String shapesId) throws IOException
-	{
-		List<String[]> shapes = new ArrayList<String[]>();
-
-		Boolean alreadyFound = false;
-		Boolean finishedReading = false;
-		for (int i = 1; i < shapesCsv.size(); i++) {
-			String[] shape = shapesCsv.get(i);
-			if (shape[0].equals(shapesId)) {
-				shapes.add(shape);
-				alreadyFound = true;
-			} else if (!shape[0].equals(shapesId) && alreadyFound) {
-				finishedReading = true;
-			}
-			if (finishedReading) {
-				break;
-			}
-		}
-		return shapes;
-	}
-
-	// in shapes.txt
-	// 0 - shape_id
-	// private List<String[]> getShapesOfTrip(String shapesId) throws
-	// IOException
-	// {
-	// List<String[]> shapes = new ArrayList<String[]>();
-	// shapesCsv = new CSVReader(new FileReader(tempDir + SHAPES));
-	// String[] shape = shapesCsv.readNext();// throw away headers
-	// Boolean alreadyFound = false;
-	// Boolean finishedReading = false;
-	// shape = shapesCsv.readNext();
-	// while (shape != null) {
-	// if (shape[0].equals(shapesId)) {
-	// shapes.add(shape);
-	// alreadyFound = true;
-	// } else if (!shape[0].equals(shapesId) && alreadyFound) {
-	// finishedReading = true;
-	// }
-	// if (finishedReading) {
-	// break;
-	// }
-	// shape = shapesCsv.readNext();
-	// }
-	// return shapes;
-	// }
-
 	private String ifPlatformConvertToStation(String stopName)
 	{
 		if (platformOfStation(stopName))
@@ -218,7 +173,6 @@ public class RdfDatabaseBuilder
 	{
 		String postfix = data.equals("\n") ? "" : "\n";
 		out.write(data + postfix);
-		// FileUtils.writeLines(database, data, true);
 	}
 
 	private void initializeDatabase() throws IOException
@@ -239,8 +193,8 @@ public class RdfDatabaseBuilder
 	 */
 	private void generateStops() throws IOException
 	{
-		for (int i = 1; i < stops.size(); i++) {
-			String[] stop = stops.get(i);
+		Collection<String[]> stops = stopsMap.values();
+		for (String[] stop : stops) {
 			if (!platformOfStation(stop[2])) {
 				writeToDatabase("\n");
 				writeToDatabase("<croo:Town rdf:ID=\"" + formatted(stop[2]) + "\">");
