@@ -16,13 +16,14 @@ import croo.szakdolgozat.shared.Town;
 public class TownTest
 {
 
+	private static final String NO_IMAGE_AVAILABLE = "http://www.findhomestaykorea.com/images/no_image.gif";
 	private static final InterestingPlace EMPTY_PAGE_PLACE = new InterestingPlace("http://emptypage.org", "");
 	private static final InterestingPlace INTERESTING_PLACE_1 = new InterestingPlace("http://www.thedailywtf.com",
-			"The Daily WTF", "From programmers to programmers");
+			"The Daily WTF", "From programmers to programmers", NO_IMAGE_AVAILABLE);
 	private static final InterestingPlace INTERESTING_PLACE_2 = new InterestingPlace("http://www.cracked.com", "Cracked",
-			"Americas only humor site since 1777");
+			"Americas only humor site since 1777", NO_IMAGE_AVAILABLE);
 	private static final InterestingPlace INTERESTING_PLACE_3 = new InterestingPlace("http://www.9gag.com", "9-Gag",
-			"Best of the worst");
+			"Best of the worst", NO_IMAGE_AVAILABLE);
 
 	private static final String badly_formatted_name = "   	BuDaPeST  	 ";
 	ArrayList<InterestingPlace> places;

@@ -9,6 +9,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import croo.szakdolgozat.client.stubs.MapService;
 import croo.szakdolgozat.server.database.Database;
 import croo.szakdolgozat.server.database.DatabaseFactory;
+import croo.szakdolgozat.shared.InterestingPlace;
 import croo.szakdolgozat.shared.Route;
 
 /**
@@ -20,18 +21,18 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 
 	private static volatile Database database;
 	static {
-		 try {
+		try {
 			database = DatabaseFactory.createRdfDatabase();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	@Override
 	public Boolean verifyLocation(String location)
 	{
 		return database.townExists(formatted(location));
-	}	
+	}
 
 	@Override
 	public Route getRoute(String startTown, String endTown)
@@ -46,6 +47,12 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 			return database.getRoute(formatted(startTown), formatted(endTown));
 		} else
 			return null;
+	}
+
+	@Override
+	public void addNewInterestingPlace(InterestingPlace place)
+	{
+
 	}
 
 	private Boolean bothLocationExists(String startTown, String endTown)

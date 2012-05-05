@@ -11,11 +11,12 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.maps.client.InfoWindow;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import croo.szakdolgozat.client.view.ElementCreatorView;
+import croo.szakdolgozat.client.view.InterestingPlacePopup;
 import croo.szakdolgozat.shared.InterestingPlace;
 import croo.szakdolgozat.shared.Town;
 
@@ -30,12 +31,12 @@ public class PlacesListPanel extends VerticalPanel
 			else
 				add(emptyElement());
 		}
-		add(elementCreatorButton(endTown.getTownCoordinateInJSO(), infoWindow));
+		add(newInterestingPlaceButton(endTown.getTownCoordinateInJSO(), infoWindow));
 	}
 
-	private HTML elementCreatorButton(final LatLng coordinateInJSO, final InfoWindow infoWindow)
+	private HTML newInterestingPlaceButton(final LatLng coordinateInJSO, final InfoWindow infoWindow)
 	{
-		final HTML elementCreatorButton = new HTML("Hozz·ad·s...");
+		final HTML elementCreatorButton = new HTML("Hozz√°ad√°s...");
 		elementCreatorButton.setStylePrimaryName("placeButton-link");
 
 		elementCreatorButton.addClickHandler(new ClickHandler() {
@@ -58,9 +59,10 @@ public class PlacesListPanel extends VerticalPanel
 		return emptyElement;
 	}
 
-	public Frame createMaxContent(String url)
+	public Widget createMaxContent(InterestingPlace place)
 	{
-		Frame interestingPage = new Frame(url);
+		Widget interestingPage = new InterestingPlacePopup(place.getName(), place.getDescription(), place.getURL(),
+				place.getImageUrl());
 		interestingPage.setHeight("98%");
 		interestingPage.setWidth("98%");
 		return interestingPage;
@@ -77,7 +79,7 @@ public class PlacesListPanel extends VerticalPanel
 			public void onClick(ClickEvent event)
 			{
 				InfoWindowContent content = new InfoWindowContent(PlacesListPanel.this);
-				content.setMaxContent(createMaxContent(place.getURL()));
+				content.setMaxContent(createMaxContent(place));
 				infoWindow.open(coordinateInJSO, content);
 				infoWindow.maximize();
 			}

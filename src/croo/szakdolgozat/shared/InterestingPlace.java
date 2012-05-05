@@ -4,9 +4,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class InterestingPlace implements IsSerializable
 {
-	String url;
-	String name;
-	String description = "";
+	private String url;
+	private String name;
+	private String description = "";
+	private String imageUrl;
 
 	public InterestingPlace()
 	{
@@ -19,11 +20,12 @@ public class InterestingPlace implements IsSerializable
 		this.name = name;
 	}
 
-	public InterestingPlace(String url, String name, String description)
+	public InterestingPlace(String url, String name, String description, String imageUrl)
 	{
 		this.url = url;
 		this.name = name;
 		this.description = description;
+		this.imageUrl = imageUrl;
 	}
 
 	public String getURL()
@@ -63,5 +65,10 @@ public class InterestingPlace implements IsSerializable
 	public int hashCode()
 	{
 		return url.hashCode();
+	}
+
+	public String getImageUrl()
+	{
+		return imageUrl;
 	}
 }

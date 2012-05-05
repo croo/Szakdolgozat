@@ -10,14 +10,17 @@ import croo.szakdolgozat.shared.Town;
 
 public class MockDatabase implements Database
 {
+	private static final String NO_IMAGE_AVAILABLE = "http://www.findhomestaykorea.com/images/no_image.gif";
 	HashMap<String, Town> db = new HashMap<String, Town>();
 
 	public MockDatabase()
 	{
 		ArrayList<InterestingPlace> placesInBudapest = new ArrayList<InterestingPlace>();
-		placesInBudapest.add(new InterestingPlace("http://budapest.hu", "Budapest", "A fıv·ros honlapja."));
-		placesInBudapest.add(new InterestingPlace("http://skanzen.hu", "Skanzen Klub", "A v·ros egyetlen doh·nyzÛ kocsm·ja."));
-		placesInBudapest.add(new InterestingPlace("http://index.hu", "HÌrek mindenrıl", "A legl·togatottabb bulv·r oldal."));
+		placesInBudapest.add(new InterestingPlace("http://budapest.hu", "Budapest", "A f≈ëv√°ros honlapja.", NO_IMAGE_AVAILABLE));
+		placesInBudapest.add(new InterestingPlace("http://skanzen.hu", "Skanzen Klub", "A v≈ëros egyetlen dohonyz√≥ kocsm√°ja.",
+				NO_IMAGE_AVAILABLE));
+		placesInBudapest.add(new InterestingPlace("http://index.hu", "H√≠rek mindenr≈ël", "A legl√°togatottabb bulv√°r oldal.",
+				NO_IMAGE_AVAILABLE));
 
 		db.put("budapest", new Town(new Coordinate(47.49841, 19.04076), "budapest", placesInBudapest));
 		db.put("esztergom", new Town(new Coordinate(47.7776069, 18.7435935), "esztergom"));
@@ -40,8 +43,8 @@ public class MockDatabase implements Database
 		routeway.add(db.get(formatted(endTownName)).getCoordinate());
 
 		return new Route(db.get(formatted(startTownName)), db.get(formatted(endTownName)), routeway);
-	}	
-	
+	}
+
 	private String formatted(String text)
 	{
 		return text.trim().toLowerCase();
