@@ -50,15 +50,15 @@
         <void method="set">
          <object idref="Point2D$Double1">
           <void method="setLocation">
-           <double>368.0</double>
-           <double>313.0</double>
+           <double>374.0</double>
+           <double>322.0</double>
           </void>
          </object>
-         <double>313.0</double>
+         <double>322.0</double>
         </void>
        </void>
       </object>
-      <double>368.0</double>
+      <double>374.0</double>
      </void>
     </void>
    </object>
