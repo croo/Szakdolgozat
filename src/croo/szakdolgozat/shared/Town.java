@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class Town implements IsSerializable
 {
 	public static final InterestingPlace EMPTY_PLACE = new InterestingPlace("http://emptypage.org",
-			"Itt nincs semmi érdekes...");
+			"Itt nincs semmi Ã©rdekes...");
 	private Coordinate coordinate;
 	private String name;
 	private ArrayList<InterestingPlace> interestingPlaces = null;
@@ -37,6 +37,15 @@ public class Town implements IsSerializable
 			return interestingPlaces;
 		else
 			return createEmptyInterestingPlaces();
+	}
+
+	public void addInterestingPlace(InterestingPlace place)
+	{
+		if (interestingPlaces == null)
+			interestingPlaces = new ArrayList<InterestingPlace>();
+		else if (interestingPlaces.contains(EMPTY_PLACE))
+			interestingPlaces.remove(EMPTY_PLACE);
+		interestingPlaces.add(place);
 	}
 
 	private ArrayList<InterestingPlace> createEmptyInterestingPlaces()
