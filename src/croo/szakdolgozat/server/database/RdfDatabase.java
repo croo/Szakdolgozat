@@ -8,6 +8,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.FileManager;
 
 import croo.szakdolgozat.shared.Coordinate;
+import croo.szakdolgozat.shared.InterestingPlace;
 import croo.szakdolgozat.shared.Route;
 import croo.szakdolgozat.shared.Town;
 
@@ -23,16 +24,18 @@ public class RdfDatabase implements Database
 
 	/**
 	 * Accepts filename with relative or absolute path
-	 * @param rdfFileName 
+	 * 
+	 * @param rdfFileName
 	 */
-	public RdfDatabase(String rdfFileName){
+	public RdfDatabase(String rdfFileName)
+	{
 		model = FileManager.get().loadModel(rdfFileName);
 		LATITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#lat");
 		LONGITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#long");
 		NAME = model.getProperty("http://xmlns.com/foaf/0.1/Name");
 		ROUTEWAY = model.getProperty("http://www.georss.org/georss#line");
 	}
-	
+
 	@Override
 	public boolean townExists(String town)
 	{
@@ -51,6 +54,13 @@ public class RdfDatabase implements Database
 		Town end = createTown(endTownResource);
 		ArrayList<Coordinate> routeway = createRouteWay(start.getCoordinate(), routewayResource, end.getCoordinate());
 		return new Route(start, end, routeway);
+	}
+
+	@Override
+	public void addInterestinPlace(InterestingPlace place, String town)
+	{
+		Resource townResource = model.getResource(NAMESPACE + town);
+
 	}
 
 	private ArrayList<Coordinate> createRouteWay(Coordinate startTownCoordinate, Resource route, Coordinate endTownCoordinate)

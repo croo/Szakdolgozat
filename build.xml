@@ -5,8 +5,8 @@
 	
   <property name="glassfish.domain" location="c:/glassfish3.1.1/glassfish3/glassfish/domains/domain1" />
   <!-- Configure path to Needed Libraries -->
-  <property name="gwt.sdk.home" location="c:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201202290255-rel-r37/gwt-2.4.0" />
-  <property name="gwt.sdk" location="c:\Users\epterba\Desktop\eclipse\plugins\com.google.gwt.eclipse.sdkbundle_2.4.0.v201203300216-rel-r36\gwt-2.4.0" />
+  <property name="gwt.sdk" location="c:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201202290255-rel-r37/gwt-2.4.0" />
+  <property name="gwt.sdk.laptop" location="c:\Users\epterba\Desktop\eclipse\plugins\com.google.gwt.eclipse.sdkbundle_2.4.0.v201203300216-rel-r36\gwt-2.4.0" />
   <property name="jena.dir" location="../Jena/apache-jena-2.7.0-incubating" />
 	<property name="resty.dir" location="../Resty" />
   <property name="googlemaps.dir" location="../googlemaps-api/gwt-maps-1.1.1" />
@@ -77,7 +77,7 @@
         <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA.jar" />
         <pathelement location="${default.jar.dir}/validation-api-1.0.0.GA-sources.jar" />
       </classpath>
-      <jvmarg value="-Xmx256M"/>
+      <jvmarg value="-Xmx1000M"/>
       <jvmarg value="-Xdebug" />
       <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8001" />
       <jvmarg value="-Dconfig.location=config.properties" />

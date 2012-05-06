@@ -24,7 +24,7 @@ public class PlacesListPanel extends VerticalPanel
 {
 	public PlacesListPanel(final Town endTown, final InfoWindow infoWindow)
 	{
-		ArrayList<InterestingPlace> places = endTown.getInterestingPlaces();
+		final ArrayList<InterestingPlace> places = endTown.getInterestingPlaces();
 		for (final InterestingPlace place : places) {
 			if (place != Town.EMPTY_PLACE)
 				add(listElement(endTown.getTownCoordinateInJSO(), infoWindow, place));

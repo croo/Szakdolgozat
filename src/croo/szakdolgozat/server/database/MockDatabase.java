@@ -49,4 +49,10 @@ public class MockDatabase implements Database
 	{
 		return text.trim().toLowerCase();
 	}
+
+	@Override
+	public void addInterestinPlace(InterestingPlace place, String town)
+	{
+		db.get(town).addInterestingPlace(place);
+	}
 }

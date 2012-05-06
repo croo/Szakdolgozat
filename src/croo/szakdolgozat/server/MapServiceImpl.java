@@ -52,7 +52,8 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 	@Override
 	public void addNewInterestingPlace(InterestingPlace place)
 	{
-
+		String town = (String) session().getAttribute("endTown");
+		database.addInterestinPlace(place, formatted(town));
 	}
 
 	private Boolean bothLocationExists(String startTown, String endTown)
