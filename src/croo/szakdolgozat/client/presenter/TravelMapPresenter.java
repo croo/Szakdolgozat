@@ -17,7 +17,7 @@ public class TravelMapPresenter implements MapClickHandler
 	private static final String MY_GOOGLEAPI_AUTH_KEY = "AIzaSyD--gmXsvTyag6v_Li5-wsYfdlXTMyauCU";
 	private EventBus eventBus;
 	private TravelMapDisplay display;
-	private MapManager mapManager;
+	private TravelMapManager mapManager;
 
 	private MapServiceAsync mapService;
 
@@ -78,7 +78,7 @@ public class TravelMapPresenter implements MapClickHandler
 		return new Runnable() {
 			public void run()
 			{
-				mapManager = new MapManager(new MapWidget());
+				mapManager = new TravelMapManager(new MapWidget(), TravelMapPresenter.this);
 				mapManager.initMap();
 				mapManager.addMapClickHandler(TravelMapPresenter.this);
 				display.setTravelMap(mapManager.getMap());

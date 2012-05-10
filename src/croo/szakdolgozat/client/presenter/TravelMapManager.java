@@ -12,13 +12,15 @@ import com.google.gwt.user.client.ui.Frame;
 import croo.szakdolgozat.shared.Route;
 import croo.szakdolgozat.shared.Town;
 
-public class MapManager
+public class TravelMapManager
 {
 	private MapWidget map;
+	private final TravelMapPresenter presenter;
 
-	public MapManager(MapWidget map)
+	public TravelMapManager(MapWidget map, TravelMapPresenter presenter)
 	{
 		this.map = map;
+		this.presenter = presenter;
 	}
 
 	public void drawRoute(final Route route)

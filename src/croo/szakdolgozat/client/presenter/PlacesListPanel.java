@@ -59,7 +59,7 @@ public class PlacesListPanel extends VerticalPanel
 		return emptyElement;
 	}
 
-	public Widget createMaxContent(InterestingPlace place)
+	private Widget createMaxContent(InterestingPlace place)
 	{
 		Widget interestingPage = new InterestingPlacePopup(place.getName(), place.getDescription(), place.getURL(),
 				place.getImageUrl());
