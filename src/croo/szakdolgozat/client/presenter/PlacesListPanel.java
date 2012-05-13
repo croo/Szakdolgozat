@@ -14,6 +14,7 @@ import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.client.view.ElementCreatorView;
 import croo.szakdolgozat.client.view.InterestingPlacePopup;
@@ -22,7 +23,8 @@ import croo.szakdolgozat.shared.Town;
 
 public class PlacesListPanel extends VerticalPanel
 {
-	public PlacesListPanel(final Town endTown, final InfoWindow infoWindow)
+
+	public PlacesListPanel(final Town endTown, final InfoWindow infoWindow, final EventBus eventBus)
 	{
 		final ArrayList<InterestingPlace> places = endTown.getInterestingPlaces();
 		for (final InterestingPlace place : places) {
@@ -31,10 +33,10 @@ public class PlacesListPanel extends VerticalPanel
 			else
 				add(emptyElement());
 		}
-		add(newInterestingPlaceButton(endTown.getTownCoordinateInJSO(), infoWindow));
+		add(newInterestingPlaceButton(endTown.getTownCoordinateInJSO(), infoWindow, eventBus));
 	}
 
-	private HTML newInterestingPlaceButton(final LatLng coordinateInJSO, final InfoWindow infoWindow)
+	private HTML newInterestingPlaceButton(final LatLng coordinateInJSO, final InfoWindow infoWindow, final EventBus eventBus)
 	{
 		final HTML elementCreatorButton = new HTML("Hozzáadás...");
 		elementCreatorButton.setStylePrimaryName("placeButton-link");
@@ -44,7 +46,7 @@ public class PlacesListPanel extends VerticalPanel
 			public void onClick(ClickEvent event)
 			{
 				InfoWindowContent content = new InfoWindowContent(PlacesListPanel.this);
-				content.setMaxContent(new ElementCreatorView());
+				content.setMaxContent(new ElementCreatorView(eventBus));
 				infoWindow.open(coordinateInJSO, content);
 				infoWindow.maximize();
 			}

@@ -8,6 +8,7 @@ import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.user.client.ui.Frame;
+import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.shared.Route;
 import croo.szakdolgozat.shared.Town;
@@ -15,12 +16,12 @@ import croo.szakdolgozat.shared.Town;
 public class TravelMapManager
 {
 	private MapWidget map;
-	private final TravelMapPresenter presenter;
+	private final EventBus eventBus;
 
-	public TravelMapManager(MapWidget map, TravelMapPresenter presenter)
+	public TravelMapManager(MapWidget map, EventBus eventBus)
 	{
 		this.map = map;
-		this.presenter = presenter;
+		this.eventBus = eventBus;
 	}
 
 	public void drawRoute(final Route route)
@@ -36,7 +37,7 @@ public class TravelMapManager
 	private Marker markerOfTown(final Town town)
 	{
 		final Marker marker = new Marker(town.getTownCoordinateInJSO());
-		final PlacesListPanel placesPanel = new PlacesListPanel(town, map.getInfoWindow());
+		final PlacesListPanel placesPanel = new PlacesListPanel(town, map.getInfoWindow(), eventBus);
 		marker.addMarkerClickHandler(new MarkerClickHandler() {
 			@Override
 			public void onClick(MarkerClickEvent event)
@@ -55,11 +56,6 @@ public class TravelMapManager
 		initContent.setMaxContent(new Frame("http://www.asdf.com"));// placesPanel.createMaxContent("http://www.asdf.com"));
 		initContent.setNoCloseOnClick(true);
 		map.getInfoWindow().open(destination, initContent);
-	}
-
-	public void addMapClickHandler(TravelMapPresenter travelMapPresenter)
-	{
-		map.addMapClickHandler(travelMapPresenter);
 	}
 
 	public MapWidget getMap()

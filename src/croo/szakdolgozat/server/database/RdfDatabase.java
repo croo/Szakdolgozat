@@ -16,11 +16,16 @@ public class RdfDatabase implements Database
 {
 
 	private static final String NAMESPACE = "http://example.org/base#";
+
 	private static Model model;
 	private static Property LATITUDE;
 	private static Property LONGITUDE;
 	private static Property NAME;
 	private static Property ROUTEWAY;
+	private static Property DESCRIPTION;
+	private static Property URL;
+	private static Property IMAGE;
+	private static Property PLACE;
 
 	/**
 	 * Accepts filename with relative or absolute path
@@ -34,6 +39,11 @@ public class RdfDatabase implements Database
 		LONGITUDE = model.getProperty("http://www.w3.org/2003/01/geo/wgs84_pos#long");
 		NAME = model.getProperty("http://xmlns.com/foaf/0.1/Name");
 		ROUTEWAY = model.getProperty("http://www.georss.org/georss#line");
+
+		DESCRIPTION = model.getProperty("http://purl.org/dc/terms/description");
+		URL = model.getProperty("http://purl.org/dc/terms/references");
+		IMAGE = model.getProperty("http://xmlns.com/foaf/0.1/img");
+		PLACE = model.getProperty(NAMESPACE + "places");
 	}
 
 	@Override
@@ -57,10 +67,21 @@ public class RdfDatabase implements Database
 	}
 
 	@Override
-	public void addInterestinPlace(InterestingPlace place, String town)
+	public synchronized void addInterestinPlace(InterestingPlace place, String town)
 	{
-		Resource townResource = model.getResource(NAMESPACE + town);
+		Resource placeResource = model.createResource(NAMESPACE + place.getName()
+				+ place.getURL().replaceAll("[.,/\\?#&=*:;]*", ""));
+		if (!model.contains(placeResource, null)) {
+			placeResource.addLiteral(NAME, place.getName());
+			placeResource.addLiteral(DESCRIPTION, place.getDescription());
+			placeResource.addLiteral(URL, place.getURL());
+			placeResource.addLiteral(IMAGE, place.getImageUrl());
 
+			Resource placesResource = model.createResource(NAMESPACE + "placesat" + town);
+
+			placesResource.addProperty(PLACE, placeResource);
+		} else
+			return;
 	}
 
 	private ArrayList<Coordinate> createRouteWay(Coordinate startTownCoordinate, Resource route, Coordinate endTownCoordinate)

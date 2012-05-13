@@ -3,16 +3,17 @@ package croo.szakdolgozat.client.presenter;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
-import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.client.display.TravelMapDisplay;
+import croo.szakdolgozat.client.events.PlaceRequestEvent;
+import croo.szakdolgozat.client.events.PlaceRequestEventHandler;
 import croo.szakdolgozat.client.events.SendEvent;
 import croo.szakdolgozat.client.stubs.MapServiceAsync;
 import croo.szakdolgozat.client.stubs.callbacks.ErrorHandlingAsyncCallback;
 import croo.szakdolgozat.shared.Route;
 
-public class TravelMapPresenter implements MapClickHandler
+public class TravelMapPresenter implements PlaceRequestEventHandler
 {
 	private static final String MY_GOOGLEAPI_AUTH_KEY = "AIzaSyD--gmXsvTyag6v_Li5-wsYfdlXTMyauCU";
 	private EventBus eventBus;
@@ -26,6 +27,7 @@ public class TravelMapPresenter implements MapClickHandler
 		this.eventBus = eventBus;
 		this.display = display;
 		this.mapService = mapService;
+		this.eventBus.addHandler(PlaceRequestEvent.TYPE, this);
 	}
 
 	public void verifyTownInput(final String location)
@@ -62,12 +64,6 @@ public class TravelMapPresenter implements MapClickHandler
 		});
 	}
 
-	@Override
-	public void onClick(MapClickEvent event)
-	{
-		GWT.log("You have clicked on the map.");
-	}
-
 	public void initializeMap()
 	{
 		Maps.loadMapsApi(MY_GOOGLEAPI_AUTH_KEY, "2", false, getMapInitThread());
@@ -78,11 +74,23 @@ public class TravelMapPresenter implements MapClickHandler
 		return new Runnable() {
 			public void run()
 			{
-				mapManager = new TravelMapManager(new MapWidget(), TravelMapPresenter.this);
+				mapManager = new TravelMapManager(new MapWidget(), eventBus);
 				mapManager.initMap();
-				mapManager.addMapClickHandler(TravelMapPresenter.this);
 				display.setTravelMap(mapManager.getMap());
 			}
 		};
+	}
+
+	@Override
+	public void onNewPlaceRequest(PlaceRequestEvent event)
+	{
+		GWT.log("Sending a new place to database...");
+		mapService.addNewInterestingPlace(event.getPlace(), new ErrorHandlingAsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result)
+			{
+				GWT.log("The place successfully added to the database.");
+			}
+		});
 	}
 }

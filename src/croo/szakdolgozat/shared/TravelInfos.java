@@ -18,7 +18,12 @@ public class TravelInfos implements IsSerializable
 	public TravelInfos(String routeName, String travelDate)
 	{
 		this.routeName = routeName;
-		this.travelDate = travelDate;
+		this.travelDate = removeStringWhatsThereBecouseOfAnElviraApiBug(travelDate);
+	}
+
+	private String removeStringWhatsThereBecouseOfAnElviraApiBug(String travelDate)
+	{
+		return travelDate.replaceAll(".tsz.ll.s n.lk.l;", "");
 	}
 
 	public void add(TravelInfo travelInfo)

@@ -43,8 +43,7 @@ public class RdfDatabaseBuilder
 	{
 
 		File database = createDatabaseFile(rdfDatabaseFile);
-		out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(database), "UTF-8"), 1024 * 1024 * 10);
-		initializeDatabase();
+		initializeDatabase(database);
 
 		generateStops();
 		generateRoutes();
@@ -175,8 +174,10 @@ public class RdfDatabaseBuilder
 		out.write(data + postfix);
 	}
 
-	private void initializeDatabase() throws IOException
+	private void initializeDatabase(File database) throws IOException
 	{
+		out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(database), "UTF-8"), 1024 * 1024 * 10);
+
 		writeToDatabase("<?xml version=\"1.0\"?>");
 		writeToDatabase("<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"");
 		writeToDatabase("xmlns:geo=\"http://www.w3.org/2003/01/geo/wgs84_pos#\"");
@@ -196,12 +197,14 @@ public class RdfDatabaseBuilder
 		Collection<String[]> stops = stopsMap.values();
 		for (String[] stop : stops) {
 			if (!platformOfStation(stop[2])) {
-				writeToDatabase("\n");
 				writeToDatabase("<croo:Town rdf:ID=\"" + formatted(stop[2]) + "\">");
 				writeToDatabase("<foaf:Name>" + stop[2] + "</foaf:Name>");
 				writeToDatabase("<geo:lat>" + stop[4] + "</geo:lat>");
 				writeToDatabase("<geo:long>" + stop[5] + "</geo:long>");
+				writeToDatabase("<croo:places rdf:resource=\"#placesat" + formatted(stop[2]) + "\"/>");
 				writeToDatabase("</croo:Town>");
+				writeToDatabase("<croo:places rdf:ID=\"placesat" + formatted(stop[2]) + "\">");
+				writeToDatabase("</croo:places>");
 			}
 		}
 	}
