@@ -13,6 +13,8 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import croo.szakdolgozat.server.SystemProperties;
+
 /**
  * Generates the RDF database from a downloaded source. The source zip file
  * should be exactly in the format described on

@@ -8,15 +8,10 @@ import croo.szakdolgozat.shared.TravelInfos;
 
 public class TravelInfoCreator
 {
-	public static TravelInfos fromJson(JSONObject json) throws JSONException
-	{
-		return createTravelInfos(json);
-	}
-
-	private static TravelInfos createTravelInfos(JSONObject json) throws JSONException
+	public static TravelInfos createTravelInfos(JSONObject json) throws JSONException
 	{
 		String routeName = json.getString("route");
-		String travelDate = json.getString("date").replace("·tsz·ll·s nÈlk¸l;", "");
+		String travelDate = json.getString("date").replace("√°tsz√°ll√°s n√©lk√ºl;", "");
 		TravelInfos infos = new TravelInfos(routeName, travelDate);
 
 		JSONArray timetables = json.getJSONArray("timetable");

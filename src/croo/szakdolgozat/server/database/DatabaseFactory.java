@@ -3,6 +3,8 @@ package croo.szakdolgozat.server.database;
 import java.io.File;
 import java.io.IOException;
 
+import croo.szakdolgozat.server.SystemProperties;
+
 public class DatabaseFactory
 {
 

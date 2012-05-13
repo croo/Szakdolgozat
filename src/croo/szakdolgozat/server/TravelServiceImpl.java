@@ -19,7 +19,7 @@ public class TravelServiceImpl extends RemoteServiceServlet implements TravelSer
 	public TravelInfos getTravelInfos() throws Exception
 	{
 		JSONObject json = ElviraApi.getJson(getString("startTown"), getString("endTown"), getDate("date"), getString("rate"));
-		TravelInfos infos = TravelInfoCreator.fromJson(json);
+		TravelInfos infos = TravelInfoCreator.createTravelInfos(json);
 
 		return infos;
 	}

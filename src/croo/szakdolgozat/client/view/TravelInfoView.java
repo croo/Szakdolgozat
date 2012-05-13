@@ -82,14 +82,14 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 	{
 		int column = 0;
 		grid.setWidget(0, column++, new HTML("Honnan"));
-		grid.setWidget(0, column++, new HTML("Vágány"));
+		grid.setWidget(0, column++, new HTML("VÃ¡gÃ¡ny"));
 		grid.setWidget(0, column++, new HTML("Hova"));
-		grid.setWidget(0, column++, new HTML("Indulás"));
-		grid.setWidget(0, column++, new HTML("Érkezés"));
-		grid.setWidget(0, column++, new HTML("Idõtartam"));
-		grid.setWidget(0, column++, new HTML("Távolság"));
-		grid.setWidget(0, column++, new HTML("Járat"));
-		grid.setWidget(0, column++, new HTML("Osztály"));
-		grid.setWidget(0, column++, new HTML("Ár"));
+		grid.setWidget(0, column++, new HTML("IndulÃ¡s"));
+		grid.setWidget(0, column++, new HTML("Ã‰rkezÃ©s"));
+		grid.setWidget(0, column++, new HTML("ItÅ‘tartam"));
+		grid.setWidget(0, column++, new HTML("TÃ¡volsÃ¡g"));
+		grid.setWidget(0, column++, new HTML("JÃ¡rat"));
+		grid.setWidget(0, column++, new HTML("OsztÃ¡ly"));
+		grid.setWidget(0, column++, new HTML("Ãr"));
 	}
 }

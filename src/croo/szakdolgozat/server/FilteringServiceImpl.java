@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import croo.szakdolgozat.client.stubs.FilterService;
-import croo.szakdolgozat.server.database.SystemProperties;
 
 /**
  * The server side implementation of the FilteringService service.

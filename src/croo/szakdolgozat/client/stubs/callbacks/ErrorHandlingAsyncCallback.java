@@ -16,7 +16,11 @@ public abstract class ErrorHandlingAsyncCallback<T> implements AsyncCallback<T>
 	@Override
 	public void onFailure(Throwable caught)
 	{
+		popup.clear();
 		popup.add(new HTML(caught.getMessage()));
 		popup.show();
 	}
+
+	@Override
+	public abstract void onSuccess(T result);
 }
