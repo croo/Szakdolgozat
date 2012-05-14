@@ -38,9 +38,9 @@ public class SystemProperties
 		return INSTANCE;
 	}
 
-	public String getFileLocation(String propertyKey)
+	public String get(String propertyKey)
 	{
-		String databaseFile = systemProperties.getProperty(propertyKey);
-		return databaseFile;
+		String propertyValue = systemProperties.getProperty(propertyKey);
+		return propertyValue;
 	}
 }

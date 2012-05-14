@@ -6,12 +6,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 
 public abstract class ErrorHandlingAsyncCallback<T> implements AsyncCallback<T>
 {
-	PopupPanel popup;
-
-	public ErrorHandlingAsyncCallback()
-	{
-		popup = new PopupPanel(true, true);
-	}
+	PopupPanel popup = new PopupPanel(true, true);
 
 	@Override
 	public void onFailure(Throwable caught)

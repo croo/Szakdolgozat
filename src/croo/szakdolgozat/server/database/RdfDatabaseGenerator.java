@@ -51,7 +51,7 @@ public class RdfDatabaseGenerator
 
 	private void downloadSource() throws IOException
 	{
-		String sourceURL = SystemProperties.GetInstance().getFileLocation("mav.source.zip.url");
+		String sourceURL = SystemProperties.GetInstance().get("mav.source.zip.url");
 		saveUrl(TEMP_DIR + TEMP_DATA_ZIP, sourceURL);
 	}
 

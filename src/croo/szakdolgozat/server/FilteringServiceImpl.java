@@ -49,7 +49,7 @@ public class FilteringServiceImpl extends RemoteServiceServlet implements Filter
 
 	private String getPricingProperties()
 	{
-		String pricingProperties = SystemProperties.GetInstance().getFileLocation("pricing.properties");
+		String pricingProperties = SystemProperties.GetInstance().get("pricing.properties");
 		return (pricingProperties == null) ? "pricing.properties" : pricingProperties;
 	}
 

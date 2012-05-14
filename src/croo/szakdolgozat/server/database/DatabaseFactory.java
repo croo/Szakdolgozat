@@ -17,7 +17,7 @@ public class DatabaseFactory
 
 	public static Database createRdfDatabase() throws IOException
 	{
-		String databaseFile = SystemProperties.GetInstance().getFileLocation(RDF_DATABASE_FILE_PROPERTY_KEY);
+		String databaseFile = SystemProperties.GetInstance().get(RDF_DATABASE_FILE_PROPERTY_KEY);
 
 		RdfDatabaseGenerator generator = new RdfDatabaseGenerator();
 		File file = new File(databaseFile);
