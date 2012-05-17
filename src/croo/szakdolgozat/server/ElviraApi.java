@@ -50,7 +50,7 @@ public class ElviraApi
 		if (json.toString().equals(EMPTY_JSON_RESULT))
 			return null;
 		else if (json.has("error") && json.getString("error").equals("1"))
-			throw new IOException("Az ·llom·s nem tal·lhatÛ az Elvira adatb·zisban.");
+			throw new IOException("Az √°llom√°s nem tal√°lhat√≥ az Elvira adatb√°zisban.");
 		else
 			return json;
 	}
