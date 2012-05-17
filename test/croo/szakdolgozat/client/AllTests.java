@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({CoordinateTest.class, TravelInfoCreatorTest.class, MapServiceImplTest.class,
+@SuiteClasses({CoordinateTest.class, ElviraApiTest.class, TravelInfoCreatorTest.class, MapServiceImplTest.class,
 		TownTest.class, InterestingPlaceTest.class})
 public class AllTests
 {

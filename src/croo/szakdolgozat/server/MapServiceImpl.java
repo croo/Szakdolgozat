@@ -20,12 +20,25 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 {
 
 	private static volatile Database database;
-	static {
+
+	public MapServiceImpl()
+	{
 		try {
 			database = DatabaseFactory.createRdfDatabase();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Should only be used for testing purposes
+	 * 
+	 * @param database
+	 */
+	@SuppressWarnings("static-access")
+	public MapServiceImpl(Database database)
+	{
+		this.database = database;
 	}
 
 	@Override
@@ -73,4 +86,5 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 	{
 		return text.trim().toLowerCase();
 	}
+
 }

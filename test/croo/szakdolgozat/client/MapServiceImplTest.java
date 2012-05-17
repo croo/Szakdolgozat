@@ -4,12 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import croo.szakdolgozat.server.MapServiceImpl;
+import croo.szakdolgozat.server.database.DatabaseFactory;
 import croo.szakdolgozat.shared.Coordinate;
 import croo.szakdolgozat.shared.Route;
 import croo.szakdolgozat.shared.Town;
@@ -22,10 +24,9 @@ public class MapServiceImplTest
 	private static final String END_TOWN = "Esztergom";
 
 	@Before
-	public void setUp()
+	public void setUp() throws IOException
 	{
-		mapService = new MapServiceImpl();
-		// mapService.setDatabase(DatabaseFactory.createMockDatabase());
+		mapService = new MapServiceImpl(DatabaseFactory.createRdfDatabase());
 	}
 
 	@Test
@@ -55,7 +56,7 @@ public class MapServiceImplTest
 	@Test
 	public void inputShouldBeInvalidIfNotFoundInDatabase()
 	{
-		assertFalse(mapService.verifyLocation("Mucsaröcsöge"));
+		assertFalse(mapService.verifyLocation("Mucsarï¿½csï¿½ge"));
 	}
 
 	@Test
