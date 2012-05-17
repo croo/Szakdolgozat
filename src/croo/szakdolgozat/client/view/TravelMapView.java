@@ -19,10 +19,10 @@ import croo.szakdolgozat.client.display.TravelMapDisplay;
 import croo.szakdolgozat.client.presenter.TravelMapPresenter;
 import croo.szakdolgozat.client.stubs.MapServiceAsync;
 
-public class TravelMap extends Composite implements TravelMapDisplay
+public class TravelMapView extends Composite implements TravelMapDisplay
 {
-	private static TravelMapUiBinder uiBinder = GWT.create(TravelMapUiBinder.class);
-	interface TravelMapUiBinder extends UiBinder<Widget, TravelMap>
+	private static TravelMapViewUiBinder uiBinder = GWT.create(TravelMapViewUiBinder.class);
+	interface TravelMapViewUiBinder extends UiBinder<Widget, TravelMapView>
 	{
 	}
 
@@ -41,7 +41,7 @@ public class TravelMap extends Composite implements TravelMapDisplay
 
 	// private MapWidget map;
 
-	public TravelMap(EventBus eventBus, MapServiceAsync mapService)
+	public TravelMapView(EventBus eventBus, MapServiceAsync mapService)
 	{
 		initWidget(uiBinder.createAndBindUi(this));
 		presenter = new TravelMapPresenter(eventBus, this, mapService);
