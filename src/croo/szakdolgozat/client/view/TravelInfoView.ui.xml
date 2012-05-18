@@ -5,10 +5,12 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-		<g:VerticalPanel ui:field="infoPanel">
-			<g:Label ui:field="routeLabel"/>
-			<g:Label ui:field="dateLabel"/>
-			<g:SimplePanel ui:field="table"/>
+		<g:VerticalPanel ui:field="infoPanel" horizontalAlignment="ALIGN_CENTER">
+			<g:Label ui:field="routeLabel" horizontalAlignment="ALIGN_CENTER"/>
+			<g:Label ui:field="dateLabel" horizontalAlignment="ALIGN_CENTER"/>
+			<g:Cell horizontalAlignment="ALIGN_CENTER">
+				<g:SimplePanel ui:field="table"/>
+			</g:Cell>
 		</g:VerticalPanel>
 			
 		

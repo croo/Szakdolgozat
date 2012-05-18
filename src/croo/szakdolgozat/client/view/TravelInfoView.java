@@ -44,6 +44,8 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 	{
 		initWidget(uiBinder.createAndBindUi(this));
 		presenter = new TravelInfoPresenter(this, eventBus, travelInfoService);
+		routeLabel.setStyleName("headerLabel");
+		dateLabel.setStyleName("headerLabel");
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 		table.clear();
 		Grid grid = new Grid(travelInfos.size() + 1, 10);
 		grid.setBorderWidth(1);
-		addHeader(grid);
+		addHeaders(grid);
 		for (int i = 1; i <= travelInfos.size(); i++) {
 			TravelInfo info = travelInfos.get(i - 1);
 			int column = 0;
@@ -78,18 +80,25 @@ public class TravelInfoView extends Composite implements TravelInfoDisplay
 		table.add(grid);
 	}
 
-	private void addHeader(Grid grid)
+	private void addHeaders(Grid grid)
 	{
 		int column = 0;
-		grid.setWidget(0, column++, new HTML("Honnan"));
-		grid.setWidget(0, column++, new HTML("Vágány"));
-		grid.setWidget(0, column++, new HTML("Hova"));
-		grid.setWidget(0, column++, new HTML("Indulás"));
-		grid.setWidget(0, column++, new HTML("Érkezés"));
-		grid.setWidget(0, column++, new HTML("Itőtartam"));
-		grid.setWidget(0, column++, new HTML("Távolság"));
-		grid.setWidget(0, column++, new HTML("Járat"));
-		grid.setWidget(0, column++, new HTML("Osztály"));
-		grid.setWidget(0, column++, new HTML("Ár"));
+		grid.setWidget(0, column++, getHeader("Honnan"));
+		grid.setWidget(0, column++, getHeader("Vágány"));
+		grid.setWidget(0, column++, getHeader("Hova"));
+		grid.setWidget(0, column++, getHeader("Indulás"));
+		grid.setWidget(0, column++, getHeader("Érkezés"));
+		grid.setWidget(0, column++, getHeader("Itőtartam"));
+		grid.setWidget(0, column++, getHeader("Távolság"));
+		grid.setWidget(0, column++, getHeader("Járat"));
+		grid.setWidget(0, column++, getHeader("Osztály"));
+		grid.setWidget(0, column++, getHeader("Ár"));
+	}
+
+	private HTML getHeader(String text)
+	{
+		HTML header = new HTML(text);
+		header.setStyleName("headerLabel");
+		return header;
 	}
 }

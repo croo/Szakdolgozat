@@ -8,15 +8,12 @@ h1 {
   text-align: center;
 }
 
-body{
-	background-color: 9DC0E8;
-}
-
 #wrapper{
 	width:1027px;
 	height:768px;
 	margin-left: auto;
 	margin-right:auto;
+	text-align: center;
 }
 
 #map{
@@ -25,9 +22,18 @@ body{
   box-shadow:         3px 3px 5px 6px #ccc;
 }
 
+#travelinfo{
+	margin-left: auto;
+	margin-right:auto;
+	text-align: center;
+	padding-top: 30px;
+	width:80%;
+}
+
 #title{
 	display:block;
 	background-image:url('title_bg_normal_size.jpg');
+	background-repeat:no-repeat;
 	height:250px;
 }
 
@@ -48,6 +54,11 @@ body{
 	cursor: pointer; 
 	cursor: hand;
 	color: blue;
+}
+
+.headerLabel{ 
+	font-size:medium;	
+	font-variant: small-caps;
 }
 
 .placeButton-hover{
