@@ -12,6 +12,7 @@ import com.google.gwt.maps.client.InfoWindow;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -29,7 +30,7 @@ public class PlacesListPanel extends VerticalPanel
 		final ArrayList<InterestingPlace> places = endTown.getInterestingPlaces();
 		for (final InterestingPlace place : places) {
 			if (place != Town.EMPTY_PLACE)
-				add(listElement(endTown.getTownCoordinateInJSO(), infoWindow, place));
+				add(listElement(endTown, infoWindow, place));
 			else
 				add(emptyElement());
 		}
@@ -45,10 +46,10 @@ public class PlacesListPanel extends VerticalPanel
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				InfoWindowContent content = new InfoWindowContent(PlacesListPanel.this);
-				content.setMaxContent(new ElementCreatorView(eventBus));
-				infoWindow.open(coordinateInJSO, content);
-				infoWindow.maximize();
+				PopupPanel popup = new PopupPanel(false);
+				popup.add(new ElementCreatorView(eventBus, popup));
+				popup.setGlassEnabled(true);
+				popup.center();
 			}
 		});
 		return elementCreatorButton;
@@ -70,7 +71,7 @@ public class PlacesListPanel extends VerticalPanel
 		return interestingPage;
 	}
 
-	private HTML listElement(final LatLng coordinateInJSO, final InfoWindow infoWindow, final InterestingPlace place)
+	private HTML listElement(final Town endTown, final InfoWindow infoWindow, final InterestingPlace place)
 	{
 		final HTML listElement = new HTML(place.getName());
 		listElement.setStylePrimaryName("placeButton");
@@ -82,7 +83,8 @@ public class PlacesListPanel extends VerticalPanel
 			{
 				InfoWindowContent content = new InfoWindowContent(PlacesListPanel.this);
 				content.setMaxContent(createMaxContent(place));
-				infoWindow.open(coordinateInJSO, content);
+				content.setMaxTitle("Egy érdekes hely " + endTown.getName() + " környékén.");
+				infoWindow.open(endTown.getTownCoordinateInJSO(), content);
 				infoWindow.maximize();
 			}
 		});

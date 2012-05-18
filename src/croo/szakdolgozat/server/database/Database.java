@@ -9,5 +9,5 @@ public interface Database
 
 	public Route getRoute(String startTown, String endTown);
 
-	public void addInterestinPlace(InterestingPlace place, String town);
+	public void addInterestingPlace(InterestingPlace place, String town);
 }

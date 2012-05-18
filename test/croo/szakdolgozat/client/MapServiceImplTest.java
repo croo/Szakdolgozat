@@ -20,8 +20,8 @@ public class MapServiceImplTest
 {
 
 	private MapServiceImpl mapService;
-	private static final String START_TOWN = "Budapest";
-	private static final String END_TOWN = "Esztergom";
+	private static final String START_TOWN = "Esztergom";
+	private static final String END_TOWN = "Budapest";
 
 	@Before
 	public void setUp() throws IOException
@@ -60,7 +60,7 @@ public class MapServiceImplTest
 	}
 
 	@Test
-	public void routeShouldContainTheSameTownsAsInputButWellFormatted()
+	public void routeShouldContainTheSameTownsAsInputButWellFormatted() throws Exception
 	{
 		Route route = mapService.getRoute(START_TOWN, END_TOWN);
 
@@ -69,7 +69,7 @@ public class MapServiceImplTest
 	}
 
 	@Test
-	public void routeShouldContainTheCoordinatesOfTowns()
+	public void routeShouldContainTheCoordinatesOfTowns() throws Exception
 	{
 		Route route = mapService.getRoute(START_TOWN, END_TOWN);
 
@@ -78,16 +78,16 @@ public class MapServiceImplTest
 	}
 
 	@Test
-	public void routeShouldContainAllTheCoordinatesBetweenTowns()
+	public void routeShouldContainAllTheCoordinatesBetweenTowns() throws Exception
 	{
 		Route route = mapService.getRoute(START_TOWN, END_TOWN);
 
 		ArrayList<Coordinate> routeway = route.getRouteway();
-		assertEquals(5, routeway.size());
+		assertTrue(routeway.size() > 2);
 	}
 
 	@Test
-	public void firstAndLastRouteCoordinateShouldBeTheTownCoordinates()
+	public void firstAndLastRouteCoordinateShouldBeTheTownCoordinates() throws Exception
 	{
 		Route route = mapService.getRoute(START_TOWN, END_TOWN);
 
@@ -97,7 +97,7 @@ public class MapServiceImplTest
 	}
 
 	@Test
-	public void endTownInRouteShouldContainListOfInterestingPlaces()
+	public void endTownInRouteShouldContainListOfInterestingPlaces() throws Exception
 	{
 		Route route = mapService.getRoute(START_TOWN, END_TOWN);
 		Town endtown = route.getEndTown();
@@ -105,7 +105,7 @@ public class MapServiceImplTest
 	}
 
 	@Test
-	public void ifOneOfTheTownsAreInvalidRouteShouldBeNull()
+	public void ifOneOfTheTownsAreInvalidRouteShouldBeNull() throws Exception
 	{
 		Route route = mapService.getRoute(START_TOWN, "8argaer");
 		assertEquals(route, null);
@@ -114,7 +114,7 @@ public class MapServiceImplTest
 	}
 
 	@Test
-	public void ifBothTownsAreInvalidRouteShouldBeNull()
+	public void ifBothTownsAreInvalidRouteShouldBeNull() throws Exception
 	{
 		Route route = mapService.getRoute("bebe Aghae", "8argaer");
 		assertEquals(route, null);

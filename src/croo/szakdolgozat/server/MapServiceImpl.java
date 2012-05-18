@@ -48,13 +48,17 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 	}
 
 	@Override
-	public Route getRoute(String startTown, String endTown)
+	public Route getRoute(String startTown, String endTown) throws Exception
 	{
-		if (bothLocationExists(startTown, endTown)) {
-			saveTownsToSession(startTown, endTown);
-			return database.getRoute(formatted(startTown), formatted(endTown));
-		} else
-			return null;
+		try {
+			if (bothLocationExists(startTown, endTown)) {
+				saveTownsToSession(startTown, endTown);
+				return database.getRoute(formatted(startTown), formatted(endTown));
+			} else
+				return null;
+		} catch (Throwable t) {
+			throw new Exception(t);
+		}
 	}
 
 	// while running JUnit test there are no sessions.
@@ -71,7 +75,7 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 	public void addNewInterestingPlace(InterestingPlace place)
 	{
 		String town = (String) session().getAttribute("endTown");
-		database.addInterestinPlace(place, formatted(town));
+		database.addInterestingPlace(place, formatted(town));
 	}
 
 	private Boolean bothLocationExists(String startTown, String endTown)

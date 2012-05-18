@@ -82,7 +82,7 @@ public class TravelMapPresenter implements PlaceRequestEventHandler
 	}
 
 	@Override
-	public void onNewPlaceRequest(PlaceRequestEvent event)
+	public void onNewPlaceRequest(final PlaceRequestEvent event)
 	{
 		GWT.log("Sending a new place to database...");
 		mapService.addNewInterestingPlace(event.getPlace(), new ErrorHandlingAsyncCallback<Void>() {
@@ -90,6 +90,8 @@ public class TravelMapPresenter implements PlaceRequestEventHandler
 			public void onSuccess(Void result)
 			{
 				GWT.log("The place successfully added to the database.");
+				display.setErrorLabel("Az új helyet sikeresen elmentettük.");
+				mapManager.updatePlacesListPanel(event.getPlace());
 			}
 		});
 	}

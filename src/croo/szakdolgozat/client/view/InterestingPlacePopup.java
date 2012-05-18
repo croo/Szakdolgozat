@@ -31,6 +31,7 @@ public class InterestingPlacePopup extends Composite
 	public InterestingPlacePopup()
 	{
 		initWidget(uiBinder.createAndBindUi(this));
+		title.addStyleName("h1");
 	}
 
 	public InterestingPlacePopup(String name, String description, String url, String imageUrl)

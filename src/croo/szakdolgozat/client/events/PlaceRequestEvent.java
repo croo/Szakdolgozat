@@ -11,7 +11,7 @@ public class PlaceRequestEvent extends Event<PlaceRequestEventHandler>
 
 	public PlaceRequestEvent(String name, String url, String description, String image)
 	{
-		place = new InterestingPlace(name, url, description, image);
+		place = new InterestingPlace(url, name, description, image);
 	}
 
 	@Override

@@ -5,7 +5,11 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-		<p1:DateBox ui:field="dateBox"/>
-		<g:ListBox ui:field="discountBox"/>
+		<g:HorizontalPanel>
+			<g:Label>Mikor: </g:Label>
+				<p1:DateBox ui:field="dateBox"/>
+			<g:Label>Mennyiért: </g:Label>
+				<g:ListBox ui:field="discountBox"/>
+		</g:HorizontalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

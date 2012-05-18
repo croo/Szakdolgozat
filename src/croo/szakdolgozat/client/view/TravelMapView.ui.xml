@@ -10,9 +10,11 @@
 	<g:VerticalPanel>
 		
 		<g:HorizontalPanel>
-			<g:TextBox ui:field="startTown"/>			
+		<g:Label>Honnan: </g:Label>
+			<g:TextBox ui:field="startTown"/>
+		<g:Label>Hova: </g:Label>
 			<g:TextBox ui:field="destinationTown"/>			
-			<g:Button styleName="{style.important}" ui:field="sendButton" text="Send" />
+			<g:Button styleName="{style.important}" ui:field="sendButton" text="Mehet!" />
 		</g:HorizontalPanel>
 		
 		<g:Label ui:field="errorLabel" text="" />

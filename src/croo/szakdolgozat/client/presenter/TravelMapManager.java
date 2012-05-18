@@ -7,9 +7,10 @@ import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.web.bindery.event.shared.EventBus;
 
+import croo.szakdolgozat.shared.InterestingPlace;
 import croo.szakdolgozat.shared.Route;
 import croo.szakdolgozat.shared.Town;
 
@@ -49,11 +50,11 @@ public class TravelMapManager
 		return marker;
 	}
 
-	// TODO: Default max content is like WTF. fix that...
 	private void showInterestingPlaces(final Marker destination, final PlacesListPanel placesPanel)
 	{
 		InfoWindowContent initContent = new InfoWindowContent(placesPanel);
-		initContent.setMaxContent(new Frame("http://www.asdf.com"));// placesPanel.createMaxContent("http://www.asdf.com"));
+		initContent.setMaxContent(new HTML());
+		initContent.setMaxTitle("");
 		initContent.setNoCloseOnClick(true);
 		map.getInfoWindow().open(destination, initContent);
 	}
@@ -68,10 +69,16 @@ public class TravelMapManager
 		LatLng budapest = LatLng.newInstance(47.49841, 19.04076);
 		map.setCenter(budapest);
 		map.setZoomLevel(7);
-		map.setSize("800px", "600px");
+		map.setSize("1024px", "768px");
 		map.setTitle("Utazz a MÁVval!");
 		map.setScrollWheelZoomEnabled(true);
 		map.setContinuousZoom(true);
 		map.addControl(new LargeMapControl());
+	}
+
+	public void updatePlacesListPanel(InterestingPlace place)
+	{
+		// TODO Auto-generated method stub
+
 	}
 }

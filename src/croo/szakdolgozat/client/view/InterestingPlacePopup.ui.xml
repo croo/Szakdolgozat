@@ -6,12 +6,12 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<g:VerticalPanel>
-			<g:Label text="Title" ui:field="title"/>
+			<g:Label text="Title" ui:field="title" horizontalAlignment="ALIGN_CENTER"/>
 			<g:HorizontalPanel>
 				<g:SimplePanel ui:field="description"/>
 				<g:Image ui:field="image"/>
 			</g:HorizontalPanel>
-			<g:VerticalPanel ui:field="urlList"/>
+			<g:VerticalPanel ui:field="urlList" horizontalAlignment="ALIGN_CENTER"/>
 		</g:VerticalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

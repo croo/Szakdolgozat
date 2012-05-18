@@ -14,7 +14,7 @@ public interface MapService extends RemoteService
 {
 	Boolean verifyLocation(String location);
 
-	Route getRoute(String startTown, String destinationTown);
+	Route getRoute(String startTown, String destinationTown) throws Exception;
 
 	void addNewInterestingPlace(InterestingPlace place);
 }

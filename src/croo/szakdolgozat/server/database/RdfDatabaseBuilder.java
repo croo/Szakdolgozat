@@ -121,14 +121,15 @@ public class RdfDatabaseBuilder
 		}
 	}
 
+	// 2 - name of stop/town
 	private void createRouteBetweenTwoStopsInTrip(String shapesId, String startTownId, String endTownId,
 			String startTown_shape_dist_traveled, String endTown_shape_dist_traveled) throws IOException
 	{
 		String[] startTownRow = stopsMap.get(startTownId);
 		String[] endTownRow = stopsMap.get(endTownId);
 
-		String startTown = ifPlatformConvertToStation(startTownRow[2]);
-		String endTown = ifPlatformConvertToStation(endTownRow[2]);
+		String startTown = isPlatformOfStation(startTownRow[2]) ? convertPlatformToStation(startTownRow[2]) : startTownRow[2];
+		String endTown = isPlatformOfStation(endTownRow[2]) ? convertPlatformToStation(endTownRow[2]) : endTownRow[2];
 
 		writeToDatabase("\n");
 		writeToDatabase("<croo:Route rdf:ID=\"from" + formatted(startTown) + "to" + formatted(endTown) + "\">");
@@ -160,12 +161,9 @@ public class RdfDatabaseBuilder
 				&& Double.parseDouble(shape[4]) <= Double.parseDouble(end_dist_traveled);
 	}
 
-	private String ifPlatformConvertToStation(String stopName)
+	private String convertPlatformToStation(String stopName)
 	{
-		if (platformOfStation(stopName))
-			return stopName.replaceAll(", *[0-9]*. *vágány", "");
-		else
-			return stopName;
+		return stopName.replaceAll(", *[0-9]*. *vágány", "");
 	}
 
 	private void writeToDatabase(String data) throws IOException
@@ -196,7 +194,7 @@ public class RdfDatabaseBuilder
 	{
 		Collection<String[]> stops = stopsMap.values();
 		for (String[] stop : stops) {
-			if (!platformOfStation(stop[2])) {
+			if (!isPlatformOfStation(stop[2])) {
 				writeToDatabase("<croo:Town rdf:ID=\"" + formatted(stop[2]) + "\">");
 				writeToDatabase("<foaf:Name>" + stop[2] + "</foaf:Name>");
 				writeToDatabase("<geo:lat>" + stop[4] + "</geo:lat>");
@@ -209,7 +207,7 @@ public class RdfDatabaseBuilder
 		}
 	}
 
-	private boolean platformOfStation(String stopName)
+	private boolean isPlatformOfStation(String stopName)
 	{
 		return formatted(stopName).contains("vágány");
 	}

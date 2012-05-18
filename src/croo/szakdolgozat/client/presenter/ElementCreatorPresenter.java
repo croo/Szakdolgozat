@@ -1,6 +1,7 @@
 package croo.szakdolgozat.client.presenter;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.client.display.ElementCreatorDisplay;
@@ -11,11 +12,13 @@ public class ElementCreatorPresenter
 
 	private final ElementCreatorDisplay display;
 	private final EventBus eventBus;
+	private final PopupPanel container;
 
-	public ElementCreatorPresenter(ElementCreatorDisplay display, EventBus eventBus)
+	public ElementCreatorPresenter(ElementCreatorDisplay display, EventBus eventBus, PopupPanel popup)
 	{
 		this.display = display;
 		this.eventBus = eventBus;
+		this.container = popup;
 	}
 
 	public void createNewPlace(String name, String url, String description, String image)
@@ -26,4 +29,8 @@ public class ElementCreatorPresenter
 		eventBus.fireEvent(new PlaceRequestEvent(name, url, description, image));
 	}
 
+	public void hideCreatorView()
+	{
+		container.hide();
+	}
 }

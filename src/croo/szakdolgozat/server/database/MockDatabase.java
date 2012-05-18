@@ -51,7 +51,7 @@ public class MockDatabase implements Database
 	}
 
 	@Override
-	public void addInterestinPlace(InterestingPlace place, String town)
+	public void addInterestingPlace(InterestingPlace place, String town)
 	{
 		db.get(town).addInterestingPlace(place);
 	}

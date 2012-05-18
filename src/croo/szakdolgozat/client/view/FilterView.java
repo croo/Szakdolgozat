@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -47,6 +48,8 @@ public class FilterView extends Composite implements FilterDisplay
 	private void setUpDateBox()
 	{
 		dateBox.setValue(new Date());
+		dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
+		presenter.onDateBoxValueChange(dateBox.getValue());
 	}
 
 	private void setUpDiscountBox()
@@ -72,5 +75,6 @@ public class FilterView extends Composite implements FilterDisplay
 		for (Entry<String, String> item : properties.entrySet()) {
 			discountBox.addItem((String) item.getValue(), (String) item.getKey());
 		}
+		presenter.onDiscountBoxChange(discountBox.getValue(discountBox.getSelectedIndex()));
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.FileManager;
 
 import croo.szakdolgozat.shared.Coordinate;
@@ -26,6 +27,7 @@ public class RdfDatabase implements Database
 	private static Property URL;
 	private static Property IMAGE;
 	private static Property PLACE;
+	private static Property PLACES;
 
 	/**
 	 * Accepts filename with relative or absolute path
@@ -42,8 +44,9 @@ public class RdfDatabase implements Database
 
 		DESCRIPTION = model.getProperty("http://purl.org/dc/terms/description");
 		URL = model.getProperty("http://purl.org/dc/terms/references");
-		IMAGE = model.getProperty("http://xmlns.com/foaf/0.1/img");
-		PLACE = model.getProperty(NAMESPACE + "places");
+		IMAGE = model.getProperty("http://xmlns.com/foaf/0.1/image");
+		PLACE = model.getProperty("http://example.org/croo#place");
+		PLACES = model.getProperty("http://example.org/croo#places");
 	}
 
 	@Override
@@ -59,7 +62,6 @@ public class RdfDatabase implements Database
 		Resource startTownResource = model.getResource(NAMESPACE + startTown);
 		Resource endTownResource = model.getResource(NAMESPACE + endTown);
 		Resource routewayResource = model.getResource(NAMESPACE + "from" + startTown + "to" + endTown);
-
 		Town start = createTown(startTownResource);
 		Town end = createTown(endTownResource);
 		ArrayList<Coordinate> routeway = createRouteWay(start.getCoordinate(), routewayResource, end.getCoordinate());
@@ -67,10 +69,9 @@ public class RdfDatabase implements Database
 	}
 
 	@Override
-	public synchronized void addInterestinPlace(InterestingPlace place, String town)
+	public synchronized void addInterestingPlace(InterestingPlace place, String town)
 	{
-		Resource placeResource = model.createResource(NAMESPACE + place.getName()
-				+ place.getURL().replaceAll("[.,/\\?#&=*:;]*", ""));
+		Resource placeResource = model.createResource(getUniquePlaceId(place));
 		if (!model.contains(placeResource, null)) {
 			placeResource.addLiteral(NAME, place.getName());
 			placeResource.addLiteral(DESCRIPTION, place.getDescription());
@@ -82,6 +83,12 @@ public class RdfDatabase implements Database
 			placesResource.addProperty(PLACE, placeResource);
 		} else
 			return;
+	}
+
+	private String getUniquePlaceId(InterestingPlace place)
+	{
+		return NAMESPACE + place.getName().replaceAll("[ .,/\\?#&=*:;]*", "").toLowerCase()
+				+ place.getURL().replaceAll("[ .,/\\?#&=*:;]*", "");
 	}
 
 	private ArrayList<Coordinate> createRouteWay(Coordinate startTownCoordinate, Resource route, Coordinate endTownCoordinate)
@@ -105,8 +112,31 @@ public class RdfDatabase implements Database
 
 		String name = town.getProperty(NAME).getString();
 
-		// TODO: List of interesting places are yet to add.
+		Town resultTown = new Town(coordinate, name);
+		loadInterestingPlacesIntoTown(resultTown);
 
-		return new Town(coordinate, name);
+		return resultTown;
+	}
+
+	private void loadInterestingPlacesIntoTown(Town town)
+	{
+		String a = NAMESPACE + "placesat" + town.getName().toLowerCase().trim();
+		Resource placesList = model.getResource(a);
+
+		StmtIterator places = placesList.listProperties(PLACE);
+		while (places.hasNext()) {
+			Resource place = places.next().getObject().asResource();
+			town.addInterestingPlace(createInterestingPlaceFromResource(place));
+		}
+	}
+
+	private InterestingPlace createInterestingPlaceFromResource(Resource place)
+	{
+		String name = place.getProperty(NAME).getString();
+		String url = place.getProperty(URL).getString();
+		String description = place.getProperty(DESCRIPTION).getString();
+		String imageUrl = place.getProperty(IMAGE).getString();
+
+		return new InterestingPlace(url, name, description, imageUrl);
 	}
 }

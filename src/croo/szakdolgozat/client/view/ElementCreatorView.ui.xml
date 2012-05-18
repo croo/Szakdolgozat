@@ -6,7 +6,7 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<g:Label text="Adj hozzá egy érdekes helyet te is!" horizontalAlignment="ALIGN_CENTER"/>
-		<g:VerticalPanel horizontalAlignment="ALIGN_CENTER">
+		<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" ui:field="wrapper">
 			<g:HorizontalPanel>
 				<g:Label text="Név " width="75px"/>
 				<g:TextBox alignment="LEFT" ui:field="name"/>
@@ -23,7 +23,10 @@
 				<g:Label text="Leírás"/>
 			</g:Cell>
 			<g:TextArea width="230px" height="106px" ui:field="description"/>
-			<g:Button width="46px" ui:field="sendButton">Ok</g:Button>
+			<g:HorizontalPanel>
+				<g:Button width="46px" ui:field="sendButton">Ok</g:Button>
+				<g:Button ui:field="cancelButton">Mégse</g:Button>
+			</g:HorizontalPanel>
 		</g:VerticalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 
