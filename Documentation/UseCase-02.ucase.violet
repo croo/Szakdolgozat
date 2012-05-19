@@ -132,7 +132,8 @@ megadása</string>
     <void property="name">
      <void property="text">
       <string>Dátum
-megadása</string>
+megadása
+(opcionális)</string>
      </void>
     </void>
    </object>
@@ -164,7 +165,8 @@ megadása</string>
     <void property="name">
      <void property="text">
       <string>Utazási kedvezmény
-megadása</string>
+megadása
+(opcionális)</string>
      </void>
     </void>
    </object>

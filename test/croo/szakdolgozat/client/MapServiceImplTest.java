@@ -73,8 +73,8 @@ public class MapServiceImplTest
 	{
 		Route route = mapService.getRoute(START_TOWN, END_TOWN);
 
-		assertEquals(route.getStartTown().getCoordinate(), new Coordinate(47.49841, 19.04076));
-		assertEquals(route.getEndTown().getCoordinate(), new Coordinate(47.7776069, 18.7435935));
+		assertEquals(route.getStartTown().getCoordinate(), new Coordinate(47.7776069, 18.7435935));
+		assertEquals(route.getEndTown().getCoordinate(), new Coordinate(47.49841, 19.04076));
 	}
 
 	@Test

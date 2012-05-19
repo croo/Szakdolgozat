@@ -25,7 +25,7 @@ import croo.szakdolgozat.server.ElviraApi;
 public class ElviraApiTest
 {
 
-	private static final String NON_EXISTING_STATION = "Mucsaröcsöge";
+	private static final String NON_EXISTING_STATION = "MucsarÃ¶csÃ¶ge";
 	private static final boolean WITHOUT_TRANSFER = true;
 	private static final String TYPE = "27";
 	private static final Date DATE = new Date();
@@ -49,14 +49,14 @@ public class ElviraApiTest
 	}
 
 	@Test
-	public void testJsonQueryWith3Parameters() throws JSONException
+	public void testJsonQueryWith3ParametersShouldRunWithoutProblem() throws JSONException
 	{
 		JSONObject json = null;
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE);
-		} catch (IOException e){
+		} catch (IOException e) {
 			System.out.println(e.getMessage());
-		}catch (JSONException e){
+		} catch (JSONException e) {
 			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
@@ -68,7 +68,7 @@ public class ElviraApiTest
 		JSONObject json = null;
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, TYPE);
-		} catch (IOException e){
+		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
@@ -80,14 +80,14 @@ public class ElviraApiTest
 		JSONObject json = null;
 		try {
 			json = ElviraApi.getJson(BUDAPEST, ESZTERGOM, DATE, TYPE, WITHOUT_TRANSFER);
-		} catch (IOException e){
+		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 		assertEquals(json.toString(), json_reference.toString());
 	}
 
 	@Test(expected = IOException.class)
-	public void queryWithNotExistingStationShouldGiveJsonWithErrorCode() throws IOException
+	public void queryWithNotExistingStationShouldGiveIOException() throws IOException
 	{
 		try {
 			JSONObject json = ElviraApi.getJson(NON_EXISTING_STATION, ESZTERGOM, DATE, TYPE, WITHOUT_TRANSFER);
