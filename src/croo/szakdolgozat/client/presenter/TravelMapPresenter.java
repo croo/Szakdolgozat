@@ -1,5 +1,8 @@
 package croo.szakdolgozat.client.presenter;
 
+import java.util.Date;
+import java.util.HashMap;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
@@ -9,6 +12,7 @@ import croo.szakdolgozat.client.display.TravelMapDisplay;
 import croo.szakdolgozat.client.events.PlaceRequestEvent;
 import croo.szakdolgozat.client.events.PlaceRequestEventHandler;
 import croo.szakdolgozat.client.events.SendEvent;
+import croo.szakdolgozat.client.stubs.FilterServiceAsync;
 import croo.szakdolgozat.client.stubs.MapServiceAsync;
 import croo.szakdolgozat.client.stubs.callbacks.ErrorHandlingAsyncCallback;
 import croo.szakdolgozat.shared.Route;
@@ -20,13 +24,16 @@ public class TravelMapPresenter implements PlaceRequestEventHandler
 	private TravelMapDisplay display;
 	private TravelMapManager mapManager;
 
-	private MapServiceAsync mapService;
+	private final MapServiceAsync mapService;
+	private final FilterServiceAsync filterService;
 
-	public TravelMapPresenter(EventBus eventBus, TravelMapDisplay display, MapServiceAsync mapService)
+	public TravelMapPresenter(EventBus eventBus, TravelMapDisplay display, MapServiceAsync mapService,
+			FilterServiceAsync filterService)
 	{
 		this.eventBus = eventBus;
 		this.display = display;
 		this.mapService = mapService;
+		this.filterService = filterService;
 		this.eventBus.addHandler(PlaceRequestEvent.TYPE, this);
 	}
 
@@ -92,6 +99,40 @@ public class TravelMapPresenter implements PlaceRequestEventHandler
 				GWT.log("The place successfully added to the database.");
 				display.setErrorLabel("Az új helyet sikeresen elmentettük.");
 				mapManager.updatePlacesListPanel(event.getPlace());
+			}
+		});
+	}
+
+	public void onDateBoxValueChange(Date date)
+	{
+		filterService.setDate(date, new ErrorHandlingAsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result)
+			{
+				GWT.log("DateBox value succesfully changed on the server.");
+			}
+
+		});
+	}
+
+	public void onDiscountBoxChange(String rate)
+	{
+		filterService.setDiscountRate(rate, new ErrorHandlingAsyncCallback<Void>() {
+			@Override
+			public void onSuccess(Void result)
+			{
+				GWT.log("DiscountBox value succesfully changed on the server.");
+			}
+		});
+	}
+
+	public void loadDiscounts()
+	{
+		filterService.getDiscounts(new ErrorHandlingAsyncCallback<HashMap<String, String>>() {
+			@Override
+			public void onSuccess(HashMap<String, String> properties)
+			{
+				display.loadDiscountBoxData(properties);
 			}
 		});
 	}

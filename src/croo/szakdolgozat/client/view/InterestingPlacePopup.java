@@ -41,6 +41,8 @@ public class InterestingPlacePopup extends Composite
 		this.description.add(new HTML(description));
 		image.setUrl(imageUrl);
 		image.setSize("400px", "400px");
-		urlList.add(new HTML("<a href=\"" + url + "\">" + url + "</a>"));
+		HTML urlLink = new HTML("<a href=\"" + url + "\" target=\"_blank\">" + url + "</a>");
+		urlLink.setStyleName("placeButton-link");
+		urlList.add(urlLink);
 	}
 }

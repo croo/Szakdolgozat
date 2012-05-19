@@ -4,10 +4,6 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.maps.client.InfoWindow;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.geom.LatLng;
@@ -75,7 +71,6 @@ public class PlacesListPanel extends VerticalPanel
 	{
 		final HTML listElement = new HTML(place.getName());
 		listElement.setStylePrimaryName("placeButton");
-		addHoverEffectToElement(listElement);
 
 		listElement.addClickHandler(new ClickHandler() {
 			@Override
@@ -84,6 +79,7 @@ public class PlacesListPanel extends VerticalPanel
 				InfoWindowContent content = new InfoWindowContent(PlacesListPanel.this);
 				content.setMaxContent(createMaxContent(place));
 				content.setMaxTitle("Egy érdekes hely " + endTown.getName() + " környékén.");
+				infoWindow.close();
 				infoWindow.open(endTown.getTownCoordinateInJSO(), content);
 				infoWindow.maximize();
 			}
@@ -91,22 +87,4 @@ public class PlacesListPanel extends VerticalPanel
 		return listElement;
 	}
 
-	private void addHoverEffectToElement(final HTML listElement)
-	{
-		listElement.addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event)
-			{
-				listElement.setStyleName("placeButton-hover", true);
-			}
-		});
-		listElement.addMouseOutHandler(new MouseOutHandler() {
-
-			@Override
-			public void onMouseOut(MouseOutEvent event)
-			{
-				listElement.setStyleName("placeButton-hover", false);
-			}
-		});
-	}
 }

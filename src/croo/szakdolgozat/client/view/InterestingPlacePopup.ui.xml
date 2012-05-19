@@ -2,13 +2,22 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-		
+		.important {
+			font-size:medium;
+			font-weight: bold;
+			font-variant: small-caps;
+			color:black;
+		}
+		.simple {			
+			font-size:small;						
+			color:black;
+		}
 	</ui:style>
 	<g:HTMLPanel>
 		<g:VerticalPanel>
-			<g:Label text="Title" ui:field="title" horizontalAlignment="ALIGN_CENTER"/>
+			<g:Label styleName="{style.important}" text="Title" ui:field="title" horizontalAlignment="ALIGN_CENTER"/>
 			<g:HorizontalPanel>
-				<g:SimplePanel ui:field="description"/>
+				<g:SimplePanel styleName="{style.simple}" ui:field="description"/>
 				<g:Image ui:field="image"/>
 			</g:HorizontalPanel>
 			<g:VerticalPanel ui:field="urlList" horizontalAlignment="ALIGN_CENTER"/>

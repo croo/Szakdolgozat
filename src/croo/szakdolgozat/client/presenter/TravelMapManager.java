@@ -7,7 +7,7 @@ import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.web.bindery.event.shared.EventBus;
 
 import croo.szakdolgozat.shared.InterestingPlace;
@@ -28,6 +28,7 @@ public class TravelMapManager
 	public void drawRoute(final Route route)
 	{
 		map.clearOverlays();
+		map.getInfoWindow().close();
 		map.getInfoWindow().setMaximizeEnabled(true);
 		map.addOverlay(route.getRouteWayInJSO());
 		map.addOverlay(markerOfTown(route.getEndTown()));
@@ -53,8 +54,9 @@ public class TravelMapManager
 	private void showInterestingPlaces(final Marker destination, final PlacesListPanel placesPanel)
 	{
 		InfoWindowContent initContent = new InfoWindowContent(placesPanel);
-		initContent.setMaxContent(new HTML());
-		initContent.setMaxTitle("");
+		Image easterEgg = new Image("http://netanimations.net/Moving-picture-steam-engine-silhouette-train-animation.gif");
+		easterEgg.setAltText("All your trains are belong to us!!");
+		initContent.setMaxContent(easterEgg);
 		initContent.setNoCloseOnClick(true);
 		map.getInfoWindow().open(destination, initContent);
 	}
@@ -69,7 +71,7 @@ public class TravelMapManager
 		LatLng budapest = LatLng.newInstance(47.49841, 19.04076);
 		map.setCenter(budapest);
 		map.setZoomLevel(7);
-		map.setSize("1024px", "768px");
+		map.setSize("1024px", "600px");
 		map.setTitle("Utazz a MÁVval!");
 		map.setScrollWheelZoomEnabled(true);
 		map.setContinuousZoom(true);
