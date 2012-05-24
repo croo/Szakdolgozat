@@ -31,21 +31,21 @@
               <croo:place rdf:about="http://example.org/base#tavakhttptavakhu">
                 <foaf:Name>Tavak</foaf:Name>
               <dc:references>http://tavak.hu</dc:references>
-                <dc:description>Horgásztavak, ahol fürdeni is lehet.</dc:description>
-                <foaf:image>http://www.metalmusicarchives.com/images/covers/avariel-no-end-in-sight%28demo%29-20110719103608.jpg</foaf:image>
+                <dc:description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet dui urna. Fusce malesuada, nunc nec elementum lacinia, nulla justo scelerisque justo, at sodales nibh erat at turpis. Nunc dolor turpis, dapibus ac hendrerit id, vestibulum vel diam. Etiam auctor dapibus ligula ac pretium. Pellentesque euismod, massa at feugiat tincidunt, nunc purus tempor lectus, eget vehicula neque orci sit amet nisi. Phasellus consectetur diam lacinia lacus congue fringilla congue odio rutrum. Proin vestibulum rhoncus aliquet. Quisque id nisi suscipit risus euismod tempus. Nulla tincidunt egestas egestas. Suspendisse potenti. Suspendisse eu magna enim. Sed cursus egestas blandit. Praesent imperdiet massa sed libero pellentesque id sodales lacus viverra. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </dc:description>
+                <foaf:image>http://m.cdn.blog.hu/pl/plitvice/image/Resize%20of%20P1070928.JPG</foaf:image>
               </croo:place>
             </croo:place>
           </croo:places>
         </croo:places>
-        <geo:long>12.552</geo:long>
-        <geo:lat>55.701</geo:lat>
+        <geo:long>19.0570037</geo:long>
+        <geo:lat>47.5104694</geo:lat>
         <foaf:Name> budapest </foaf:Name>
       </croo:Town>
     </croo:endTown>
     <croo:startTown>
       <croo:Town rdf:about="http://example.org/base#esztergom">
-        <geo:long>13.552</geo:long>
-        <geo:lat>54.701</geo:lat>
+        <geo:long>18.7435935</geo:long>
+        <geo:lat>47.7776069</geo:lat>
         <foaf:Name> esztergom </foaf:Name>
       </croo:Town>
     </croo:startTown>
