@@ -59,9 +59,10 @@ public class RdfDatabase implements Database
 	@Override
 	public Route getRoute(String startTown, String endTown)
 	{
+		Resource routewayResource = model.getResource(NAMESPACE + "from" + startTown + "to" + endTown);		
+		if(!model.contains(routewayResource, null)) return null;
 		Resource startTownResource = model.getResource(NAMESPACE + startTown);
 		Resource endTownResource = model.getResource(NAMESPACE + endTown);
-		Resource routewayResource = model.getResource(NAMESPACE + "from" + startTown + "to" + endTown);
 		Town start = createTown(startTownResource);
 		Town end = createTown(endTownResource);
 		ArrayList<Coordinate> routeway = createRouteWay(start.getCoordinate(), routewayResource, end.getCoordinate());

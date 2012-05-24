@@ -54,8 +54,9 @@ public class MapServiceImpl extends RemoteServiceServlet implements MapService
 			if (bothLocationExists(startTown, endTown)) {
 				saveTownsToSession(startTown, endTown);
 				return database.getRoute(formatted(startTown), formatted(endTown));
-			} else
+			} else {
 				return null;
+			}
 		} catch (Throwable t) {
 			throw new Exception(t);
 		}

@@ -1,6 +1,7 @@
 package croo.szakdolgozat.server;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class ElviraApi
 	}
 
 	public static JSONObject getJson(String startTown, String endTown, Date date, String type) throws IOException,
-			JSONException
+			JSONException, ConnectException
 	{
 		String queryUrl = buildQueryUrl(startTown, endTown, date, type, true);
 		return executeQuery(queryUrl);
@@ -46,7 +47,13 @@ public class ElviraApi
 
 	private static JSONObject executeQuery(String queryUrl) throws IOException, JSONException
 	{
-		JSONObject json = new Resty().json(queryUrl).object();
+		JSONObject json = null;
+		try{
+		json = new Resty().json(queryUrl).object();
+		}catch(Throwable e){
+			throw new IOException("The connection to oroszi elvira api has timed" +
+					" out.\n The query was: " + queryUrl +"("+e.getMessage() +";\n"+e.getCause()+")");
+		}
 		if (json.toString().equals(EMPTY_JSON_RESULT))
 			return null;
 		else if (json.has("error") && json.getString("error").equals("1"))

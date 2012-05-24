@@ -65,7 +65,7 @@ public class TravelMapPresenter implements PlaceRequestEventHandler
 					mapManager.drawRoute(route);
 					eventBus.fireEvent(new SendEvent());
 				} else {
-					display.setErrorLabel("Rossz városnevet adtál meg.");
+					display.setErrorLabel("Nincs a két város között közvetlen járat.");
 				}
 			}
 		});

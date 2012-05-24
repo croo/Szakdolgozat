@@ -22,11 +22,16 @@ public class ElementCreatorPresenter
 	}
 
 	public void createNewPlace(String name, String url, String description, String image)
-	{
-		// TODO : CHECK THAT THE INPUT PARAMETERS ARE LEGAL
-		// OTHERWISE DOUBLE PENETRATE INJECTION
+	{		
 		GWT.log("You pressed the Send New Place button.");
-		eventBus.fireEvent(new PlaceRequestEvent(name, url, description, image));
+		if(name.isEmpty() || url.isEmpty()){
+			display.setErrorLabel("A név és a honlapcím kitöltése kötelező.");
+			GWT.log("Missing input at new place request.");
+		} else {
+			GWT.log("New place request started...");
+			eventBus.fireEvent(new PlaceRequestEvent(name, url, description, image));
+			hideCreatorView();
+		}
 	}
 
 	public void hideCreatorView()

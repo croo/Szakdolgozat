@@ -7,6 +7,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -32,6 +33,8 @@ public class ElementCreatorView extends Composite implements ElementCreatorDispl
 	TextBox image;
 	@UiField
 	Button cancelButton;
+	@UiField
+	Label errorLabel;
 	private ElementCreatorPresenter presenter;
 
 	interface ElementCreatorViewUiBinder extends UiBinder<Widget, ElementCreatorView>
@@ -49,13 +52,17 @@ public class ElementCreatorView extends Composite implements ElementCreatorDispl
 	void onSendButtonClick(ClickEvent event)
 	{
 		GWT.log("UI Binderes gomb megnyomódott.");
-		presenter.createNewPlace(name.getText(), webpage.getText(), description.getText(), image.getText());
-		presenter.hideCreatorView();
+		presenter.createNewPlace(name.getText(), webpage.getText(), description.getText(), image.getText());		
 	}
 
 	@UiHandler("cancelButton")
 	void onCancelButtonClick(ClickEvent event)
 	{
 		presenter.hideCreatorView();
+	}
+
+	@Override
+	public void setErrorLabel(String error) {		
+		errorLabel.setText(error);
 	}
 }
